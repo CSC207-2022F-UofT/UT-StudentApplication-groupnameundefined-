@@ -8,15 +8,15 @@ In this course project, you are expected to use Github to manage your code. This
 1. Navigate to **Projects** Page on [CSC207 organization page](https://github.com/orgs/CSC207-2022F-UofT/projects)
 
 2. Click **New project**, and click **Create** on the new page.
-![](images/create_project.png)
+![](frontend/images/create_project.png)
 
 3. Click the title bar to rename the project to your team/project's name, and press **Enter** to save the change.
 
-![](images/rename.png)
+![](frontend/images/rename.png)
 
 4. Link the project to your repository. Navigate to your repository and select **Projects** tab, then click **Add Project** and select the project you just created.
 
-![](images/link_project.png)
+![](frontend/images/link_project.png)
 
 5. The project will show up in the the list below.
 
@@ -25,14 +25,14 @@ As a part of the project planning, you are required to record all features formu
 
 1. Navigate to your repository and select **Issues** tab, then click **New issue**.
 
-![](images/new_issue.png)
+![](frontend/images/new_issue.png)
 
 1. Fill in the title as the name of the feature and provide a brief description of the feature.
 **Please use a consistent naming convention for your issues.** For example, you can use the following format: `[Feature x] <feature name>` 
 
 2. On the side bar, select the **Assignee**, **Labels** (Enhancement for your Features), and **Projects**(the one you just created) for the issue. Then click **Submit new issue**.
 
-![](images/set_tags.png)
+![](frontend/images/set_tags.png)
 
 3. On the project page, you can see an item is automatically created.  :warning: :warning: **Make sure you verify that each feature issue is successfully created in the project.**  :warning: :warning:
 
@@ -42,7 +42,7 @@ When you work on a feature, you are always required to create a **branch** for t
 
 1. To create a new branch, navigate to the issue you are assigned to, and click **Create branch** on the right side bar.
 
-![](images/create_branch.png)
+![](frontend/images/create_branch.png)
 
 2. Select a name and click **Create branch** on the pop-up window. Use the provided command to check out the branch you just created on your local machine.
 
@@ -51,7 +51,7 @@ When you work on a feature, you are always required to create a **branch** for t
 3. Verify that the branch is successfully linked to the issue.
 
 
-![](images/link_branch.png)
+![](frontend/images/link_branch.png)
 
 
 ## Merge Feature Branch to Main Branch
@@ -61,7 +61,7 @@ When you finish working on a feature, you are required to merge the feature bran
 
     *Alternatively, you can create a pull request in the **Pull requests** tab.*
 
-![](images/create_pr.png)
+![](frontend/images/create_pr.png)
 
 2. Give a meaningful title and description for the pull request, remember please make the name consistent. 
    
@@ -69,7 +69,7 @@ When you finish working on a feature, you are required to merge the feature bran
    
    2.2 Make sure that you set the correct fields as issues (see red box).
 
-![](images/new_pr.png)
+![](frontend/images/new_pr.png)
 
 3. Select reviewers for the pull request. You can select multiple reviewers. The reviewers will be notified and will review your code. You can also add comments to the pull request. 
 
@@ -78,9 +78,9 @@ must be reviewed and approved by other team members before merging.** :warning: 
 
 5. After the pull request is merged, the linked issue will be automatically closed. You can verify that the issue is closed by navigating to the issues page and project page.
 
-![](images/closed_issue.png)
+![](frontend/images/closed_issue.png)
 
-![](images/closed_project.png)
+![](frontend/images/closed_project.png)
 
 6. (Optional) Delete the feature branch after the pull request is merged. You can delete the branch by navigating to the **View all branches** page.
 
