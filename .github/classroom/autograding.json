@@ -3,7 +3,7 @@
     {
       "name": "Default Test Runner",
       "setup": "",
-      "run": "cd backend && gradle test --tests \"*.*\"",
+      "run": "cd frontend && gradle test --tests \"*.*\"",
       "input": "",
       "output": "",
       "comparison": "included",

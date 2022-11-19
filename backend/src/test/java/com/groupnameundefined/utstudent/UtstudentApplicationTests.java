@@ -1,10 +1,10 @@
-package com.groupnameundefined.utstudentapplication;
+package com.groupnameundefined.utstudent;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class UtStudentapplicationApplicationTests {
+class UtstudentApplicationTests {
 
 	@Test
 	void contextLoads() {
