@@ -1,4 +1,4 @@
-package com.groupnameundefined.utstudent.model;
+package backend.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
