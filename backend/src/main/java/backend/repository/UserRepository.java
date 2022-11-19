@@ -1,8 +1,8 @@
-package com.groupnameundefined.utstudent.repository;
+package backend.repository;
 
 import java.util.List;
 
-import com.groupnameundefined.utstudent.model.User;
+import backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {

@@ -1,4 +1,4 @@
-package com.groupnameundefined.utstudent.controller;
+package backend.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.groupnameundefined.utstudent.model.User;
-import com.groupnameundefined.utstudent.repository.UserRepository;
+import backend.model.User;
+import backend.repository.UserRepository;
 
 @CrossOrigin
 @RestController
