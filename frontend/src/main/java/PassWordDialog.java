@@ -62,11 +62,10 @@ public class PassWordDialog extends JDialog {
             }
         });
 
-
         jbtOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                Make API request here
+                // Make API request here
                 if (Arrays.equals("stackoverflow".toCharArray(), jpfPassword.getPassword())
                         && "stackoverflow".equals(jtfUsername.getText())) {
                     parent.setVisible(true);
