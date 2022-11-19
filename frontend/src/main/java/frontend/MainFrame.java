@@ -4,6 +4,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import frontend.components.MainPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +22,21 @@ public class MainFrame extends JFrame {
     @Autowired
     private Logger logger;
 
+//    Method that switches between panels in mainPanel
     public void initalize() {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new FlowLayout());
-        mainPanel.setBackground(new Color(128, 128, 255));
-
+//       Initialize mainPanel
         setTitle("UT Student Application");
         setSize(1400, 800);
-        setMinimumSize(new Dimension(400, 300));
+        setMinimumSize(new Dimension(1400, 800));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 
-        Mono<String> response = webClient.get().uri("/users").exchangeToMono(r -> {
-            return r.bodyToMono(String.class);
-        });
-        response.subscribe(value -> logger.info(value));
+//        Add mainPanel to mainFrame
+        add(new MainPanel());
+        pack();
+//        Mono<String> response = webClient.get().uri("/users").exchangeToMono(r -> {
+//            return r.bodyToMono(String.class);
+//        });
+//        response.subscribe(value -> logger.info(value));
     }
 }
