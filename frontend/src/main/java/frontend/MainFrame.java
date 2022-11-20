@@ -22,15 +22,12 @@ public class MainFrame extends JFrame {
     private Logger logger;
 
     public void initalize() {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new FlowLayout());
-        mainPanel.setBackground(new Color(128, 128, 255));
-
         setTitle("UT Student Application");
         setSize(1400, 800);
         setMinimumSize(new Dimension(400, 300));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
+        add(new MainPanel());
 
         Mono<String> response = webClient.get().uri("/users").exchangeToMono(r -> {
             return r.bodyToMono(String.class);
