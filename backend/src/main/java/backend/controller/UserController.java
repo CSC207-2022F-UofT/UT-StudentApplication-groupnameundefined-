@@ -29,6 +29,11 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @GetMapping("/users/greeting")
+    public ResponseEntity<String> getUserGreeting() {
+        return new ResponseEntity<>("User: Greetings!", HttpStatus.OK);
+    }
+
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
         try {

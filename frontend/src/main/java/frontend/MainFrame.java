@@ -27,7 +27,7 @@ public class MainFrame extends JFrame {
         setMinimumSize(new Dimension(400, 300));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-        add(new MainPanel());
+        // add(new MainPanel());
 
         Mono<String> response = webClient.get().uri("/users").exchangeToMono(r -> {
             return r.bodyToMono(String.class);
