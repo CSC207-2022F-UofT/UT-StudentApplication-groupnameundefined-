@@ -1,11 +1,9 @@
 package backend.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -17,11 +15,46 @@ public class User {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "joinedTime")
+    private Timestamp joinedTime;
+
+    @Column(name = "lastActiveTime")
+    private Timestamp lastActiveTime;
+
+    @Column(name = "emailValidated")
+    private boolean emailValidated;
+
+    @Column(name = "listOfFriends")
+    private List<User> listOfFriends;
+
+    @Column(name = "blackList")
+    private List<User> blackList;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "studentProfile")
+    private StudentProfile studentProfile;
+
     public User() {
     }
 
-    public User(String name) {
+    public User(String name, String email, String password) {
         this.name = name;
+        this.email = email;
+        this.password = password;
+        this.joinedTime = new Timestamp(System.currentTimeMillis());
+        this.lastActiveTime = ;
+        this.emailValidated = false;
+        this.listOfFriends = new ArrayList<User>();
+        this.blackList = new ArrayList<User>();
+
     }
 
     public String getName() {
