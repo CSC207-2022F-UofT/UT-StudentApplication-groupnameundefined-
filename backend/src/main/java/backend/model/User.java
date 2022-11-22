@@ -30,31 +30,34 @@ public class User {
     @Column(name = "emailValidated")
     private boolean emailValidated;
 
-    @Column(name = "listOfFriends")
-    private List<User> listOfFriends;
+    @Column(name = "friends")
+    @OneToMany
+    private List<User> friends;
 
     @Column(name = "blackList")
+    @OneToMany
     private List<User> blackList;
 
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "studentProfile")
-    private StudentProfile studentProfile;
+    @Column(name = "profile")
+    private StudentProfile profile;
 
     public User() {
     }
 
-    public User(String name, String email, String password) {
+    public User(String name, String email, String password, String phone) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.phone = phone;
         this.joinedTime = new Timestamp(System.currentTimeMillis());
         this.lastActiveTime = ;
         this.emailValidated = false;
-        this.listOfFriends = new ArrayList<User>();
+        this.friends = new ArrayList<User>();
         this.blackList = new ArrayList<User>();
-
+        this.profile = new StudentProfile();
     }
 
     public String getName() {
