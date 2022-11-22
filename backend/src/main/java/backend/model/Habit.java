@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.*;
 import java.io.*;
 import java.util.*;
 
@@ -60,6 +61,10 @@ public class Habit{
         this.collaborate = 5;
     }
 
+    public Habit() {
+
+    }
+
     public String getUsername() { return this.username; }
     public void setUsername(String _username) { this.username = _username; }
 
@@ -92,7 +97,7 @@ public class Habit{
             return false;
         }
 
-        Habit habit = (Habit) habit;
+        Habit habit = (Habit)o;
         if((this.collaborate == habit.collaborate) && (this.talktive == habit.talktive) && (this.MBTI == habit.MBIT)){
             return true;
         }
