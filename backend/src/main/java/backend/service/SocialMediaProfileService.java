@@ -1,5 +1,5 @@
 package backend.service;
 
-public class SocialMediaProfileService {
+public interface SocialMediaProfileService {
 
 }

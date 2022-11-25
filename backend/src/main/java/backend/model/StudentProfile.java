@@ -1,6 +1,10 @@
 package backend.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "student_profile")
@@ -10,15 +14,20 @@ public class StudentProfile {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @NotNull(groups = { UpdateFormVG.class })
     private User user;
 
+    @Size(max = 256, message = "Program name should not exceed 256 characters.")
     @Column(name = "program")
     private String program;
 
+    @Size(max = 256, message = "College name should not exceed 256 characters.")
     @Column(name = "college")
     private String college;
 
+    @Max(value = 9999, message = "Invalid enrolment year")
+    @Min(value = 1827, message = "Invalid enrolment year")
     @Column(name = "enrolment_year")
     private Integer enrolmentYear;
 
@@ -28,6 +37,18 @@ public class StudentProfile {
     @OneToOne
     @JoinColumn(name = "socialmediaprofile_id", referencedColumnName = "id")
     private SocialMediaProfile socialMediaProfile;
+
+    public interface CreateFormVG {
+    }
+
+    public interface UpdateFormVG {
+    }
+
+    public interface CreatePersistVG {
+    }
+
+    public interface UpdatePersistVG {
+    }
 
     public StudentProfile() {
     }

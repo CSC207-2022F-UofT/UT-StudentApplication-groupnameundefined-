@@ -1,6 +1,6 @@
 package backend.model;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -21,6 +21,11 @@ public class Timetable {
     private Set<Block> blocks;
 
     public Timetable() {
+    }
+
+    public Timetable(StudentProfile studentProfile, Set<Block> blocks) {
+        this.studentProfile = studentProfile;
+        this.blocks = blocks;
     }
 
     public Long getId() {
@@ -46,5 +51,9 @@ public class Timetable {
     public void removeBlock(Block block) {
         blocks.remove(block);
         block.removeTimetable(this);
+    }
+
+    public Set<Block> parseIcsToBlocks(File file) {
+
     }
 }
