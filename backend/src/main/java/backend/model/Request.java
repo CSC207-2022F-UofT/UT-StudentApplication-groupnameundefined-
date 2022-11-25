@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
+@Entity
+@Table(name = "requests")
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +27,7 @@ public class Request {
     private Timestamp time;
     final String defaultMessage = "Hi " + to.getName() + ", this is " + from.getName() + ", nice to meet you!";
 
+    public Request() {}
     public Request(User from, User to, String message) {
         this.from = from;
         this.to = to;
@@ -45,6 +48,10 @@ public class Request {
         // Keep track of the time when the request is created.
         Date date = new Date();
         this.time = new Timestamp(date.getTime());
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getStatus() {
