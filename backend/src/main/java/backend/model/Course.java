@@ -31,7 +31,7 @@ public class Course {
     @Column(name = "campus")
     private String campus;
 
-    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = { CascadeType.ALL }, orphanRemoval = true)
     private Set<Section> sections;
 
     public Course(String name, String code, String sectionCode, String campus, Set<Section> sections) {

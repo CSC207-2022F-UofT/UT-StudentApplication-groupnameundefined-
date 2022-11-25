@@ -17,7 +17,7 @@ public class Timetable {
     private StudentProfile studentProfile;
 
     @ManyToMany(cascade = { CascadeType.REFRESH, CascadeType.DETACH })
-    @JoinTable(name = "timetable_block", joinColumns = @JoinColumn(name = "timetable_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "block_id", referencedColumnName = "id"))
+    @JoinTable(name = "timetable_x_block", joinColumns = @JoinColumn(name = "timetable_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "block_id", referencedColumnName = "id"))
     private Set<Block> blocks;
 
     public Timetable() {

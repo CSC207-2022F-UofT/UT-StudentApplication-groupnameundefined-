@@ -16,7 +16,7 @@ public class Section {
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 
-    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @OneToMany(mappedBy = "section", cascade = { CascadeType.ALL }, orphanRemoval = true)
     private Set<SectionBlock> sectionBlocks;
 
     public Section(Course course) {
