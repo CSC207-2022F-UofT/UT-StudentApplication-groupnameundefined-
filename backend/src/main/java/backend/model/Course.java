@@ -92,7 +92,9 @@ public class Course {
     }
 
     public void addSection(Section section) {
-        sections.add(section);
+        if (!sections.contains(section)) {
+            sections.add(section);
+        }
         section.setCourse(this);
     }
 

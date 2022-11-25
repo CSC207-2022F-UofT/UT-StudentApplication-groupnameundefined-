@@ -9,8 +9,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "appointment_block")
 public class AppointmentBlock extends Block {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    public AppointmentBlock() {
+    }
 
 }

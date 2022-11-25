@@ -8,6 +8,10 @@ import javax.persistence.*;
 @Entity
 public class Block {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     @Column(name = "start_day")
     private Integer startDay;
 
@@ -20,8 +24,8 @@ public class Block {
     @Column(name = "end_mil")
     private Integer endMil;
 
-    @ManyToMany(mappedBy = "timetable")
-    private ArrayList<StudentProfile> studentProfiles;
+    @ManyToMany(mappedBy = "blocks")
+    private ArrayList<Timetable> timetables;
 
     public Block() {
     }
@@ -31,6 +35,10 @@ public class Block {
         this.startMil = startMil;
         this.endDay = endDay;
         this.endMil = endMil;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public int getStartDay() {
@@ -63,6 +71,20 @@ public class Block {
 
     public void setEndMil(int endMil) {
         this.endMil = endMil;
+    }
+
+    public ArrayList<Timetable> getTimetables() {
+        return timetables;
+    }
+
+    public void addTimetable(Timetable timetable) {
+        if (!timetables.contains(timetable)) {
+            timetables.add(timetable);
+        }
+    }
+
+    public void removeTimetable(Timetable timetable) {
+        timetables.remove(timetable);
     }
 
 }

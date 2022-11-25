@@ -48,7 +48,6 @@ public class Section {
 
     public void addSectionBlock(SectionBlock sectionBlock) {
         sectionBlock.setSection(this);
-
         this.sectionBlocks.add(sectionBlock);
     }
 

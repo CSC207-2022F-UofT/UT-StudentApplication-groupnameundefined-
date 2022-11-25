@@ -27,17 +27,8 @@ public class StudentProfile {
     @Column(name = "courses")
     private ArrayList<String> courses;
 
-//    @Column(name = "habits")
-//    private Habits habits;
-
-    // this variable is not contained in "student_profile" table
-    @ManyToMany
-    @JoinTable(
-            name = "timetable",
-            joinColumns = @JoinColumn(name = "studentprofile_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "block_id", referencedColumnName = "id")
-    )
-    private ArrayList<Block> timetable;
+    @OneToOne(cascade = { CascadeType.ALL }, mappedBy = "timetable")
+    private Timetable timetable;
 
     @OneToOne
     @JoinColumn(name = "socialmediaprofile_id", referencedColumnName = "id")
@@ -48,9 +39,6 @@ public class StudentProfile {
 
     public StudentProfile(User user) {
         this.user = user;
-        this.program = program;
-        this.college = college;
-        this.enrolmentYear = enrolmentYear;
     }
 
     public StudentProfile(User user, String program, String college, Integer enrolmentYear) {
@@ -104,12 +92,16 @@ public class StudentProfile {
         this.courses = courses;
     }
 
-    public ArrayList<Block> getTimetable() {
+    public Timetable getTimetable() {
         return timetable;
     }
 
-    public void setTimetable(ArrayList<Block> timetable) {
+    public void setTimetable(Timetable timetable) {
         this.timetable = timetable;
+    }
+
+    public void removeTimetable() {
+        timetable = null;
     }
 
     public SocialMediaProfile getSocialMediaProfile() {
