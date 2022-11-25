@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 import javax.persistence.*;
 
-@MappedSuperclass
+@Inheritance(strategy = InheritanceType.JOINED)
+@Entity
 public class Block {
 
     @Column(name = "start_day")
