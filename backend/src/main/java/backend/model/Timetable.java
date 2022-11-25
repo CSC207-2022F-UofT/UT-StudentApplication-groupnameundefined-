@@ -1,6 +1,7 @@
 package backend.model;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -13,7 +14,7 @@ public class Timetable {
 
     @ManyToMany(cascade = { CascadeType.REFRESH, CascadeType.DETACH })
     @JoinTable(name = "timetable_block", joinColumns = @JoinColumn(name = "timetable_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "block_id", referencedColumnName = "id"))
-    private ArrayList<Block> blocks;
+    private Set<Block> blocks;
 
     @OneToOne
     @JoinColumn(name = "studentprofile_id", referencedColumnName = "id")
@@ -26,11 +27,11 @@ public class Timetable {
         return id;
     }
 
-    public ArrayList<Block> getBlocks() {
+    public Set<Block> getBlocks() {
         return blocks;
     }
 
-    public void setBlocks(ArrayList<Block> blocks) {
+    public void setBlocks(Set<Block> blocks) {
         for (Block block : blocks) {
             if (!block.getTimetables().contains(this)) {
                 block.addTimetable(this);
@@ -40,13 +41,8 @@ public class Timetable {
     }
 
     public void addBlock(Block block) {
-        if (!blocks.contains(block)) {
-            blocks.add(block);
-        }
-
-        if (!block.getTimetables().contains(this)) {
-            block.addTimetable(this);
-        }
+        blocks.add(block);
+        block.addTimetable(this);
     }
 
     public void removeBlock(Block block) {

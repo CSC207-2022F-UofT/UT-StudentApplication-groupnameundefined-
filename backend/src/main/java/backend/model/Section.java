@@ -1,6 +1,7 @@
 package backend.model;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -16,7 +17,7 @@ public class Section {
     private Course course;
 
     @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
-    private ArrayList<SectionBlock> sectionBlocks;
+    private Set<SectionBlock> sectionBlocks;
 
     public Section(Course course) {
         this.course = course;
@@ -34,7 +35,7 @@ public class Section {
         this.course = course;
     }
 
-    public void setSectionBlocks(ArrayList<SectionBlock> sectionBlocks) {
+    public void setSectionBlocks(Set<SectionBlock> sectionBlocks) {
         for (SectionBlock sectionBlock : sectionBlocks) {
             sectionBlock.setSection(this);
         }

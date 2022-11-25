@@ -1,6 +1,7 @@
 package backend.model;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,9 +32,9 @@ public class Course {
     private String campus;
 
     @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
-    private ArrayList<Section> sections;
+    private Set<Section> sections;
 
-    public Course(String name, String code, String sectionCode, String campus, ArrayList<Section> sections) {
+    public Course(String name, String code, String sectionCode, String campus, Set<Section> sections) {
         this.name = name;
         this.code = code;
         this.sectionCode = sectionCode;
@@ -77,11 +78,11 @@ public class Course {
         this.campus = campus;
     }
 
-    public ArrayList<Section> getSections() {
+    public Set<Section> getSections() {
         return sections;
     }
 
-    public void setSections(ArrayList<Section> sections) {
+    public void setSections(Set<Section> sections) {
         for (Section section : sections) {
             section.setCourse(this);
         }
@@ -92,9 +93,7 @@ public class Course {
     }
 
     public void addSection(Section section) {
-        if (!sections.contains(section)) {
-            sections.add(section);
-        }
+        sections.add(section);
         section.setCourse(this);
     }
 

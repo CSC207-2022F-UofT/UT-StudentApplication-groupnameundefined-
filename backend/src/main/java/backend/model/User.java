@@ -19,7 +19,7 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToOne(cascade = { CascadeType.ALL }, mappedBy = "user")
     private StudentProfile studentProfile;
 
     public User() {

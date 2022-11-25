@@ -1,6 +1,7 @@
 package backend.model;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -25,7 +26,7 @@ public class Block {
     private Integer endMil;
 
     @ManyToMany(mappedBy = "blocks")
-    private ArrayList<Timetable> timetables;
+    private Set<Timetable> timetables;
 
     public Block() {
     }
@@ -73,14 +74,12 @@ public class Block {
         this.endMil = endMil;
     }
 
-    public ArrayList<Timetable> getTimetables() {
+    public Set<Timetable> getTimetables() {
         return timetables;
     }
 
     public void addTimetable(Timetable timetable) {
-        if (!timetables.contains(timetable)) {
-            timetables.add(timetable);
-        }
+        timetables.add(timetable);
     }
 
     public void removeTimetable(Timetable timetable) {
