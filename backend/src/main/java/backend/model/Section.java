@@ -15,7 +15,7 @@ public class Section {
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 
-    @OneToMany(cascade = { CascadeType.REMOVE }, orphanRemoval = true)
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
     private ArrayList<SectionBlock> sectionBlocks;
 
     public Section(Course course) {
@@ -32,6 +32,29 @@ public class Section {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public void setSectionBlocks(ArrayList<SectionBlock> sectionBlocks) {
+        for (SectionBlock sectionBlock : sectionBlocks) {
+            sectionBlock.setSection(this);
+        }
+
+        for (SectionBlock sectionBlock : this.sectionBlocks) {
+            sectionBlock.setSection(null);
+        }
+
+        this.sectionBlocks = sectionBlocks;
+    }
+
+    public void addSectionBlock(SectionBlock sectionBlock) {
+        sectionBlock.setSection(this);
+
+        this.sectionBlocks.add(sectionBlock);
+    }
+
+    public void removeSectionBlock(SectionBlock sectionBlock) {
+        sectionBlock.setSection(null);
+        this.sectionBlocks.remove(sectionBlock);
     }
 
 }

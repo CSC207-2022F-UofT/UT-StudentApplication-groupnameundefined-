@@ -1,5 +1,6 @@
 package backend.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,6 +38,7 @@ public class SectionBlock extends Block {
 
     public void setSection(Section section) {
         this.section = section;
+        section.addSectionBlock(this);
     }
 
 }

@@ -30,7 +30,7 @@ public class Course {
     @Column(name = "campus")
     private String campus;
 
-    @OneToMany(cascade = { CascadeType.REMOVE }, orphanRemoval = true)
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
     private ArrayList<Section> sections;
 
     public Course(String name, String code, String sectionCode, String campus, ArrayList<Section> sections) {
@@ -82,7 +82,23 @@ public class Course {
     }
 
     public void setSections(ArrayList<Section> sections) {
+        for (Section section : sections) {
+            section.setCourse(this);
+        }
+        for (Section section : this.sections) {
+            section.setCourse(null);
+        }
         this.sections = sections;
+    }
+
+    public void addSection(Section section) {
+        sections.add(section);
+        section.setCourse(this);
+    }
+
+    public void removeSection(Section section) {
+        section.setCourse(null);
+        sections.remove(section);
     }
 
 }
