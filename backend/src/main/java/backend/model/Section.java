@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "course_block")
+@Table(name = "section")
 public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

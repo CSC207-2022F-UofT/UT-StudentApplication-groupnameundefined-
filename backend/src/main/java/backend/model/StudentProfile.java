@@ -1,7 +1,6 @@
 package backend.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 
 @Entity
 @Table(name = "student_profile")
@@ -23,11 +22,7 @@ public class StudentProfile {
     @Column(name = "enrolment_year")
     private Integer enrolmentYear;
 
-    @ElementCollection
-    @Column(name = "courses")
-    private ArrayList<String> courses;
-
-    @OneToOne(cascade = { CascadeType.ALL }, mappedBy = "timetable")
+    @OneToOne(cascade = { CascadeType.ALL }, mappedBy = "studentProfile")
     private Timetable timetable;
 
     @OneToOne
@@ -82,14 +77,6 @@ public class StudentProfile {
 
     public void setEnrolmentYear(Integer enrolmentYear) {
         this.enrolmentYear = enrolmentYear;
-    }
-
-    public ArrayList<String> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(ArrayList<String> courses) {
-        this.courses = courses;
     }
 
     public Timetable getTimetable() {

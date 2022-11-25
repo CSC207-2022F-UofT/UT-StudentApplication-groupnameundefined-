@@ -12,13 +12,13 @@ public class Timetable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToMany(cascade = { CascadeType.REFRESH, CascadeType.DETACH })
-    @JoinTable(name = "timetable_block", joinColumns = @JoinColumn(name = "timetable_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "block_id", referencedColumnName = "id"))
-    private Set<Block> blocks;
-
     @OneToOne
     @JoinColumn(name = "studentprofile_id", referencedColumnName = "id")
     private StudentProfile studentProfile;
+
+    @ManyToMany(cascade = { CascadeType.REFRESH, CascadeType.DETACH })
+    @JoinTable(name = "timetable_block", joinColumns = @JoinColumn(name = "timetable_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "block_id", referencedColumnName = "id"))
+    private Set<Block> blocks;
 
     public Timetable() {
     }
@@ -33,9 +33,7 @@ public class Timetable {
 
     public void setBlocks(Set<Block> blocks) {
         for (Block block : blocks) {
-            if (!block.getTimetables().contains(this)) {
-                block.addTimetable(this);
-            }
+            block.addTimetable(this);
         }
         this.blocks = blocks;
     }
