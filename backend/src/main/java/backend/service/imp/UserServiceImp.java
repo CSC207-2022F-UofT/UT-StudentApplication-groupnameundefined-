@@ -34,7 +34,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User createUser(User user) {
-        User _user = userRepository.save(new User(user.getName()));
+        User _user = userRepository.save(new User(user.getName(), user.getEmail(), user.getPassword(), user.getPhone()));
 
         return _user;
     }
