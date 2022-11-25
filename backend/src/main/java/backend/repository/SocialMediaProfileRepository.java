@@ -1,5 +1,5 @@
 package backend.repository;
 
-public class StudentMediaProfileRepository {
+public class SocialMediaProfileRepository {
 
 }
