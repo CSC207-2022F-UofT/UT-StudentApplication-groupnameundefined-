@@ -21,7 +21,7 @@ public class SocialMediaProfile {
     @OneToOne
     @JoinColumn(name = "studentprofile_id", referencedColumnName = "id")
     private StudentProfile studentProfile;
-    
+
     public SocialMediaProfile() {
     }
 }
