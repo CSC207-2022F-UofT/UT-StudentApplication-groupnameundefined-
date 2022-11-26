@@ -2,9 +2,11 @@ package backend.controller;
 
 import java.util.List;
 
+import backend.form.UserForm;
 import org.springframework.http.ResponseEntity;
 
 import backend.model.User;
+import org.springframework.web.bind.annotation.RequestBody;
 
 public interface UserController {
 
@@ -15,4 +17,6 @@ public interface UserController {
     ResponseEntity<User> getUserById(Long id);
 
     ResponseEntity<User> createUser(User user);
+
+    ResponseEntity<User> registerUser(UserForm.UserRegisterForm input);
 }

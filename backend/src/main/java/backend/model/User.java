@@ -24,7 +24,7 @@ public class User {
     private String password;
 
     @Column(name = "joinedTime")
-    private final Timestamp joinedTime;
+    private Timestamp joinedTime;
 
     @Column(name = "lastActiveTime")
     private Timestamp lastActiveTime;
@@ -43,8 +43,8 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "profile")
-    private StudentProfile profile;
+//    @Column(name = "profile")
+//    private StudentProfile profile;
 
     public User() {
 
@@ -60,7 +60,7 @@ public class User {
         this.emailValidated = false;
         this.friends = new ArrayList<User>();
         this.blackList = new ArrayList<User>(); // users in the black list should not appear in the friend list.
-        this.profile = new StudentProfile(); // profile is an empty object by default.
+//        this.profile = new StudentProfile(); // profile is an empty object by default.
     }
 
 
@@ -100,9 +100,9 @@ public class User {
         return this.blackList;
     }
 
-    public StudentProfile getProfile() {
-        return this.profile;
-    }
+//    public StudentProfile getProfile() {
+//        return this.profile;
+//    }
 
 
     public void setName(String name) {

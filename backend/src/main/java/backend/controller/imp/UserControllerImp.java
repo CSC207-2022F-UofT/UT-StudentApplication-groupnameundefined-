@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import backend.form.UserForm.*;
+import backend.service.imp.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,20 +27,20 @@ import backend.service.UserService;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserControllerImp implements UserController {
 
     @Autowired
     UserService userService;
 
     @Override
-    @GetMapping("/users/greeting")
+    @GetMapping("/greeting")
     public ResponseEntity<String> getUserGreeting() {
         return new ResponseEntity<>("User: Greetings!", HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/users")
+    @GetMapping("/")
     public ResponseEntity<List<User>> getAllUsers() {
         try {
             List<User> users = userService.getAllUsers();
@@ -49,7 +51,7 @@ public class UserControllerImp implements UserController {
     }
 
     @Override
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
         Optional<User> user = userService.getUserById(id);
 
@@ -61,7 +63,7 @@ public class UserControllerImp implements UserController {
     }
 
     @Override
-    @PostMapping("/users")
+    @PostMapping("/")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         try {
             User _user = userService.createUser(user);
@@ -72,8 +74,16 @@ public class UserControllerImp implements UserController {
         }
     }
 
-    @GetMapping("/register")
-    public ResponseEntity<User> registerUser(){
-
+    @Override
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody UserRegisterForm input) {
+        try {
+            return new ResponseEntity<User>(userService.registerUser(input), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+
+
 }
