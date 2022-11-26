@@ -71,4 +71,9 @@ public class UserControllerImp implements UserController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/register")
+    public ResponseEntity<User> registerUser(){
+
+    }
 }

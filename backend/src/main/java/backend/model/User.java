@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "users")
@@ -87,15 +89,15 @@ public class User {
     }
 
     public boolean getEmailValidated(){
-        return this.emailValidated
+        return this.emailValidated;
     }
 
     public List<User> getFriends(){
-        return this.friends
+        return this.friends;
     }
 
     public List<User> getBlackList(){
-        return this.blackList
+        return this.blackList;
     }
 
     public StudentProfile getProfile() {
@@ -156,6 +158,25 @@ public class User {
             this.friends.remove(user);
         }
         this.blackList.add(user);
+    }
+
+    public boolean passwordIsValid(String password){
+        Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$");
+        if (password == null){
+            return false;
+        }
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
+    public boolean nameIsValid(String name){
+        if (name == null){
+            return false;
+        } else if (name.length() > 20){
+            return false;
+        } else {
+            return true;
+        }
     }
 
 

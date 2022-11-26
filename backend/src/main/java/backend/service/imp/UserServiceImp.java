@@ -38,4 +38,27 @@ public class UserServiceImp implements UserService {
 
         return _user;
     }
+
+    @Override
+    public boolean existName(String name){
+        Optional<User> user = userRepository.findByName(name);
+        return user.isPresent();
+    }
+
+    @Override
+    public boolean userRegister(String name, String email, String password, String phone, String repeatPassword){
+        User user = new User(name, email, password, phone);
+        Optional<User> existedUser = userRepository.findByName(name);
+        if (!existedUser.isPresent()) {
+            if (user.nameIsValid(name) && user.passwordIsValid(password) && password == repeatPassword) {
+                User _user = userRepository.save(user);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
 }
