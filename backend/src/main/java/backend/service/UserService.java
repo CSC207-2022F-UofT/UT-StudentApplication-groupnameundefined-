@@ -24,6 +24,6 @@ public interface UserService {
 //
 //    boolean repeatPasswordMatch(String password, String repeatPassword);
 
-    public User registerUser(UserForm.UserRegisterForm userRegisterInput) throws Exception;
+    User registerUser(UserForm.UserRegisterForm userRegisterInput) throws Exception;
 
 }

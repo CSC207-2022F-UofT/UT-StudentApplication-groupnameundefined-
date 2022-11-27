@@ -76,9 +76,9 @@ public class UserControllerImp implements UserController {
 
     @Override
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserRegisterForm input) {
+    public ResponseEntity<User> registerUser(@RequestBody UserRegisterForm userRegisterInput) {
         try {
-            return new ResponseEntity<User>(userService.registerUser(input), HttpStatus.OK);
+            return new ResponseEntity<User>(userService.registerUser(userRegisterInput), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

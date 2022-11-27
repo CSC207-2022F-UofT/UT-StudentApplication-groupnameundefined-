@@ -23,14 +23,17 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "phone")
+    private String phone;
+
     @Column(name = "joinedTime")
     private Timestamp joinedTime;
 
     @Column(name = "lastActiveTime")
     private Timestamp lastActiveTime;
 
-    @Column(name = "emailValidated")
-    private boolean emailValidated;
+//    @Column(name = "emailValidated")
+//    private boolean emailValidated;
 
     @Column(name = "friends")
     @OneToMany
@@ -40,8 +43,6 @@ public class User {
     @OneToMany
     private List<User> blackList;
 
-    @Column(name = "phone")
-    private String phone;
 
 //    @Column(name = "profile")
 //    private StudentProfile profile;
@@ -57,7 +58,7 @@ public class User {
         this.phone = phone;
         this.joinedTime = new Timestamp(System.currentTimeMillis());
         this.lastActiveTime = new Timestamp(System.currentTimeMillis());
-        this.emailValidated = false;
+//        this.emailValidated = false;
         this.friends = new ArrayList<User>();
         this.blackList = new ArrayList<User>(); // users in the black list should not appear in the friend list.
 //        this.profile = new StudentProfile(); // profile is an empty object by default.
@@ -88,9 +89,9 @@ public class User {
         return this.lastActiveTime;
     }
 
-    public boolean getEmailValidated(){
-        return this.emailValidated;
-    }
+//    public boolean getEmailValidated(){
+//        return this.emailValidated;
+//    }
 
     public List<User> getFriends(){
         return this.friends;
@@ -117,24 +118,24 @@ public class User {
         this.password = password;
     }
 
+    public void setPhone(){
+        this.phone = phone;
+    }
+
     public void setLastActiveTime(Timestamp lastActiveTime){
         this.lastActiveTime = lastActiveTime;
     }
 
-    public void setEmailValidated(){
-        this.emailValidated = true;
-    }
+//    public void setEmailValidated(){
+//        this.emailValidated = true;
+//    }
 
     public void setBlackListEmpty(){
         this.blackList = new ArrayList<User>();
     }
 
-    public void setPhone(){
-        this.phone = phone;
-    }
-
-    public void setStudentProfile(){ // overload this method with different arguments to set different options in a profile.
-
+    public void setStudentProfile(){
+        // overload this method with different arguments to set different options in a profile.
     }
 
 
@@ -160,24 +161,24 @@ public class User {
         this.blackList.add(user);
     }
 
-    public boolean passwordIsValid(String password){
-        Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$");
-        if (password == null){
-            return false;
-        }
-        Matcher matcher = pattern.matcher(password);
-        return matcher.matches();
-    }
+//    public boolean passwordIsValid(String password){
+//        Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$");
+//        if (password == null){
+//            return false;
+//        }
+//        Matcher matcher = pattern.matcher(password);
+//        return matcher.matches();
+//    }
 
-    public boolean nameIsValid(String name){
-        if (name == null){
-            return false;
-        } else if (name.length() > 20){
-            return false;
-        } else {
-            return true;
-        }
-    }
+//    public boolean nameIsValid(String name){
+//        if (name == null){
+//            return false;
+//        } else if (name.length() > 20){
+//            return false;
+//        } else {
+//            return true;
+//        }
+//    }
 
 
     @Override

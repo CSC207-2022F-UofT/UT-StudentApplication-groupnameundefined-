@@ -44,7 +44,8 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User createUser(User user) {
-        User _user = userRepository.save(new User(user.getName(), user.getEmail(), user.getPassword(), user.getPhone()));
+        User _user = userRepository.save(new User(user.getName(), user.getEmail(),
+                user.getPassword(), user.getPhone()));
 
         return _user;
     }
@@ -92,7 +93,8 @@ public class UserServiceImp implements UserService {
             logger.error("Name Already Exists.");
             throw new Exception("Name Already Exists.");
         } else {
-            return this.createUser(new User(userRegisterInput.name, userRegisterInput.email, userRegisterInput.password, userRegisterInput.phone));
+            return this.createUser(new User(userRegisterInput.name, userRegisterInput.email,
+                    userRegisterInput.password, userRegisterInput.phone));
         }
     }
 }

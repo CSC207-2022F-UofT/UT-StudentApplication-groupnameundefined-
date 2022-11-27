@@ -1,12 +1,12 @@
 package backend.form;
 
+//InputBoundary Layer
 
 import javax.validation.constraints.*;
 
 public class UserForm {
     public static class UserRegisterForm {
-        @Size(max = 20, min = 1)
-        @NotNull
+        @Size(max = 20)
         @NotBlank
         public String name;
         @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$")
@@ -16,6 +16,7 @@ public class UserForm {
         public String phone;
 
         public UserRegisterForm(){
+
         }
     }
 }
