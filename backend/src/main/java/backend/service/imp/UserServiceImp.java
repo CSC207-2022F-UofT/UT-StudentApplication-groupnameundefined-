@@ -137,7 +137,7 @@ public class UserServiceImp implements UserService {
         if (! _user.isPresent()) {
             logger.error("User With This Email Doesn't Exist.");
             throw new Exception("User With This Email Doesn't Exist.");
-        } else if (!(_user.get().getPassword() == userLoginInput.password)) {
+        } else if (!(_user.get().getPassword().equals(userLoginInput.password))) {
             logger.error("Password Is Incorrect.");
             throw new Exception("Password Is Incorrect.");
         } else {
