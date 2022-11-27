@@ -26,6 +26,9 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "loginStatus")
+    private boolean loginStatus;
+
     @Column(name = "joinedTime")
     private Timestamp joinedTime;
 
@@ -59,6 +62,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.phone = phone;
+        this.loginStatus = false;
         this.joinedTime = new Timestamp(System.currentTimeMillis());
         this.lastActiveTime = new Timestamp(System.currentTimeMillis());
         this.friends = new ArrayList<User>();
@@ -82,6 +86,8 @@ public class User {
     public String getPhone() {
         return this.phone;
     }
+
+    public boolean getLoginStatus() { return this.loginStatus; }
 
     public Timestamp getJoinedTime() {
         return this.joinedTime;
@@ -119,6 +125,10 @@ public class User {
     public void setPhone(){
         this.phone = phone;
     }
+
+    public void setLogin() { this.loginStatus = true; }
+
+    public void setLogout() {this.loginStatus = false; }
 
     public void setLastActiveTime(Timestamp lastActiveTime){
         this.lastActiveTime = lastActiveTime;

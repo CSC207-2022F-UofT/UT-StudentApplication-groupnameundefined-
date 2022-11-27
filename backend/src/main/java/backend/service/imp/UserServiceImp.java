@@ -137,13 +137,13 @@ public class UserServiceImp implements UserService {
         if (! _user.isPresent()) {
             logger.error("User With This Email Doesn't Exist.");
             throw new Exception("User With This Email Doesn't Exist.");
+        } else if (!(_user.get().getPassword() == userLoginInput.password)) {
+            logger.error("Password Is Incorrect.");
+            throw new Exception("Password Is Incorrect.");
         } else {
-            if (!(_user.get().getPassword() == userLoginInput.password)) {
-                logger.error("Password Is Incorrect.");
-                throw new Exception("Password Is Incorrect.");
-            } else {
-                return
-            }
+            System.out.println("Login Successfully.");
+            _user.get().setLogin();
+            return _user.get();
         }
     }
 }

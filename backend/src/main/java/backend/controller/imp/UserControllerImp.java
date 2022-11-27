@@ -78,21 +78,21 @@ public class UserControllerImp implements UserController {
 
     @Override
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody @Valid UserRegisterForm userRegisterInput) {
+    public ResponseEntity registerUser(@RequestBody @Valid UserRegisterForm userRegisterInput) {
         try {
             return new ResponseEntity<User>(userService.registerUser(userRegisterInput), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody UserLoginForm userLoginInput) {
+    public ResponseEntity loginUser(@RequestBody UserLoginForm userLoginInput) {
         try {
             return new ResponseEntity<User>(userService.loginUser(userLoginInput), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

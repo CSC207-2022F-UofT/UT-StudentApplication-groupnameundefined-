@@ -13,6 +13,7 @@ public class UserForm {
         public String name;
 
         //input email must follow formal email format.
+        @NotBlank
         @Email
         public String email;
 
@@ -38,6 +39,7 @@ public class UserForm {
 
     public static class UserLoginForm {
 
+        @NotBlank
         @Email
         public String email;
 
