@@ -12,6 +12,8 @@ public interface UserService {
 
     Optional<User> getUserById(Long id);
 
+    Optional<User> getUserByEmail(String email);
+
     User createUser(User user);
 
 //    void saveUser(User user);
@@ -29,5 +31,7 @@ public interface UserService {
 //    boolean repeatPasswordMatch(String password, String repeatPassword);
 
     User registerUser(UserForm.UserRegisterForm userRegisterInput) throws Exception;
+
+    User loginUser(UserForm.UserLoginForm userLoginInput) throws Exception;
 
 }

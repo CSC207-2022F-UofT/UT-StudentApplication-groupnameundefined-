@@ -86,4 +86,14 @@ public class UserControllerImp implements UserController {
         }
     }
 
+    @Override
+    @PostMapping("/login")
+    public ResponseEntity<User> loginUser(@RequestBody UserLoginForm userLoginInput) {
+        try {
+            return new ResponseEntity<User>(userService.loginUser(userLoginInput), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

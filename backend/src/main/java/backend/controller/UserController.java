@@ -19,4 +19,6 @@ public interface UserController {
     ResponseEntity<User> createUser(User user);
 
     ResponseEntity<User> registerUser(UserForm.UserRegisterForm userRegisterInput);
+
+    ResponseEntity<User> loginUser(UserForm.UserLoginForm userLoginInput);
 }

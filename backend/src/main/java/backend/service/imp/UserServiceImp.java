@@ -43,6 +43,12 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public Optional<User> getUserByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        return user;
+    }
+
+    @Override
     public User createUser(User user) {
         User _user = userRepository.save(new User(user.getName(), user.getEmail(),
                 user.getPassword(), user.getPhone()));
@@ -122,6 +128,22 @@ public class UserServiceImp implements UserService {
         } else {
             return this.createUser(new User(userRegisterInput.name, userRegisterInput.email,
                     userRegisterInput.password, userRegisterInput.phone));
+        }
+    }
+
+    @Override
+    public User loginUser(UserForm.UserLoginForm userLoginInput) throws Exception {
+        Optional<User> _user = this.getUserByEmail(userLoginInput.email);
+        if (! _user.isPresent()) {
+            logger.error("User With This Email Doesn't Exist.");
+            throw new Exception("User With This Email Doesn't Exist.");
+        } else {
+            if (!(_user.get().getPassword() == userLoginInput.password)) {
+                logger.error("Password Is Incorrect.");
+                throw new Exception("Password Is Incorrect.");
+            } else {
+                return
+            }
         }
     }
 }

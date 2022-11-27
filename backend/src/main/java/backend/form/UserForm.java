@@ -35,4 +35,17 @@ public class UserForm {
 
         }
     }
+
+    public static class UserLoginForm {
+
+        @Email
+        public String email;
+
+        @NotBlank
+        public String password;
+
+        public UserLoginForm(){
+
+        }
+    }
 }
