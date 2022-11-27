@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-@Table(name = "requests")
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

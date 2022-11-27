@@ -1,5 +1,5 @@
 package backend.model;
-public class FriendRequest {
+public class FriendRequest extends Request{
 
     public FriendRequest(){
         super();
