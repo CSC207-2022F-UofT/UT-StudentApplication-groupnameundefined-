@@ -1,7 +1,17 @@
-// package backend.service;
+package backend.service;
 
-// import backend.model.Timetable;
+import java.io.File;
+import java.util.Set;
 
-// public interface TimetableService {
-// Timetable createTimetable(Timetable timetable);
-// }
+import org.springframework.web.multipart.MultipartFile;
+
+import backend.model.Block;
+import backend.model.Timetable;
+
+public interface TimetableService {
+
+    Set<Block> parseIcs(MultipartFile file);
+
+    Timetable createTimetable(Timetable timetable);
+
+}

@@ -8,12 +8,13 @@ import javax.validation.constraints.Size;
 import backend.model.StudentProfile;
 
 public class StudentProfileForm {
-    public class CreateStudentProfileForm {
-        private StudentProfile studentProfile;
 
-        @Size(max = 20, message = "User ID too long")
+    public static class CreateStudentProfileForm {
+        public CreateStudentProfileForm() {
+        }
+
+        private StudentProfile studentProfile;
         private Long userId;
-        private File schedule;
 
         public StudentProfile getStudentProfile() {
             return studentProfile;
@@ -22,9 +23,9 @@ public class StudentProfileForm {
         public Long getUserId() {
             return userId;
         }
+    }
 
-        public File getSchedule() {
-            return schedule;
-        }
+    public class updateStudentProfileForm {
+        private StudentProfile studentProfile;
     }
 }

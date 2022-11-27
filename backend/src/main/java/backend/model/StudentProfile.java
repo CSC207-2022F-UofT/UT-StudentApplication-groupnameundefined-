@@ -15,7 +15,6 @@ public class StudentProfile {
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    @NotNull(groups = { UpdateFormVG.class })
     private User user;
 
     @Size(max = 256, message = "Program name should not exceed 256 characters.")
@@ -37,18 +36,6 @@ public class StudentProfile {
     @OneToOne
     @JoinColumn(name = "socialmediaprofile_id", referencedColumnName = "id")
     private SocialMediaProfile socialMediaProfile;
-
-    public interface CreateFormVG {
-    }
-
-    public interface UpdateFormVG {
-    }
-
-    public interface CreatePersistVG {
-    }
-
-    public interface UpdatePersistVG {
-    }
 
     public StudentProfile() {
     }

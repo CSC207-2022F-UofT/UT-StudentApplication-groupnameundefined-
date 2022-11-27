@@ -1,12 +1,18 @@
 package backend.service;
 
+import java.util.Optional;
+
 import backend.form.StudentProfileForm.CreateStudentProfileForm;
 import backend.model.StudentProfile;
 
 public interface StudentProfileService {
-    StudentProfile createStudentProfile(CreateStudentProfileForm studentProfile);
 
-    StudentProfile updateStudentProfile(StudentProfile studentProfile);
+    StudentProfile createStudentProfile(CreateStudentProfileForm input);
 
-    void deleteStudentProfile(StudentProfile studentProfile);
+    StudentProfile getStudentProfile(Long id);
+
+    // StudentProfile updateStudentProfile(StudentProfile studentProfile);
+
+    // void deleteStudentProfile(StudentProfile studentProfile);
+
 }

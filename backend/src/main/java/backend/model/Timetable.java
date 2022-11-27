@@ -1,6 +1,8 @@
 package backend.model;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -36,24 +38,33 @@ public class Timetable {
         return blocks;
     }
 
+    public void initializeBlocks() {
+        blocks = new HashSet<>();
+    }
+
+    public void clearBlocks() {
+        blocks = null;
+    }
+
+
     public void setBlocks(Set<Block> blocks) {
-        for (Block block : blocks) {
-            block.addTimetable(this);
-        }
         this.blocks = blocks;
     }
 
     public void addBlock(Block block) {
+        if (blocks == null) {
+            initializeBlocks();
+        }
         blocks.add(block);
-        block.addTimetable(this);
     }
 
     public void removeBlock(Block block) {
-        blocks.remove(block);
-        block.removeTimetable(this);
+        if (blocks != null) {
+            blocks.remove(block);
+            if (blocks.size() == 0) {
+                clearBlocks();
+            }
+        }
     }
 
-    public Set<Block> parseIcsToBlocks(File file) {
-
-    }
 }

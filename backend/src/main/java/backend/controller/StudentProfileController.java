@@ -9,4 +9,6 @@ public interface StudentProfileController {
 
     ResponseEntity<StudentProfile> createStudentProfile(CreateStudentProfileForm input);
 
+    ResponseEntity<StudentProfile> getStudentProfile(Long id);
+
 }
