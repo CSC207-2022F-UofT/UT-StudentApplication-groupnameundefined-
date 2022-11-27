@@ -18,10 +18,14 @@ public interface UserService {
 
     boolean existName(String name);
 
-//    boolean nameIsValid(String name);
+    boolean existEmail(String email);
 
-//    boolean passwordIsValid(String password);
-//
+    boolean existPhone(String phone);
+
+    boolean nameIsValid(String name);
+
+    boolean passwordIsValid(String password);
+
 //    boolean repeatPasswordMatch(String password, String repeatPassword);
 
     User registerUser(UserForm.UserRegisterForm userRegisterInput) throws Exception;

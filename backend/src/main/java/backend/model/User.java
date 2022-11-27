@@ -36,16 +36,22 @@ public class User {
 //    private boolean emailValidated;
 
     @Column(name = "friends")
-    @OneToMany
+    @ManyToMany
     private List<User> friends;
 
     @Column(name = "blackList")
-    @OneToMany
+    @ManyToMany
     private List<User> blackList;
-
 
 //    @Column(name = "profile")
 //    private StudentProfile profile;
+
+//    @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "from")
+//    private List<FriendRequest> sentFriendRequests;
+//
+//    @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "to")
+//    private List<FriendRequest> receivedFriendRequests;
+
 
     public User() {
 
@@ -141,25 +147,28 @@ public class User {
 
     public static boolean isFriend(User user1, User user2){
         return user1.friends.contains(user2) & user2.friends.contains(user1);
-    } //mutual
+    } //mutually
 
     public void addFriend(User user){
-        if (this.blackList.contains(user)){
-            this.blackList.remove(user);
-        }
+        this.blackList.remove(user);
         this.friends.add(user);
-    } //not mutual, add as a friend automatically means not ghosting this user anymore.
+        user.friends.add(this);
+    } //mutually, add as a friend automatically means not ghosting this user anymore.
 
     public void removeFriend(User user){
         this.friends.remove(user);
-    } //not mutual
+        user.friends.remove(this);
+    } //mutually, remove a friend from your friend list automatically remove you from his/her friend list.
 
     public void ghostFriend(User user){
-        if (this.friends.contains(user)){
-            this.friends.remove(user);
-        }
+        this.removeFriend(user);
         this.blackList.add(user);
     }
+
+    public void unghostFriend(User user){
+        this.blackList.remove(user);
+    }
+
 
 //    public boolean passwordIsValid(String password){
 //        Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$");

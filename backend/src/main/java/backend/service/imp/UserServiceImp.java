@@ -61,26 +61,38 @@ public class UserServiceImp implements UserService {
         return user.isPresent();
     }
 
-//    @Override
-//    public boolean nameIsValid(String name) {
-//        if (name == null){
-//            return false;
-//        } else if (name.length() > 20){
-//            return false;
-//        } else {
-//            return true;
-//        }
-//    }
+    @Override
+    public boolean existEmail(String email){
+        Optional<User> user = userRepository.findByEmail(email);
+        return user.isPresent();
+    }
 
-//    @Override
-//    public boolean passwordIsValid(String password) {
-//        Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$");
-//        if (password == null){
-//            return false;
-//        }
-//        Matcher matcher = pattern.matcher(password);
-//        return matcher.matches();
-//    }
+    @Override
+    public boolean existPhone(String phone){
+        Optional<User> user = userRepository.findByPhone(phone);
+        return user.isPresent();
+    }
+
+    @Override
+    public boolean nameIsValid(String name) {
+        if (name == null){
+            return false;
+        } else if (name.length() > 20){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean passwordIsValid(String password) {
+        Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$");
+        if (password == null){
+            return false;
+        }
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
 
 //    @Override
 //    public boolean repeatPasswordMatch(String password, String repeatPassword) {
@@ -92,6 +104,18 @@ public class UserServiceImp implements UserService {
         if (this.existName(userRegisterInput.name)) {
             logger.error("Name Already Exists.");
             throw new Exception("Name Already Exists.");
+        } else if (this.existEmail(userRegisterInput.email)) {
+            logger.error("Email Already Exists.");
+            throw new Exception("Email Already Exists.");
+        } else if (this.existPhone(userRegisterInput.phone)) {
+            logger.error("Phone Already Exists.");
+            throw new Exception("Phone Already Exists.");
+//        } else if (!this.nameIsValid(userRegisterInput.name)) {
+//            logger.error("Invalid Name.");
+//            throw new Exception("Invalid Name.");
+//        } else if (!this.passwordIsValid(userRegisterInput.password)) {
+//            logger.error("Invalid Password.");
+//            throw new Exception("Invalid Password.");
         } else {
             return this.createUser(new User(userRegisterInput.name, userRegisterInput.email,
                     userRegisterInput.password, userRegisterInput.phone));
