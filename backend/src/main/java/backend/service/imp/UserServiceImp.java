@@ -73,30 +73,30 @@ public class UserServiceImp implements UserService {
         return user.isPresent();
     }
 
-    @Override
-    public boolean nameIsValid(String name) {
-        if (name == null){
-            return false;
-        } else if (name.length() > 20){
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    @Override
-    public boolean passwordIsValid(String password) {
-        Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$");
-        if (password == null){
-            return false;
-        }
-        Matcher matcher = pattern.matcher(password);
-        return matcher.matches();
-    }
-
 //    @Override
 //    public boolean repeatPasswordMatch(String password, String repeatPassword) {
 //        return password == repeatPassword;
+//    }
+
+//    @Override
+//    public boolean nameIsValid(String name) {
+//        if (name == null){
+//            return false;
+//        } else if (name.length() > 20){
+//            return false;
+//        } else {
+//            return true;
+//        }
+//    }
+//
+//    @Override
+//    public boolean passwordIsValid(String password) {
+//        Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$");
+//        if (password == null){
+//            return false;
+//        }
+//        Matcher matcher = pattern.matcher(password);
+//        return matcher.matches();
 //    }
 
     @Override
@@ -116,6 +116,9 @@ public class UserServiceImp implements UserService {
 //        } else if (!this.passwordIsValid(userRegisterInput.password)) {
 //            logger.error("Invalid Password.");
 //            throw new Exception("Invalid Password.");
+//        } else if (! this.repeatPasswordMatch(userRegisterInput.password, userRegisterInput.repeatPassword)) {
+//            logger.error("Password and RepeatPassword Don't Match.");
+//            throw new Exception("Password and RepeatPassword Don't Match.");
         } else {
             return this.createUser(new User(userRegisterInput.name, userRegisterInput.email,
                     userRegisterInput.password, userRegisterInput.phone));

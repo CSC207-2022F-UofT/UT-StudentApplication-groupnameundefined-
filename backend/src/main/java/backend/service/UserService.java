@@ -22,9 +22,9 @@ public interface UserService {
 
     boolean existPhone(String phone);
 
-    boolean nameIsValid(String name);
-
-    boolean passwordIsValid(String password);
+//    boolean nameIsValid(String name);
+//
+//    boolean passwordIsValid(String password);
 
 //    boolean repeatPasswordMatch(String password, String repeatPassword);
 

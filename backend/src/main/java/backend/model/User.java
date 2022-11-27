@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+//import java.util.regex.Matcher;
+//import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "users")
@@ -31,9 +31,6 @@ public class User {
 
     @Column(name = "lastActiveTime")
     private Timestamp lastActiveTime;
-
-//    @Column(name = "emailValidated")
-//    private boolean emailValidated;
 
     @Column(name = "friends")
     @ManyToMany
@@ -64,7 +61,6 @@ public class User {
         this.phone = phone;
         this.joinedTime = new Timestamp(System.currentTimeMillis());
         this.lastActiveTime = new Timestamp(System.currentTimeMillis());
-//        this.emailValidated = false;
         this.friends = new ArrayList<User>();
         this.blackList = new ArrayList<User>(); // users in the black list should not appear in the friend list.
 //        this.profile = new StudentProfile(); // profile is an empty object by default.
@@ -94,10 +90,6 @@ public class User {
     public Timestamp getLastActiveTime() {
         return this.lastActiveTime;
     }
-
-//    public boolean getEmailValidated(){
-//        return this.emailValidated;
-//    }
 
     public List<User> getFriends(){
         return this.friends;
@@ -132,10 +124,6 @@ public class User {
         this.lastActiveTime = lastActiveTime;
     }
 
-//    public void setEmailValidated(){
-//        this.emailValidated = true;
-//    }
-
     public void setBlackListEmpty(){
         this.blackList = new ArrayList<User>();
     }
@@ -144,7 +132,7 @@ public class User {
         // overload this method with different arguments to set different options in a profile.
     }
 
-
+//some methods that would help friendRequest backend:
     public static boolean isFriend(User user1, User user2){
         return user1.friends.contains(user2) & user2.friends.contains(user1);
     } //mutually
@@ -168,26 +156,6 @@ public class User {
     public void unghostFriend(User user){
         this.blackList.remove(user);
     }
-
-
-//    public boolean passwordIsValid(String password){
-//        Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$");
-//        if (password == null){
-//            return false;
-//        }
-//        Matcher matcher = pattern.matcher(password);
-//        return matcher.matches();
-//    }
-
-//    public boolean nameIsValid(String name){
-//        if (name == null){
-//            return false;
-//        } else if (name.length() > 20){
-//            return false;
-//        } else {
-//            return true;
-//        }
-//    }
 
 
     @Override
