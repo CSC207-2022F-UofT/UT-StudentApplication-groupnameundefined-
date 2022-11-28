@@ -1,4 +1,15 @@
-# UT-StudentApplication
+# CSC207 Project UT-StudentApplication
+
+## Members (By Alphabetical Order of Family Name)
+
+Ella Bai([yitong-bai](https://github.com/yitong-bai)) \
+Haoqian Cui([Eric-1120](https://github.com/Eric-1120)) \
+Bingcan Guo([hzelg](https://github.com/hzelg)) \
+Jimmy Hao([hzc011213](https://github.com/hzc011213)) \
+Sunny Kim([python-plusplus](https://github.com/python-plusplus)) \
+Alan Lin([Archivec](https://github.com/Archivec)) \
+Ian Quan([IanQuan](https://github.com/IanQuan))
+
 
 ## Project Scope & Vision
 
