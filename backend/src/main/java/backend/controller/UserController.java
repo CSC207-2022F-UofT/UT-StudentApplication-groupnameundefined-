@@ -21,4 +21,6 @@ public interface UserController {
     ResponseEntity<User> registerUser(UserForm.UserRegisterForm userRegisterInput);
 
     ResponseEntity<User> loginUser(UserForm.UserLoginForm userLoginInput);
+
+    ResponseEntity<User> logoutUser(Long id);
 }

@@ -34,4 +34,6 @@ public interface UserService {
 
     User loginUser(UserForm.UserLoginForm userLoginInput) throws Exception;
 
+    User logoutUser(Long id) throws Exception;
+
 }

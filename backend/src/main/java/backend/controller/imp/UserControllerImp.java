@@ -96,4 +96,14 @@ public class UserControllerImp implements UserController {
         }
     }
 
+    @Override
+    @GetMapping("/logout/{id}")
+    public ResponseEntity logoutUser(@PathVariable("id") Long id) {
+        try {
+            return new ResponseEntity<User>(userService.logoutUser(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

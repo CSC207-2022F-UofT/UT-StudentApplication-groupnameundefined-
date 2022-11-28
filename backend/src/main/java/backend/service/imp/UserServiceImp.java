@@ -133,21 +133,33 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User loginUser(UserForm.UserLoginForm userLoginInput) throws Exception {
-        Optional<User> _user = this.getUserByEmail(userLoginInput.email);
-        if (! _user.isPresent()) {
+        Optional<User> user = this.getUserByEmail(userLoginInput.email);
+        if (! user.isPresent()) {
             logger.error("User With This Email Doesn't Exist.");
             throw new Exception("User With This Email Doesn't Exist.");
-        } else if (!(_user.get().getPassword().equals(userLoginInput.password))) {
+        } else if (!(user.get().getPassword().equals(userLoginInput.password))) {
             logger.error("Password Is Incorrect.");
             throw new Exception("Password Is Incorrect.");
         } else {
             System.out.println("Login Successfully.");
-            _user.get().setLogin();
-            return _user.get();
+            User updatedUser = user.get();
+            updatedUser.setLogin();
+            return userRepository.save(updatedUser);
         }
     }
 
+    @Override
+    public User logoutUser(Long id) throws Exception {
+        Optional<User> user = this.getUserById(id);
+        if (! user.isPresent()) {
+            logger.error("User Doesn't Exist.");
+            throw new Exception("User Doesn't Exist.");
+        } else {
+            User updatedUser = user.get();
+            updatedUser.setLogout();
+            return userRepository.save(updatedUser);
+        }
+    }
 
-
-    //logout: session invalidation, redirect to login,
+    //logout: session invalidation, redirect to login.
 }
