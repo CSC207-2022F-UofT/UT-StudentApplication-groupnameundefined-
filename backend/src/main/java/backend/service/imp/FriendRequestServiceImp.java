@@ -13,6 +13,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class FriendRequestServiceImp implements FriendRequestService {
@@ -68,8 +69,12 @@ public class FriendRequestServiceImp implements FriendRequestService {
         Optional<FriendRequest> friendRequest = friendRequestRepository.findById(id);
         if(friendRequest.isPresent()){
             FriendRequest _friendRequest = friendRequest.get();
-            _friendRequest.setStatus("APPROVED");
-            friendRequestRepository.save(_friendRequest);
+            if(_friendRequest.getStatus().equals("PENDING")){
+                _friendRequest.setStatus("APPROVED");
+                friendRequestRepository.save(_friendRequest);
+            } else {
+                throw new RuntimeException();
+            }
             return _friendRequest;
         } else {
             throw new EntityNotFoundException();
@@ -81,8 +86,12 @@ public class FriendRequestServiceImp implements FriendRequestService {
         Optional<FriendRequest> friendRequest = friendRequestRepository.findById(id);
         if(friendRequest.isPresent()){
             FriendRequest _friendRequest = friendRequest.get();
-            _friendRequest.setStatus("DENIED");
-            friendRequestRepository.save(_friendRequest);
+            if(_friendRequest.getStatus().equals("PENDING")){
+                _friendRequest.setStatus("DENIED");
+                friendRequestRepository.save(_friendRequest);
+            } else {
+                throw new RuntimeException();
+            }
             return _friendRequest;
         } else {
             throw new EntityNotFoundException();
@@ -99,14 +108,4 @@ public class FriendRequestServiceImp implements FriendRequestService {
         }
     }
 
-    @Override
-    public FriendRequest updateFriendRequest(FriendRequest friendRequest) {
-        Optional<FriendRequest> _friendRequest = friendRequestRepository.findById(friendRequest.getId());
-        if(_friendRequest.isPresent()) {
-            friendRequestRepository.save(friendRequest);
-            return friendRequest;
-        } else {
-            throw new EntityNotFoundException();
-        }
-    }
 }

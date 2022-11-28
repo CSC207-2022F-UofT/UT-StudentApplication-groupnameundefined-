@@ -23,7 +23,4 @@ public interface FriendRequestController {
 
     ResponseEntity<Long> deleteFriendRequest(Long id);
 
-    ResponseEntity<FriendRequest> updateFriendRequest(FriendRequest friendRequest);
-
-
 }

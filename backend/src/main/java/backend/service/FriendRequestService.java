@@ -20,5 +20,4 @@ public interface FriendRequestService {
 
     Long deleteFriendRequest(Long id);
 
-    FriendRequest updateFriendRequest(FriendRequest friendRequest);
 }

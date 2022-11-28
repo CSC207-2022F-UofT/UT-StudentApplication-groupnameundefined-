@@ -70,8 +70,8 @@ public class FriendRequestControllerImp implements FriendRequestController {
     }
 
     @Override
-    @PostMapping("/approve")
-    public ResponseEntity<FriendRequest> approveFriendRequest(@RequestBody Long id) {
+    @GetMapping("/approve/{id}")
+    public ResponseEntity<FriendRequest> approveFriendRequest(@PathVariable Long id) {
         try{
             FriendRequest friendRequest = friendRequestService.approveFriendRequest(id);
             return new ResponseEntity<FriendRequest>(friendRequest, HttpStatus.OK);
@@ -81,8 +81,8 @@ public class FriendRequestControllerImp implements FriendRequestController {
     }
 
     @Override
-    @PostMapping("/deny")
-    public ResponseEntity<FriendRequest> denyFriendRequest(@RequestBody Long id) {
+    @GetMapping("/deny/{id}")
+    public ResponseEntity<FriendRequest> denyFriendRequest(@PathVariable Long id) {
         try{
             FriendRequest friendRequest = friendRequestService.denyFriendRequest(id);
             return new ResponseEntity<FriendRequest>(friendRequest, HttpStatus.OK);
@@ -92,8 +92,8 @@ public class FriendRequestControllerImp implements FriendRequestController {
     }
 
     @Override
-    @PostMapping("/delete")
-    public ResponseEntity<Long> deleteFriendRequest(@RequestBody Long id) {
+    @GetMapping("/delete/{id}")
+    public ResponseEntity<Long> deleteFriendRequest(@PathVariable Long id) {
         try{
             Long deletedId = friendRequestService.deleteFriendRequest(id);
             return new ResponseEntity<Long>(deletedId, HttpStatus.OK);
@@ -102,14 +102,4 @@ public class FriendRequestControllerImp implements FriendRequestController {
         }
     }
 
-    @Override
-    @PostMapping("/update")
-    public ResponseEntity<FriendRequest> updateFriendRequest(@RequestBody FriendRequest friendRequest) {
-        try{
-            FriendRequest updatedFriendRequest = friendRequestService.updateFriendRequest(friendRequest);
-            return new ResponseEntity<FriendRequest>(updatedFriendRequest, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }
