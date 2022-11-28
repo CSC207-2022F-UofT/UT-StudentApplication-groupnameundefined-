@@ -1,11 +1,14 @@
 package backend.model;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
+@Table(name = "request")
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,9 +18,11 @@ public class Request {
     @Column(name = "status")
     private String status;
     @OneToOne
+    @NotNull
     @JoinColumn(name = "from_id", referencedColumnName = "id")
     private User from;
     @OneToOne
+    @NotNull
     @JoinColumn(name = "to_id", referencedColumnName = "id")
     private User to;
     @Column(name = "message")
@@ -25,9 +30,10 @@ public class Request {
 
     @Column(name = "time")
     private Timestamp time;
-    final String defaultMessage = "Hi " + to.getName() + ", this is " + from.getName() + ", nice to meet you!";
 
-    public Request() {}
+    public Request() {
+    }
+
     public Request(User from, User to, String message) {
         this.from = from;
         this.to = to;
@@ -42,7 +48,7 @@ public class Request {
     public Request(User from, User to) {
         this.from = from;
         this.to = to;
-        this.message = defaultMessage;
+        this.message = getDefaultMessage();
         // Default status without explicitly addressing is PENDING
         this.status = "PENDING";
         // Keep track of the time when the request is created.
@@ -50,6 +56,9 @@ public class Request {
         this.time = new Timestamp(date.getTime());
     }
 
+    public String getDefaultMessage(){
+        return "Hi " + this.to.getName() + ", this is " + this.from.getName() + ", nice to meet you!";
+    }
     public Long getId() {
         return id;
     }
@@ -96,9 +105,8 @@ public class Request {
 
     @Override
     public String toString() {
-        String s = "Request " + this.id + ": from " + this.from.getName()
+        return "Request " + this.id + ": from " + this.from.getName()
                 + "to " + this.to.getName() + " is " + this.status;
-        return s;
     }
 
     @Override
@@ -106,11 +114,10 @@ public class Request {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof User)) {
+        if (!(o instanceof Request request)) {
             return false;
         }
 
-        Request request = (Request) o;
         return this.id.equals(request.id);
     }
 }

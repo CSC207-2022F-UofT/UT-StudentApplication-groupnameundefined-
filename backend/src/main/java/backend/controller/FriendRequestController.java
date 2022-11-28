@@ -1,8 +1,6 @@
 package backend.controller;
 
 import backend.model.FriendRequest;
-import backend.model.Request;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -13,6 +11,8 @@ public interface FriendRequestController {
     ResponseEntity<List<FriendRequest>> getAllFriendRequests();
 
     ResponseEntity<FriendRequest> getFriendRequestById(Long id);
+
+    ResponseEntity<List<FriendRequest>> getFriendRequestByUserId(Long userId);
 
     ResponseEntity<FriendRequest> createFriendRequest(FriendRequest friendRequest);
 
