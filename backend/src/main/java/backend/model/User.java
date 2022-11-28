@@ -4,8 +4,6 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.regex.Matcher;
-//import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "users")
@@ -43,8 +41,8 @@ public class User {
     @ManyToMany
     private List<User> blackList;
 
-//    @Column(name = "profile")
-//    private StudentProfile profile;
+    @OneToOne(cascade = { CascadeType.ALL }, mappedBy = "user")
+    private StudentProfile studentProfile;
 
 //    @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "from")
 //    private List<FriendRequest> sentFriendRequests;
@@ -66,10 +64,10 @@ public class User {
         this.joinedTime = new Timestamp(System.currentTimeMillis());
         this.lastActiveTime = new Timestamp(System.currentTimeMillis());
         this.friends = new ArrayList<User>();
-        this.blackList = new ArrayList<User>(); // users in the black list should not appear in the friend list.
-//        this.profile = new StudentProfile(); // profile is an empty object by default.
+        this.blackList = new ArrayList<User>();
     }
 
+    public Long getId() { return this.id; }
 
     public String getName() {
         return this.name;
@@ -105,9 +103,13 @@ public class User {
         return this.blackList;
     }
 
-//    public StudentProfile getProfile() {
-//        return this.profile;
-//    }
+    public StudentProfile getStudentProfile() {
+        return studentProfile;
+    }
+
+    public void setStudentProfile(StudentProfile studentProfile) {
+        this.studentProfile = studentProfile;
+    }
 
 
     public void setName(String name) {
