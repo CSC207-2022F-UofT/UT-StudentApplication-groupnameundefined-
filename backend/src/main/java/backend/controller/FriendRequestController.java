@@ -1,5 +1,6 @@
 package backend.controller;
 
+import backend.form.FriendRequestForm.*;
 import backend.model.FriendRequest;
 import org.springframework.http.ResponseEntity;
 
@@ -14,7 +15,7 @@ public interface FriendRequestController {
 
     ResponseEntity<List<FriendRequest>> getFriendRequestByUserId(Long userId);
 
-    ResponseEntity<FriendRequest> createFriendRequest(FriendRequest friendRequest);
+    ResponseEntity<FriendRequest> createFriendRequest(CreateFriendRequestForm input);
 
     ResponseEntity<FriendRequest> approveFriendRequest(Long id);
 

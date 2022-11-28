@@ -37,7 +37,11 @@ public class Request {
     public Request(User from, User to, String message) {
         this.from = from;
         this.to = to;
-        this.message = message;
+
+        if (message != null && message.length() > 0) {
+            this.message = message;
+        }
+
         // Default status without explicitly addressing is PENDING
         this.status = "PENDING";
         // Keep track of the time when the request is created.

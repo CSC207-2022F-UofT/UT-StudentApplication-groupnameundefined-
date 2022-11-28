@@ -11,4 +11,11 @@ public class FriendRequest extends Request{
         super();
     }
 
+    public FriendRequest(User from, User to) {
+        super(from, to);
+    }
+
+    public FriendRequest(User from, User to, String message) {
+        super(from, to, message);
+    }
 }

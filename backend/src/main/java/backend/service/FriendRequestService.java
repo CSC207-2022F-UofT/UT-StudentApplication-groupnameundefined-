@@ -1,5 +1,6 @@
 package backend.service;
 
+import backend.form.FriendRequestForm.*;
 import backend.model.FriendRequest;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface FriendRequestService {
 
     List<FriendRequest> getFriendRequestByUserId(Long userId);
 
-    FriendRequest createFriendRequest(FriendRequest friendRequest);
+    FriendRequest createFriendRequest(CreateFriendRequestForm input);
 
     FriendRequest approveFriendRequest(Long id);
 

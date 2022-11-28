@@ -1,7 +1,10 @@
 package backend.service.imp;
 
+import backend.form.FriendRequestForm.*;
 import backend.model.FriendRequest;
+import backend.model.User;
 import backend.repository.FriendRequestRepository;
+import backend.repository.UserRepository;
 import backend.service.FriendRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,9 @@ import java.util.Optional;
 public class FriendRequestServiceImp implements FriendRequestService {
     @Autowired
     private FriendRequestRepository friendRequestRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     @Override
@@ -42,7 +48,18 @@ public class FriendRequestServiceImp implements FriendRequestService {
     }
 
     @Override
-    public FriendRequest createFriendRequest(FriendRequest friendRequest) {
+    public FriendRequest createFriendRequest(CreateFriendRequestForm input) {
+        Optional<User> fromUser = userRepository.findById(input.getFromId());
+        Optional<User> toUser = userRepository.findById(input.getToId());
+
+        if (!(fromUser.isPresent() && toUser.isPresent())) {
+            throw new EntityNotFoundException();
+        }
+
+        String message = input.getMessage();
+
+        FriendRequest friendRequest = new FriendRequest(fromUser.get(), toUser.get(), message);
+
         return friendRequestRepository.save(friendRequest);
     }
 

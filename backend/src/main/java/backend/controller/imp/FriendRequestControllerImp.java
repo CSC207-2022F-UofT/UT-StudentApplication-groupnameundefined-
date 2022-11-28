@@ -1,6 +1,7 @@
 package backend.controller.imp;
 
 import backend.controller.FriendRequestController;
+import backend.form.FriendRequestForm.*;
 import backend.model.FriendRequest;
 import backend.service.FriendRequestService;
 import org.slf4j.Logger;
@@ -59,9 +60,9 @@ public class FriendRequestControllerImp implements FriendRequestController {
 
     @Override
     @PostMapping("/create")
-    public ResponseEntity<FriendRequest> createFriendRequest(@RequestBody FriendRequest friendRequest) {
+    public ResponseEntity<FriendRequest> createFriendRequest(@RequestBody CreateFriendRequestForm input) {
         try{
-            FriendRequest newFriendRequest = friendRequestService.createFriendRequest(friendRequest);
+            FriendRequest newFriendRequest = friendRequestService.createFriendRequest(input);
             return new ResponseEntity<FriendRequest>(newFriendRequest, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
