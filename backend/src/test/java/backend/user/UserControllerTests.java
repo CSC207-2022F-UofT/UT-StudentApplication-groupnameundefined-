@@ -32,7 +32,7 @@ public class UserControllerTests {
 
     @Test
     public void shouldReturnDefaultMessage() throws Exception {
-        this.mockMvc.perform(get("/api/users/greeting")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/api/user/greeting")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("User: Greetings!")));
     }
 
