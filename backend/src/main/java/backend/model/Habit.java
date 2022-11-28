@@ -1,30 +1,28 @@
 package backend.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.*;
 import java.util.*;
 
 @Entity
-@Table(name = "habits", uniqueConstraints = {@UniqueConstraint(columnNames = {"habit_id"})})
+@Table(name = "Habits", uniqueConstraints = {@UniqueConstraint(columnNames = {"Id"})})
 public class Habit{
 
     // Habit id, unique
     @Id
-    @NotNull
-    private Long habit_id;
+    private Long Id;
 
     // Correspond user id
     @NotNull
-    @JoinColumn(name = "User.username")
+    @JoinColumn(name = "User.name")
     private String username;
 
     // MBTI of users: [0,16], 0 refers to Not specified.
+    // MBTI encoding: refer to documents.
     @NotNull
     @Column()
     private int MBTI;
@@ -42,28 +40,42 @@ public class Habit{
     private int collaborate;
 
     // Visibility of Talktive, Collaborate, MBTI
-    @NotNull
     @Column()
-    private List<Boolean> visibilities = new ArrayList<Boolean>(Arrays.asList(new Boolean[10]));
-    Collections.fill(list, Boolean.TRUE);
+    @ElementCollection
+    private Map<String, Integer> visibilities = new HashMap<String, Integer>();
+
+    public Habit() {
+        this.username ="";
+        this.MBTI = 0;
+        this.talktive = 5;
+        this.collaborate = 5;
+        this.visibilities.put("MBTI",1);
+        this.visibilities.put("talktive",1);
+        this.visibilities.put("collaborate",1);
+    }
+
 
     public Habit(String username) {
+        super();
         this.username = username;
         this.MBTI = 0;
         this.talktive = 5;
         this.collaborate = 5;
+        this.visibilities.put("MBTI",1);
+        this.visibilities.put("talktive",1);
+        this.visibilities.put("collaborate",1);
     }
 
-    public Habit(String username, int MBTI, int talktive, int collaborate) {
-        this.username = username;
-        this.MBTI = MBTI;
-        this.talktive = 5;
-        this.collaborate = 5;
+    public Habit(String _username, int _MBTI, int _talktive, int _collaborate, Map<String, Integer> _visibilities) {
+        this.username = _username;
+        this.MBTI = _MBTI;
+        this.talktive = _talktive;
+        this.collaborate = _collaborate;
+        this.visibilities.put("MBTI",_visibilities.get("MBTI"));
+        this.visibilities.put("talktive",_visibilities.get("talktive"));
+        this.visibilities.put("collaborate",_visibilities.get("collaborate"));
     }
 
-    public Habit() {
-
-    }
 
     public String getUsername() { return this.username; }
     public void setUsername(String _username) { this.username = _username; }
@@ -77,14 +89,18 @@ public class Habit{
     public int getMBTI(){ return this.MBTI; }
     public void setMBTI(int _MBTI){ this.MBTI = _MBTI; }
 
-    public List<Boolean> getVisibility(){ return this.visibilities; }
-    public void set(List<Boolean> _visibilities){
-        this.visibilities = new ArrayList<String>(_visibilities);
+    public Map<String, Integer> getVisibility(){
+        return this.visibilities;
+    }
+    public void setVisibility(Map<String, Integer> _visibilities){
+        for(String newKey : _visibilities.keySet()){
+            this.visibilities.put(newKey, _visibilities.get(newKey));
+        }
     }
 
     @Override
     public String toString() {
-        return this.username;
+        return "habit" + this.Id;
     }
 
     @Override
@@ -98,7 +114,7 @@ public class Habit{
         }
 
         Habit habit = (Habit)o;
-        if((this.collaborate == habit.collaborate) && (this.talktive == habit.talktive) && (this.MBTI == habit.MBIT)){
+        if((this.collaborate == habit.collaborate) && (this.talktive == habit.talktive) && (this.MBTI == habit.MBTI)){
             return true;
         }
 

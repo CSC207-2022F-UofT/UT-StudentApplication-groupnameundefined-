@@ -1,6 +1,7 @@
 package backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 
@@ -16,13 +17,11 @@ public interface HabitController {
 
     ResponseEntity<Habit> createHabit(Habit habit);
 
-    ResponseEntity<List<Habit>>getSameHabitByMBTI(int MBTI);
+    ResponseEntity<Optional<Habit>>getSameHabitByMBTI(int MBTI);
 
-    ResponseEntity<List<Habit>>getSameHabitByTalktive(int talktive);
+    ResponseEntity<Optional<Habit>>getSameHabitByTalktive(int talktive);
 
-    ResponseEntity<List<Habit>>getSameHabitByCollaborate(int collaborate);
-
-    ResponseEntity<String> getHabitSummary(Long id);
+    ResponseEntity<Optional<Habit>>getSameHabitByCollaborate(int collaborate);
 
 
 }

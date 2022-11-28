@@ -1,6 +1,7 @@
 package backend.controller.imp;
 
 import backend.model.Habit;
+import backend.model.User;
 import backend.service.HabitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,44 +31,83 @@ import backend.model.Habit;
 import backend.repository.HabitRepository;
 import backend.service.HabitService;
 
-public class HabitControllerImp {
+@RestController
+@RequestMapping("/api")
+public class HabitControllerImp implements HabitController{
 
     @Autowired
     HabitService habitService;
 
+    @Override
     @GetMapping("/habits/notification")
-    ResponseEntity<String> getHabitNotification(){
-        return new ResponseEntity<>("Habit got.", HttpStatus.OK);
+    public ResponseEntity<String> getHabitNotification(){
+        return new ResponseEntity<>("Habits got.", HttpStatus.OK);
     }
 
+    @Override
     @GetMapping("/habits/all")
-    ResponseEntity<List<Habit>> getAllHabits(){
-
+    public ResponseEntity<List<Habit>> getAllHabits(){
+        try {
+            List<Habit> habits = habitService.getAllHabits();
+            return new ResponseEntity<>(habits, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+    @Override
     @GetMapping("/habits/{id}/")
-    ResponseEntity<String> getHabitSummary(Long id){
-
+    public ResponseEntity<Habit> getHabitById(Long id){
+        Optional<Habit> habit = habitService.getHabitById(id);
+        if (habit.isPresent()) {
+            return new ResponseEntity<>(habit.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
+    @Override
     @PostMapping("/habits/create")
-    ResponseEntity<Habit> createHabit(Habit habit){
-
+    public ResponseEntity<Habit> createHabit(Habit habit){
+        try {
+            Habit _habit = habitService.createHabit(habit);
+            return new ResponseEntity<>(_habit, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+    @Override
     @GetMapping("/habits/MBTI")
-    ResponseEntity<List<Habit>>getSameHabitByMBTI(int MBTI){
-
+    public ResponseEntity<Optional<Habit>>getSameHabitByMBTI(int MBTI){
+        try {
+            Optional<Habit> habits_MBTI = habitService.getSameHabitByMBTI(MBTI);
+            return new ResponseEntity<>(habits_MBTI, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+    @Override
     @GetMapping("/habits/Talktive")
-    ResponseEntity<List<Habit>>getSameHabitByTalktive(int talktive){
-
+    public ResponseEntity<Optional<Habit>>getSameHabitByTalktive(int talktive){
+        try {
+            Optional<Habit> habits_Talktive = habitService.getSameHabitByTalktive(talktive);
+            return new ResponseEntity<>(habits_Talktive, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+    @Override
     @GetMapping("/habits/Collaborate")
-    ResponseEntity<List<Habit>>getSameHabitByCollaborate(int collaborate){
-
+    public ResponseEntity<Optional<Habit>>getSameHabitByCollaborate(int collaborate){
+        try {
+            Optional<Habit> habits_Collaborate = habitService.getSameHabitByTalktive(collaborate);
+            return new ResponseEntity<>(habits_Collaborate, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
