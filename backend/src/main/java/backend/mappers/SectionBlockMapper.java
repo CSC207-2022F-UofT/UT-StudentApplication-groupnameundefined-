@@ -12,6 +12,7 @@ import backend.model.SectionBlock;
 @Mapper
 public interface SectionBlockMapper {
 
+    @Mapping(target = "repetitionTime", source = "repetitionTime")
     @Mapping(target = "sectionId", source = "section.id")
     SectionBlockDto sectionBlockToDto(SectionBlock sectionBlock);
 

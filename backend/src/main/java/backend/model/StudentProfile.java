@@ -17,16 +17,16 @@ public class StudentProfile {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @Size(max = 256, message = "Program name should not exceed 256 characters.")
+    @Size(max = 256)
     @Column(name = "program")
     private String program;
 
-    @Size(max = 256, message = "College name should not exceed 256 characters.")
+    @Size(max = 256)
     @Column(name = "college")
     private String college;
 
-    @Max(value = 9999, message = "Invalid enrolment year")
-    @Min(value = 1827, message = "Invalid enrolment year")
+    @Max(value = 9999)
+    @Min(value = 1827)
     @Column(name = "enrolment_year")
     private Integer enrolmentYear;
 
@@ -44,8 +44,7 @@ public class StudentProfile {
         this.user = user;
     }
 
-    public StudentProfile(User user, String program, String college, Integer enrolmentYear) {
-        this.user = user;
+    public StudentProfile(String program, String college, Integer enrolmentYear) {
         this.program = program;
         this.college = college;
         this.enrolmentYear = enrolmentYear;
@@ -93,11 +92,10 @@ public class StudentProfile {
 
     public void setTimetable(Timetable timetable) {
         this.timetable = timetable;
+        timetable.setStudentProfile(this);
     }
 
-    public void removeTimetable() {
-        timetable = null;
-    }
+    public void removeTimetable() { timetable = null; }
 
     public SocialMediaProfile getSocialMediaProfile() {
         return socialMediaProfile;

@@ -1,30 +1,29 @@
 package backend.service.imp;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.security.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Set;
+import java.util.*;
 
+import backend.model.Block;
+import backend.model.SectionBlock;
+import backend.model.StudentProfile;
+import backend.repository.SectionBlockRepository;
+import backend.repository.StudentProfileRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import backend.model.Block;
 import backend.model.Timetable;
 import backend.service.TimetableService;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.CalendarComponent;
-import net.fortuna.ical4j.model.component.VEvent;
+
+import javax.persistence.EntityNotFoundException;
+
+import static java.util.Map.entry;
 
 @Service
 public class TimetableServiceImp implements TimetableService {
@@ -32,12 +31,20 @@ public class TimetableServiceImp implements TimetableService {
     @Autowired
     Logger logger;
 
+    @Autowired
+    SectionBlockRepository sectionBlockRepository;
+
+    @Autowired
+    StudentProfileRepository studentProfileRepository;
+
     @Override
-    public Set<Block> parseIcs(MultipartFile file) {
+    public List<Map<String, String>> parseIcs(MultipartFile file) {
         try {
             InputStream in = file.getInputStream();
             CalendarBuilder builder = new CalendarBuilder();
             Calendar calendar = builder.build(in);
+
+            List<Map<String, String>> sectionData = new ArrayList<>();
             for (CalendarComponent vevent : calendar.getComponents("VEVENT")) {
                 // String dtstart = vevent.getProperty(Property.DTSTART).get().getValue();
                 // String dtend = vevent.getProperty(Property.DTEND).get().getValue();
@@ -60,10 +67,11 @@ public class TimetableServiceImp implements TimetableService {
 
                 String[] summary = vevent.getProperty(Property.SUMMARY).get().getValue().split(" ");
 
-                String code = summary[0];
-                String section = summary[1];
+                Map<String, String> sec = Map.ofEntries(entry("course", summary[0]), entry("section", summary[1]));
+                sectionData.add(sec);
             }
-            return null;
+
+            return sectionData;
         } catch (Exception e) {
             logger.error("error", e);
             return null;
@@ -74,6 +82,39 @@ public class TimetableServiceImp implements TimetableService {
     @Override
     public Timetable createTimetable(Timetable timetable) {
         return null;
+    }
+
+    @Override
+    public Timetable createTimetable(StudentProfile studentProfile, Set<Block> blocks) {
+        Timetable timetable = new Timetable();
+
+        timetable.setStudentProfile(studentProfile);
+        timetable.setBlocks(blocks);
+
+        return timetable;
+    }
+
+    @Override
+    public Timetable createTimetable(Long studentProfileId, MultipartFile iCalendar) {
+        Optional<StudentProfile> _studentProfile = studentProfileRepository.findById(studentProfileId);
+
+        StudentProfile studentProfile;
+        if (_studentProfile.isPresent()) {
+            studentProfile = _studentProfile.get();
+        } else {
+            throw new EntityNotFoundException();
+        }
+
+        List<Map<String, String>> sectionData = this.parseIcs(iCalendar);
+
+        Set<Block> sectionBlocks = new HashSet<>();
+        for (Map<String, String> sec : sectionData) {
+            List<SectionBlock> _sectionBlocks = sectionBlockRepository.findByCode(sec.get("course"), sec.get("section"));
+            sectionBlocks.addAll(_sectionBlocks);
+        }
+
+        return this.createTimetable(studentProfile, sectionBlocks);
+
     }
 
 }

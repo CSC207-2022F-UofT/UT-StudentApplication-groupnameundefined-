@@ -29,12 +29,23 @@ public class User {
         this.name = name;
     }
 
+    public Long getId() { return id; }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public StudentProfile getStudentProfile() {
+        return studentProfile;
+    }
+
+    public void setStudentProfile(StudentProfile studentProfile) {
+        this.studentProfile = studentProfile;
+        studentProfile.setUser(this);
     }
 
     @Override

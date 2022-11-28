@@ -25,11 +25,6 @@ public class Timetable {
     public Timetable() {
     }
 
-    public Timetable(StudentProfile studentProfile, Set<Block> blocks) {
-        this.studentProfile = studentProfile;
-        this.blocks = blocks;
-    }
-
     public Long getId() {
         return id;
     }
@@ -48,6 +43,9 @@ public class Timetable {
 
 
     public void setBlocks(Set<Block> blocks) {
+        for (Block block : blocks) {
+            block.addTimetable(this);
+        }
         this.blocks = blocks;
     }
 
@@ -65,6 +63,15 @@ public class Timetable {
                 clearBlocks();
             }
         }
+    }
+
+    public StudentProfile getStudentProfile() {
+        return studentProfile;
+    }
+
+    public void setStudentProfile(StudentProfile studentProfile) {
+        this.studentProfile = studentProfile;
+        studentProfile.setTimetable(this);
     }
 
 }

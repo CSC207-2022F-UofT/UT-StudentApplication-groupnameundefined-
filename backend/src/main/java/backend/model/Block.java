@@ -1,11 +1,15 @@
 package backend.model;
 
 import com.google.gson.annotations.Expose;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 public class Block {
@@ -35,6 +39,10 @@ public class Block {
     @Column(name = "repetition")
     private String repetition;
 
+    @Expose(serialize = true, deserialize = true)
+    @Column(name = "repetition_time")
+    private String repetitionTime;
+
     @Expose(serialize = true, deserialize = false)
     @ManyToMany(mappedBy = "blocks")
     private Set<Timetable> timetables;
@@ -42,67 +50,16 @@ public class Block {
     public Block() {
     }
 
-    public Block(Integer startDay, Integer startMil, Integer endDay, Integer endMil, String repetition) {
+    public Block(Integer startDay, Integer startMil, Integer endDay, Integer endMil, String repetition, String repetitionTime) {
         this.startDay = startDay;
         this.startMil = startMil;
         this.endDay = endDay;
         this.endMil = endMil;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public int getStartDay() {
-        return startDay;
-    }
-
-    public void setStartDay(int startDay) {
-        this.startDay = startDay;
-    }
-
-    public int getStartMil() {
-        return startMil;
-    }
-
-    public void setStartMil(int startMil) {
-        this.startMil = startMil;
-    }
-
-    public int getEndDay() {
-        return endDay;
-    }
-
-    public void setEndDay(int endDay) {
-        this.endDay = endDay;
-    }
-
-    public int getEndMil() {
-        return endMil;
-    }
-
-    public void setEndMil(int endMil) {
-        this.endMil = endMil;
-    }
-
-    public Set<Timetable> getTimetables() {
-        return timetables;
+        this.repetition = repetition;
+        this.repetitionTime = repetitionTime;
     }
 
     public void addTimetable(Timetable timetable) {
         timetables.add(timetable);
     }
-
-    public void removeTimetable(Timetable timetable) {
-        timetables.remove(timetable);
-    }
-
-    public String getRepetition() {
-        return repetition;
-    }
-
-    public void setRepetition(String repetition) {
-        this.repetition = repetition;
-    }
-
 }

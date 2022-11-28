@@ -21,10 +21,6 @@ public class SectionBlock extends Block {
     @JoinColumn(name = "section_id", referencedColumnName = "id")
     private Section section;
 
-    @Expose(serialize = true, deserialize = true)
-    @Column(name = "repetition_time")
-    private String repetitionTime;
-
     public SectionBlock() {
     }
 
@@ -34,8 +30,7 @@ public class SectionBlock extends Block {
 
     public SectionBlock(Integer startDay, Integer startMil, Integer endDay, Integer endMil,
             String repetition, String repetitionTime) {
-        super(startDay, startMil, endDay, endMil, repetition);
-        this.repetitionTime = repetitionTime;
+        super(startDay, startMil, endDay, endMil, repetition, repetitionTime);
     }
 
     public Section getSection() {
@@ -44,14 +39,6 @@ public class SectionBlock extends Block {
 
     public void setSection(Section section) {
         this.section = section;
-    }
-
-    public String getRepetitionTime() {
-        return repetitionTime;
-    }
-
-    public void setRepetitionTime(String repetitionTime) {
-        this.repetitionTime = repetitionTime;
     }
 
 }

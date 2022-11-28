@@ -6,16 +6,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SectionBlockDto {
+public class BlockDto {
 
     @JsonProperty("id")
     private Long id;
-
-    @JsonProperty("repetition")
-    private String repetition;
-
-    @JsonProperty("repetitionTime")
-    private String repetitionTime;
 
     @JsonProperty("startDay")
     private Integer startDay;
@@ -29,7 +23,10 @@ public class SectionBlockDto {
     @JsonProperty("endMil")
     private Integer endMil;
 
-    @JsonProperty("sectionId")
-    private Long sectionId;
+    @JsonProperty("repetition")
+    private String repetition;
+
+    @JsonProperty("repetitionTime")
+    private String repetitionTime;
 
 }

@@ -54,11 +54,7 @@ public class CourseServiceImp implements CourseService {
 
     @Override
     public List<Course> getAllCourses() {
-        List<Course> courses = new ArrayList<Course>();
-
-        courseRepository.findAll().forEach(courses::add);
-
-        return courses;
+        return new ArrayList<Course>(courseRepository.findAll());
     }
 
     @Override
@@ -72,12 +68,15 @@ public class CourseServiceImp implements CourseService {
 
         JSONArray courses = (JSONArray) courseData;
 
-        for (Object c : courses.subList(0, 100)) {
+        for (Object c : courses) {
             JSONObject _course = (JSONObject) c;
             JSONArray courseSections = (JSONArray) _course.get("sections");
 
-
             Course course = gson.fromJson(_course.toJSONString(), Course.class);
+
+            if (!course.getCode().contains("CSC207")) {
+                continue;
+            }
 
             for (Object s : courseSections) {
                 JSONObject _section = (JSONObject) s;

@@ -19,4 +19,9 @@ public class SectionBlockServiceImp implements SectionBlockService {
     public List<SectionBlock> getAllSectionBlocks() {
         return new ArrayList<SectionBlock>(sectionBlockRepository.findAll());
     }
+
+    @Override
+    public List<SectionBlock> getSectionBlocksByCode(String course, String section) {
+        return new ArrayList<SectionBlock>(sectionBlockRepository.findByCode(course, section));
+    }
 }

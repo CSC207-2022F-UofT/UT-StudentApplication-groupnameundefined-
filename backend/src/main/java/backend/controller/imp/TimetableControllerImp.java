@@ -1,8 +1,13 @@
 package backend.controller.imp;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import backend.dto.TimetableDto;
+import backend.mappers.TimetableMapper;
+import backend.model.Timetable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,11 +33,32 @@ public class TimetableControllerImp implements TimetableController {
     @Autowired
     TimetableService timetableService;
 
+    @Autowired
+    TimetableMapper timetableMapper;
+
+    @Override
+    @PostMapping("/")
+    public ResponseEntity<TimetableDto> uploadTimetable(@RequestParam("studentProfileId") Long studentProfileId, @RequestParam("file") MultipartFile file) {
+        try {
+            Timetable timetable = timetableService.createTimetable(studentProfileId, file);
+            TimetableDto timetableDto = timetableMapper.timetableToDto(timetable);
+
+            return new ResponseEntity<>(timetableDto, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @Override
     @PostMapping("/parse-ics")
-    public ResponseEntity<Set<Block>> parseIcs(@RequestParam("file") MultipartFile file) {
-        Set<Block> blocks = timetableService.parseIcs(file);
+    public ResponseEntity<List<Map<String, String>>> parseIcs(@RequestParam("file") MultipartFile file) {
+        try {
+            List<Map<String, String>> sectionData = timetableService.parseIcs(file);
 
-        return new ResponseEntity<Set<Block>>(blocks, HttpStatus.OK);
+            return new ResponseEntity<>(sectionData, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 }

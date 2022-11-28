@@ -56,7 +56,7 @@ public class CourseControllerImp implements CourseController {
     }
 
     @Override
-    @GetMapping("/get-all-courses")
+    @GetMapping("/")
     public ResponseEntity<List<CourseDto>> getAllCourses() {
         try {
             List<Course> courses = courseService.getAllCourses();
