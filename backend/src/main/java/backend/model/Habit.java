@@ -66,6 +66,7 @@ public class Habit{
         this.visibilities.put("collaborate",1);
     }
 
+<<<<<<< Updated upstream
     public Habit(String _username, int _MBTI, int _talktive, int _collaborate, Map<String, Integer> _visibilities) {
         this.username = _username;
         this.MBTI = _MBTI;
@@ -76,6 +77,21 @@ public class Habit{
         this.visibilities.put("collaborate",_visibilities.get("collaborate"));
     }
 
+=======
+    public Habit() {
+        super();
+    }
+
+    public Habit(String username, int MBTI, int talktive, int collaborate) {
+        super();
+        this.username = username;
+        this.MBTI = MBTI;
+        this.talktive = 5;
+        this.collaborate = 5;
+    }
+
+
+>>>>>>> Stashed changes
 
     public String getUsername() { return this.username; }
     public void setUsername(String _username) { this.username = _username; }
