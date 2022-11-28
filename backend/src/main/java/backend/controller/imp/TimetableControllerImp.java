@@ -8,16 +8,12 @@ import java.util.Set;
 import backend.dto.TimetableDto;
 import backend.mappers.TimetableMapper;
 import backend.model.Timetable;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import backend.controller.TimetableController;
@@ -31,20 +27,24 @@ import backend.service.TimetableService;
 public class TimetableControllerImp implements TimetableController {
 
     @Autowired
+    Logger logger;
+
+    @Autowired
     TimetableService timetableService;
 
     @Autowired
     TimetableMapper timetableMapper;
 
     @Override
-    @PostMapping("/")
-    public ResponseEntity<TimetableDto> uploadTimetable(@RequestParam("studentProfileId") Long studentProfileId, @RequestParam("file") MultipartFile file) {
+    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<TimetableDto> uploadTimetable(@RequestPart Long studentProfileId, @RequestPart MultipartFile file) {
         try {
             Timetable timetable = timetableService.createTimetable(studentProfileId, file);
             TimetableDto timetableDto = timetableMapper.timetableToDto(timetable);
 
             return new ResponseEntity<>(timetableDto, HttpStatus.OK);
         } catch (Exception e) {
+            logger.error("Error", e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
