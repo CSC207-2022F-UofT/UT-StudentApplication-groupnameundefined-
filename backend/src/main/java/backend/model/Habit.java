@@ -82,6 +82,10 @@ public class Habit{
         super();
     }
 
+    public Habit() {
+        super();
+    }
+
     public Habit(String username, int MBTI, int talktive, int collaborate) {
         super();
         this.username = username;
@@ -91,6 +95,9 @@ public class Habit{
     }
 
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     public String getUsername() { return this.username; }

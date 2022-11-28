@@ -1,6 +1,7 @@
 package backend.habit;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import backend.model.Habit;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -48,6 +49,8 @@ public class HabitServiceTests {
 
 
 =======
+=======
+>>>>>>> Stashed changes
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -67,5 +70,8 @@ public class HabitServiceTests {
 //
 //    @Test
 //    public
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }

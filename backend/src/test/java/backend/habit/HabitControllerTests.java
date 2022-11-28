@@ -7,8 +7,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.assertj.core.api.Assertions.assertThat;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 import backend.controller.UserController;
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 import org.junit.jupiter.api.Test;
@@ -22,6 +25,7 @@ import backend.controller.HabitController;
 
 public class HabitControllerTests {
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     @Autowired
     private MockMvc mockMvc;
@@ -41,6 +45,10 @@ public class HabitControllerTests {
     }
 
 
+=======
+    //    @Test
+    //    public
+>>>>>>> Stashed changes
 =======
     //    @Test
     //    public
