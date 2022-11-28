@@ -49,8 +49,8 @@ public class FriendRequestServiceImp implements FriendRequestService {
 
     @Override
     public FriendRequest createFriendRequest(CreateFriendRequestForm input) {
-        Optional<User> fromUser = userRepository.findById(input.getFromId());
-        Optional<User> toUser = userRepository.findById(input.getToId());
+        Optional<User> fromUser = userRepository.findById(input.getFrom());
+        Optional<User> toUser = userRepository.findById(input.getTo());
 
         if (!(fromUser.isPresent() && toUser.isPresent())) {
             throw new EntityNotFoundException();

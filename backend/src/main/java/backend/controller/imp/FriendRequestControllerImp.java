@@ -64,7 +64,7 @@ public class FriendRequestControllerImp implements FriendRequestController {
         try{
             FriendRequest newFriendRequest = friendRequestService.createFriendRequest(input);
             return new ResponseEntity<FriendRequest>(newFriendRequest, HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

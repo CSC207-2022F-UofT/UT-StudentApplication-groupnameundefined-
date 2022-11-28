@@ -9,8 +9,8 @@ public class FriendRequestForm {
     @Setter
     public static class CreateFriendRequestForm {
 
-        private Long fromId;
-        private Long toId;
+        private Long from;
+        private Long to;
         private String message;
 
     }
