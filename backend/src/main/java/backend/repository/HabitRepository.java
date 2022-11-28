@@ -12,7 +12,7 @@ public interface HabitRepository extends JpaRepository<Habit, Long> {
 
     Optional<Habit> findByMBTI(int MBTI);
 
-    Optional<Habit> findByTalktive(int talktive);
+    Optional<Habit> findByTalkative(int talkative);
 
     Optional<Habit> findByCollaborate(int collaborate);
 
@@ -22,7 +22,7 @@ public interface HabitRepository extends JpaRepository<Habit, Long> {
 
     boolean existsByMBTI(int MBTI);
 
-    boolean existsByTalktive(int talktive);
+    boolean existsByTalkative(int talkative);
 
     boolean existsByCollaborate(int collaborate);
 

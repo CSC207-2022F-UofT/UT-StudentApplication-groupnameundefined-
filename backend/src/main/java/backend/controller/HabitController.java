@@ -19,7 +19,7 @@ public interface HabitController {
 
     ResponseEntity<Optional<Habit>>getSameHabitByMBTI(int MBTI);
 
-    ResponseEntity<Optional<Habit>>getSameHabitByTalktive(int talktive);
+    ResponseEntity<Optional<Habit>>getSameHabitByTalkative(int talkative);
 
     ResponseEntity<Optional<Habit>>getSameHabitByCollaborate(int collaborate);
 

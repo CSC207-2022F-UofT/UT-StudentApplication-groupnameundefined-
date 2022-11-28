@@ -89,11 +89,11 @@ public class HabitControllerImp implements HabitController{
     }
 
     @Override
-    @GetMapping("/habits/Talktive")
-    public ResponseEntity<Optional<Habit>>getSameHabitByTalktive(int talktive){
+    @GetMapping("/habits/Talkative")
+    public ResponseEntity<Optional<Habit>>getSameHabitByTalkative(int talkative){
         try {
-            Optional<Habit> habits_Talktive = habitService.getSameHabitByTalktive(talktive);
-            return new ResponseEntity<>(habits_Talktive, HttpStatus.OK);
+            Optional<Habit> habits_Talkative = habitService.getSameHabitByTalkative(talkative);
+            return new ResponseEntity<>(habits_Talkative, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -103,7 +103,7 @@ public class HabitControllerImp implements HabitController{
     @GetMapping("/habits/Collaborate")
     public ResponseEntity<Optional<Habit>>getSameHabitByCollaborate(int collaborate){
         try {
-            Optional<Habit> habits_Collaborate = habitService.getSameHabitByTalktive(collaborate);
+            Optional<Habit> habits_Collaborate = habitService.getSameHabitByTalkative(collaborate);
             return new ResponseEntity<>(habits_Collaborate, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

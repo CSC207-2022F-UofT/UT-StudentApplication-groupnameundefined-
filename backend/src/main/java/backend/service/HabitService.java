@@ -17,7 +17,7 @@ public interface HabitService {
 
     Optional<Habit> getSameHabitByMBTI(int MBTI);
 
-    Optional<Habit> getSameHabitByTalktive(int talktive);
+    Optional<Habit> getSameHabitByTalkative(int talkative);
 
     Optional<Habit> getSameHabitByCollaborate(int collaborate);
 

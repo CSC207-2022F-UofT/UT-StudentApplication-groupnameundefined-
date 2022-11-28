@@ -35,7 +35,7 @@ public class HabitServiceImp implements HabitService{
 
     @Override
     public Habit createHabit(Habit habit){
-        Habit _habit = habitRepository.save(new Habit(habit.getUsername(),habit.getMBTI(), habit.getTalktive(), habit.getCollaborate(), habit.getVisibility()));
+        Habit _habit = habitRepository.save(new Habit(habit.getUsername(),habit.getMBTI(), habit.getTalkative(), habit.getCollaborate(), habit.getVisibility()));
         System.out.println("Create Habit Success");
         return _habit;
     }
@@ -48,8 +48,8 @@ public class HabitServiceImp implements HabitService{
     }
 
     @Override
-    public Optional<Habit> getSameHabitByTalktive(int talktive){
-        Optional<Habit> habit_Talktive = habitRepository.findByTalktive(talktive);
+    public Optional<Habit> getSameHabitByTalkative(int talkative){
+        Optional<Habit> habit_Talktive = habitRepository.findByTalkative(talkative);
         System.out.println("Get Same Habit By Talktive Success");
         return habit_Talktive;
     }
