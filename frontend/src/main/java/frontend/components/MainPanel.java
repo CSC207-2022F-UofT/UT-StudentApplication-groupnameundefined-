@@ -20,16 +20,16 @@ public class MainPanel extends JPanel {
     public MainPanel(){
         setLayout(new CardLayout());
         setBackground(new Color(128, 128, 255));
-
-        JPanel jpLogin = new LoginPanel(this);
-        add(jpLogin, "LoginPanel");
-
-        JPanel jpHome = new HomePanel(this);
-        add(jpHome, "HomePanel");
+//
+//        JPanel jpLogin = new LoginPanel(this);
+//        add(jpLogin, "LoginPanel");
+//
+//        JPanel jpHome = new HomePanel(this);
+//        add(jpHome, "HomePanel");
 
         JPanel jpCreateProfile = new CreateProfilePanel(this);
         add(jpCreateProfile, "CpPanel");
 
-        setPanel("LoginPanel");
+        setPanel("CpPanel");
     }
 }
