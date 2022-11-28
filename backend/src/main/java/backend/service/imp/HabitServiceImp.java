@@ -1,7 +1,5 @@
 package backend.service.imp;
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,11 +61,4 @@ public class HabitServiceImp implements HabitService{
         return habit_Collaborate;
     }
 
-
-=======
-public class HabitServiceImp implement HabitService {
->>>>>>> Stashed changes
-=======
-public class HabitServiceImp implement HabitService {
->>>>>>> Stashed changes
 }
