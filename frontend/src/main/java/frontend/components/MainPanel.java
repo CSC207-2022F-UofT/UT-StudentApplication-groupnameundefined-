@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import frontend.components.TopNavigation;
 
 @Component
 public class MainPanel extends JPanel {
@@ -19,9 +20,21 @@ public class MainPanel extends JPanel {
     }
 
     public MainPanel() {
+
         setLayout(new CardLayout());
         setBackground(new Color(128, 128, 255));
 
+
+        JPanel test = new JPanel();
+        TopNavigation nav = new TopNavigation();
+//        test.add(nav);
+        test.setLayout(new BorderLayout());
+        test.add(nav, BorderLayout.NORTH);
+        this.add(test, "Panel");
+
+        setPanel("Panel");
+
+        // add(test, "Panel");
         // JPanel jpLogin = new LoginPanel(this);
         // add(jpLogin, "LoginPanel");
 
@@ -31,6 +44,9 @@ public class MainPanel extends JPanel {
         // JPanel jpCreateProfile = new CreateProfilePanel(this);
         // add(jpCreateProfile, "CpPanel");
 
-        setPanel("LoginPanel");
+        // JPanel jpCreateProfile = new CreateProfilePanel(this);
+        // add(jpCreateProfile, "CpPanel");
+
+
     }
 }

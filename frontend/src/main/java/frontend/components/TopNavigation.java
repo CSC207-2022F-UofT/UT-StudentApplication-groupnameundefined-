@@ -1,3 +1,5 @@
+package frontend.components;
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -11,19 +13,25 @@ public class TopNavigation extends JMenuBar implements ActionListener{
     JMenu settingMenu;
     JMenu aboutMenu;
 
+    JMenu logoutMenu;
+
+
+
     JMenuItem accountItem;
     JMenuItem privacyItem;
     JMenuItem helpItem;
     JMenuItem teamItem;
 
     public TopNavigation(){
-        JMenuBar topNavigation = new JMenuBar();
+
+
 
         homeMenu = new JMenu("Home");
         findMenu = new JMenu("Find");
         calMenu = new JMenu("My Calendar");
         settingMenu = new JMenu("Setting");
         aboutMenu = new JMenu("About");
+        logoutMenu = new JMenu("Logout");
 
         accountItem = new JMenuItem("Account Setting");
         privacyItem = new JMenuItem("Privacy Setting");
@@ -35,11 +43,12 @@ public class TopNavigation extends JMenuBar implements ActionListener{
         aboutMenu.add(helpItem);
         aboutMenu.add(teamItem);
 
-        menuBar.add(homeMenu);
-        menuBar.add(findMenu);
-        menuBar.add(calMenu);
-        menuBar.add(settingMenu);
-        menuBar.add(aboutMenu);
+        this.add(homeMenu);
+        this.add(findMenu);
+        this.add(calMenu);
+        this.add(settingMenu);
+        this.add(aboutMenu);
+        this.add(logoutMenu);
 
         this.setVisible(true);
 
