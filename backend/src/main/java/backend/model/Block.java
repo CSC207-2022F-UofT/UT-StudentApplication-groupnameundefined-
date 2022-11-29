@@ -1,6 +1,7 @@
 package backend.model;
 
 import com.google.gson.annotations.Expose;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ import javax.persistence.*;
 @Entity
 public class Block {
 
+    @Setter(AccessLevel.NONE)
     @Expose(serialize = true, deserialize = true)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,7 +52,8 @@ public class Block {
     public Block() {
     }
 
-    public Block(Integer startDay, Integer startMil, Integer endDay, Integer endMil, String repetition, String repetitionTime) {
+    public Block(Integer startDay, Integer startMil, Integer endDay, Integer endMil, String repetition,
+                 String repetitionTime) {
         this.startDay = startDay;
         this.startMil = startMil;
         this.endDay = endDay;

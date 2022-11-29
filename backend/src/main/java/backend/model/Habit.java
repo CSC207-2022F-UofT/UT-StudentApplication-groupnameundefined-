@@ -1,5 +1,6 @@
 package backend.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ import java.util.*;
 public class Habit {
 
     // Habit id, unique
+    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

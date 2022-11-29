@@ -1,5 +1,6 @@
 package backend.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,8 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "student_profile")
 public class StudentProfile {
+
+    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -35,14 +38,14 @@ public class StudentProfile {
     @Column(name = "enrolment_year")
     private Integer enrolmentYear;
 
-    @OneToOne(cascade = { CascadeType.ALL }, mappedBy = "studentProfile")
+    @OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
     private Timetable timetable;
 
     @OneToOne
     @JoinColumn(name = "socialmediaprofile_id", referencedColumnName = "id")
     private SocialMediaProfile socialMediaProfile;
 
-    @OneToOne(cascade = { CascadeType.ALL }, mappedBy = "studentProfile")
+    @OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
     private Habit habit;
 
     public StudentProfile() {

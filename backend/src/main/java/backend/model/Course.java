@@ -1,6 +1,9 @@
 package backend.model;
 
 import com.google.gson.annotations.Expose;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,9 +19,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "course")
 public class Course {
+
+    @Setter(AccessLevel.NONE)
     @Expose(serialize = true, deserialize = false)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,7 +48,7 @@ public class Course {
     private String campus;
 
     @Expose(serialize = true, deserialize = false)
-    @OneToMany(mappedBy = "course", cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private Set<Section> sections;
 
     public Course() {
@@ -54,46 +61,6 @@ public class Course {
         this.campus = campus;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getSectionCode() {
-        return sectionCode;
-    }
-
-    public void setSectionCode(String sectionCode) {
-        this.sectionCode = sectionCode;
-    }
-
-    public String getCampus() {
-        return campus;
-    }
-
-    public void setCampus(String campus) {
-        this.campus = campus;
-    }
-
-    public Set<Section> getSections() {
-        return sections;
-    }
-
     public void initializeSections() {
         sections = new HashSet<>();
     }
@@ -103,6 +70,9 @@ public class Course {
     }
 
     public void setSections(Set<Section> sections) {
+        for (Section section : sections) {
+            section.setCourse(this);
+        }
         this.sections = sections;
     }
 

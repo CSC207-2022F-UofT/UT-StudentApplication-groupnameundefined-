@@ -1,14 +1,21 @@
 package backend.model;
 
 import com.google.gson.annotations.Expose;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.*;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "section")
 public class Section {
+
+    @Setter(AccessLevel.NONE)
     @Expose(serialize = true, deserialize = false)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,7 +31,7 @@ public class Section {
     private String name;
 
     @Expose(serialize = true, deserialize = false)
-    @OneToMany(mappedBy = "section", cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @OneToMany(mappedBy = "section", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private Set<SectionBlock> sectionBlocks;
 
     public Section() {
@@ -34,28 +41,9 @@ public class Section {
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
     public void setCourse(Course course) {
         this.course = course;
-    }
-
-    public Set<SectionBlock> getSectionBlocks() {
-        return sectionBlocks;
+        course.addSection(this);
     }
 
     public void initializeSectionBlocks() {
