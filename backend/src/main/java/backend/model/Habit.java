@@ -1,5 +1,8 @@
 package backend.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.*;
 import javax.validation.constraints.Max;
@@ -8,90 +11,80 @@ import javax.validation.constraints.NotNull;
 import java.io.*;
 import java.util.*;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "Habits", uniqueConstraints = {@UniqueConstraint(columnNames = {"Id"})})
-public class Habit{
+@Table(name = "habit")
+public class Habit {
 
     // Habit id, unique
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name = "studentprofile_id", referencedColumnName = "id", nullable = false)
+    private StudentProfile studentProfile;
+
     // MBTI of users: [0,16], 0 refers to Not specified.
     // MBTI encoding: refer to documents.
     @NotNull
-    @Column()
-    private int MBTI;
+    @Column(name = "mbti", columnDefinition = "integer default ")
+    private Integer mbti;
 
     // The user's self reported talkativeness(extrovert of introvert), rating 1~5
     @NotNull
-    @Min(value=1, message="talkative: please choose a scale between 1 and 5(inclusive)")
-    @Max(value=5, message="talkative: please choose a scale between 1 and 5(inclusive)")
-    private int talkative;
+    @Min(value = 1, message = "talkative: please choose a scale between 1 and 5(inclusive)")
+    @Max(value = 5, message = "talkative: please choose a scale between 1 and 5(inclusive)")
+    @Column(name = "talkative")
+    private Integer talkative;
 
     // The user's willingness to collaborate with others, rating 1~5
     @NotNull
-    @Min(value=1, message="Collaborative: please choose a scale between 1 and 5(inclusive)")
-    @Max(value=5, message="Collaborative: please choose a scale between 1 and 5(inclusive)")
-    private int collaborate;
+    @Min(value = 1, message = "Collaborative: please choose a scale between 1 and 5(inclusive)")
+    @Max(value = 5, message = "Collaborative: please choose a scale between 1 and 5(inclusive)")
+    @Column(name = "collaborative")
+    private Integer collaborative;
 
     // Visibility of talkative, Collaborate, MBTI
-    @Column()
-    @ElementCollection
-    private Map<String, Integer> visibilities = new HashMap<String, Integer>();
+    @OneToOne(cascade = {CascadeType.ALL}, mappedBy = "habit")
+    private HabitVisibility visibility;
 
     public Habit() {
-        this.MBTI = 0;
+    }
+
+    public Habit(StudentProfile studentProfile) {
+        this.studentProfile = studentProfile;
+
+        this.mbti = 0;
         this.talkative = 5;
-        this.collaborate = 5;
-        this.visibilities.put("MBTI",1);
-        this.visibilities.put("talkative",1);
-        this.visibilities.put("collaborate",1);
+        this.collaborative = 5;
+
+        HabitVisibility habitVisibility = new HabitVisibility();
+        habitVisibility.setHabit(this);
+        this.visibility = habitVisibility;
     }
 
+    public Habit(StudentProfile studentProfile, int mbti, int talkative, int collaborative) {
+        this.studentProfile = studentProfile;
+        studentProfile.setHabit(this);
 
-    public Habit(String username) {
-        super();
-        this.MBTI = 0;
-        this.talkative = 5;
-        this.collaborate = 5;
-        this.visibilities.put("MBTI",1);
-        this.visibilities.put("talkative",1);
-        this.visibilities.put("collaborate",1);
+        this.mbti = mbti;
+        this.talkative = talkative;
+        this.collaborative = collaborative;
     }
 
-    public Habit(int _MBTI, int _talkative, int _collaborate, Map<String, Integer> _visibilities) {
-        this.MBTI = _MBTI;
-        this.talkative = _talkative;
-        this.collaborate = _collaborate;
-        this.visibilities.put("MBTI",_visibilities.get("MBTI"));
-        this.visibilities.put("talkative",_visibilities.get("talkative"));
-        this.visibilities.put("collaborate",_visibilities.get("collaborate"));
-    }
+    public Habit(StudentProfile studentProfile, int mbti, int talkative, int collaborative,
+                 HabitVisibility habitVisibility) {
+        this.studentProfile = studentProfile;
+        studentProfile.setHabit(this);
 
-    public Habit(int MBTI, int talkative, int collaborate) {
-        super();
-        this.MBTI = MBTI;
-        this.talkative = 5;
-        this.collaborate = 5;
-    }
+        this.mbti = mbti;
+        this.talkative = talkative;
+        this.collaborative = collaborative;
 
-    public int getTalkative(){ return this.talkative; }
-    public void setTalkative(int _talkative){ this.talkative = _talkative; }
-
-    public int getCollaborate(){ return this.collaborate; }
-    public void setCollaborate(int _collaborate){ this.collaborate = _collaborate; }
-
-    public int getMBTI(){ return this.MBTI; }
-    public void setMBTI(int _MBTI){ this.MBTI = _MBTI; }
-
-    public Map<String, Integer> getVisibility(){
-        return this.visibilities;
-    }
-    public void setVisibility(Map<String, Integer> _visibilities){
-        for(String newKey : _visibilities.keySet()){
-            this.visibilities.put(newKey, _visibilities.get(newKey));
-        }
+        this.visibility = habitVisibility;
+        habitVisibility.setHabit(this);
     }
 
     @Override
@@ -104,12 +97,9 @@ public class Habit{
             return false;
         }
 
-        Habit habit = (Habit)o;
-        if((this.collaborate == habit.collaborate) && (this.talkative == habit.talkative) && (this.MBTI == habit.MBTI)){
-            return true;
-        }
-
-        return false;
+        Habit habit = (Habit) o;
+        return (Objects.equals(this.collaborative, habit.collaborative)) && (Objects.equals(this.talkative,
+                habit.talkative)) && (Objects.equals(this.mbti, habit.mbti));
     }
 
 }
