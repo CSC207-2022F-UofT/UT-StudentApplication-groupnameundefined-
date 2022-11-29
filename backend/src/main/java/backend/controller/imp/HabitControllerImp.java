@@ -31,21 +31,22 @@ import backend.model.Habit;
 import backend.repository.HabitRepository;
 import backend.service.HabitService;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/habits")
 public class HabitControllerImp implements HabitController{
 
     @Autowired
     HabitService habitService;
 
     @Override
-    @GetMapping("/habits/notification")
+    @GetMapping("/notification")
     public ResponseEntity<String> getHabitNotification(){
         return new ResponseEntity<>("Habits got.", HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/habits/all")
+    @GetMapping("/")
     public ResponseEntity<List<Habit>> getAllHabits(){
         try {
             List<Habit> habits = habitService.getAllHabits();
@@ -56,7 +57,7 @@ public class HabitControllerImp implements HabitController{
     }
 
     @Override
-    @GetMapping("/habits/{id}/")
+    @GetMapping("/{id}")
     public ResponseEntity<Habit> getHabitById(Long id){
         Optional<Habit> habit = habitService.getHabitById(id);
         if (habit.isPresent()) {
@@ -67,7 +68,7 @@ public class HabitControllerImp implements HabitController{
     }
 
     @Override
-    @PostMapping("/habits/create")
+    @PostMapping("/create")
     public ResponseEntity<Habit> createHabit(Habit habit){
         try {
             Habit _habit = habitService.createHabit(habit);
@@ -78,7 +79,7 @@ public class HabitControllerImp implements HabitController{
     }
 
     @Override
-    @GetMapping("/habits/MBTI")
+    @GetMapping("/mbti")
     public ResponseEntity<Optional<Habit>>getSameHabitByMBTI(int MBTI){
         try {
             Optional<Habit> habits_MBTI = habitService.getSameHabitByMBTI(MBTI);
@@ -89,7 +90,7 @@ public class HabitControllerImp implements HabitController{
     }
 
     @Override
-    @GetMapping("/habits/Talkative")
+    @GetMapping("/talkative")
     public ResponseEntity<Optional<Habit>>getSameHabitByTalkative(int talkative){
         try {
             Optional<Habit> habits_Talkative = habitService.getSameHabitByTalkative(talkative);
@@ -100,7 +101,7 @@ public class HabitControllerImp implements HabitController{
     }
 
     @Override
-    @GetMapping("/habits/Collaborate")
+    @GetMapping("/collaborate")
     public ResponseEntity<Optional<Habit>>getSameHabitByCollaborate(int collaborate){
         try {
             Optional<Habit> habits_Collaborate = habitService.getSameHabitByTalkative(collaborate);
@@ -109,6 +110,5 @@ public class HabitControllerImp implements HabitController{
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 }

@@ -21,8 +21,4 @@ public interface HabitService {
 
     Optional<Habit> getSameHabitByCollaborate(int collaborate);
 
-
-
-
-
 }

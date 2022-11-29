@@ -14,15 +14,13 @@ import backend.service.HabitService;
 
 public class HabitServiceImp implements HabitService{
 
-
     @Autowired
     HabitRepository habitRepository;
 
     @Override
     public List<Habit> getAllHabits(){
-        List<Habit> habits = new ArrayList<Habit>();
-        habitRepository.findAll().forEach(habits::add);
-        System.out.println("Get All Habits");
+        List<Habit> habits = new ArrayList<Habit>(habitRepository.findAll());
+
         return habits;
     }
 

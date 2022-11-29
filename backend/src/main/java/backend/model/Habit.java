@@ -14,12 +14,8 @@ public class Habit{
 
     // Habit id, unique
     @Id
-    private Long Id;
-
-    // Correspond user id
-    @NotNull
-    @JoinColumn(name = "User.name")
-    private String username;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     // MBTI of users: [0,16], 0 refers to Not specified.
     // MBTI encoding: refer to documents.
@@ -36,7 +32,7 @@ public class Habit{
     // The user's willingness to collaborate with others, rating 1~5
     @NotNull
     @Min(value=1, message="Collaborative: please choose a scale between 1 and 5(inclusive)")
-    @Max(value=5, message="Collaborative: please choose a scale between 1 and 5(inclusive")
+    @Max(value=5, message="Collaborative: please choose a scale between 1 and 5(inclusive)")
     private int collaborate;
 
     // Visibility of talkative, Collaborate, MBTI
@@ -45,7 +41,6 @@ public class Habit{
     private Map<String, Integer> visibilities = new HashMap<String, Integer>();
 
     public Habit() {
-        this.username ="";
         this.MBTI = 0;
         this.talkative = 5;
         this.collaborate = 5;
@@ -57,7 +52,6 @@ public class Habit{
 
     public Habit(String username) {
         super();
-        this.username = username;
         this.MBTI = 0;
         this.talkative = 5;
         this.collaborate = 5;
@@ -66,8 +60,7 @@ public class Habit{
         this.visibilities.put("collaborate",1);
     }
 
-    public Habit(String _username, int _MBTI, int _talkative, int _collaborate, Map<String, Integer> _visibilities) {
-        this.username = _username;
+    public Habit(int _MBTI, int _talkative, int _collaborate, Map<String, Integer> _visibilities) {
         this.MBTI = _MBTI;
         this.talkative = _talkative;
         this.collaborate = _collaborate;
@@ -76,17 +69,12 @@ public class Habit{
         this.visibilities.put("collaborate",_visibilities.get("collaborate"));
     }
 
-    public Habit(String username, int MBTI, int talkative, int collaborate) {
+    public Habit(int MBTI, int talkative, int collaborate) {
         super();
-        this.username = username;
         this.MBTI = MBTI;
         this.talkative = 5;
         this.collaborate = 5;
     }
-
-
-    public String getUsername() { return this.username; }
-    public void setUsername(String _username) { this.username = _username; }
 
     public int getTalkative(){ return this.talkative; }
     public void setTalkative(int _talkative){ this.talkative = _talkative; }
@@ -104,11 +92,6 @@ public class Habit{
         for(String newKey : _visibilities.keySet()){
             this.visibilities.put(newKey, _visibilities.get(newKey));
         }
-    }
-
-    @Override
-    public String toString() {
-        return "habit" + this.Id;
     }
 
     @Override

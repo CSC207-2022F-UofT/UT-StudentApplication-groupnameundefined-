@@ -33,7 +33,7 @@ public class SectionBlockControllerImp implements SectionBlockController {
     SectionBlockMapper sectionBlockMapper;
 
     @Override
-    @GetMapping("get-all-section-blocks")
+    @GetMapping("/")
     public ResponseEntity<List<SectionBlockDto>> getAllSectionBlocks() {
         try {
             List<SectionBlock> sectionBlocks = sectionBlockService.getAllSectionBlocks();

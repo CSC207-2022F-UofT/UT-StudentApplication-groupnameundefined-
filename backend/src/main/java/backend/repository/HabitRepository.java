@@ -6,9 +6,8 @@ import backend.model.Habit;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface HabitRepository extends JpaRepository<Habit, Long> {
-    Optional<Habit> findById(Long Id);
 
-    Optional<Habit> findByUsername(String username);
+    Optional<Habit> findByUserId(Long id);
 
     Optional<Habit> findByMBTI(int MBTI);
 
@@ -16,25 +15,10 @@ public interface HabitRepository extends JpaRepository<Habit, Long> {
 
     Optional<Habit> findByCollaborate(int collaborate);
 
-    boolean existsById(Long Id);
-
-    boolean existsByUsername(String username);
-
     boolean existsByMBTI(int MBTI);
 
     boolean existsByTalkative(int talkative);
 
     boolean existsByCollaborate(int collaborate);
-
-
-
-
-
-
-
-
-
-
-
 
 }
