@@ -3,6 +3,7 @@ package backend.controller.imp;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import backend.dto.TimetableDto;
@@ -26,21 +27,24 @@ import backend.service.TimetableService;
 @RequestMapping("/api/timetable")
 public class TimetableControllerImp implements TimetableController {
 
-    @Autowired
-    Logger logger;
+    private Logger logger;
 
-    @Autowired
-    TimetableService timetableService;
+    private TimetableService timetableService;
+    private TimetableMapper timetableMapper;
 
-    @Autowired
-    TimetableMapper timetableMapper;
+    public TimetableControllerImp(Logger logger, TimetableService timetableService, TimetableMapper timetableMapper) {
+        this.logger = logger;
+        this.timetableService = timetableService;
+        this.timetableMapper = timetableMapper;
+    }
 
     @Override
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<TimetableDto> uploadTimetable(@RequestPart Long studentProfileId, @RequestPart MultipartFile file) {
+    public ResponseEntity<TimetableDto> createTimetable(@RequestPart Long studentProfileId,
+                                                        @RequestPart MultipartFile file) {
         try {
             Timetable timetable = timetableService.createTimetable(studentProfileId, file);
-            TimetableDto timetableDto = timetableMapper.timetableToDto(timetable);
+            TimetableDto timetableDto = timetableMapper.toDto(timetable);
 
             return new ResponseEntity<>(timetableDto, HttpStatus.OK);
         } catch (Exception e) {
@@ -50,15 +54,33 @@ public class TimetableControllerImp implements TimetableController {
     }
 
     @Override
-    @PostMapping("/parse-ics")
-    public ResponseEntity<List<Map<String, String>>> parseIcs(@RequestParam("file") MultipartFile file) {
+    @GetMapping("/")
+    public ResponseEntity<List<TimetableDto>> getAllTimetables() {
         try {
-            List<Map<String, String>> sectionData = timetableService.parseIcs(file);
+            List<Timetable> timetables = timetableService.getAllTimetables();
+            List<TimetableDto> timetableDtos = timetableMapper.toDtoList(timetables);
 
-            return new ResponseEntity<>(sectionData, HttpStatus.OK);
+            return new ResponseEntity<>(timetableDtos, HttpStatus.OK);
         } catch (Exception e) {
+            logger.error("Error", e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
+
+    @Override
+    @GetMapping("/{id}")
+    public ResponseEntity<TimetableDto> getTimetableById(@PathVariable Long id) {
+        try {
+            Optional<Timetable> timetable = timetableService.getTimetableByid(id);
+
+            if (timetable.isPresent()) {
+                TimetableDto timetableDto = timetableMapper.toDto(timetable.get());
+                return new ResponseEntity<>(timetableDto, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

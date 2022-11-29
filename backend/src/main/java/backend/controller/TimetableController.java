@@ -15,8 +15,10 @@ import backend.model.Block;
 
 public interface TimetableController {
 
-    ResponseEntity<List<Map<String, String>>> parseIcs(MultipartFile file);
+    ResponseEntity<TimetableDto> createTimetable(Long studentProfileId, MultipartFile file);
 
-    ResponseEntity<TimetableDto> uploadTimetable(Long studentProfileId, MultipartFile file);
+    ResponseEntity<List<Timetable>> getAllTimetables();
+
+    ResponseEntity<TimetableDto> getTimetableById(Long id);
 
 }

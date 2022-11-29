@@ -3,25 +3,19 @@ package backend.controller;
 import java.util.List;
 import java.util.Optional;
 
+import backend.dto.HabitDto;
 import org.springframework.http.ResponseEntity;
 
 import backend.model.Habit;
 
 public interface HabitController {
 
-    ResponseEntity<String> getHabitNotification();
+    ResponseEntity<HabitDto> createHabit(CreateHabitForm input);
 
-    ResponseEntity<List<Habit>> getAllHabits();
+    ResponseEntity<List<HabitDto>> getAllHabits();
 
-    ResponseEntity<Habit> getHabitById(Long id);
-
-    ResponseEntity<Habit> createHabit(Habit habit);
-
-    ResponseEntity<Optional<Habit>>getSameHabitByMBTI(int MBTI);
-
-    ResponseEntity<Optional<Habit>>getSameHabitByTalkative(int talkative);
-
-    ResponseEntity<Optional<Habit>>getSameHabitByCollaborate(int collaborate);
-
+    ResponseEntity<HabitDto> getHabitById(Long id);
+    
+    ResponseEntity<List<HabitDto>> getFilteredHabits(Integer mbti, Integer talktative, Integer collaborative);
 
 }

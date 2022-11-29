@@ -3,6 +3,7 @@ package backend.controller.imp;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,13 +11,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import backend.controller.CourseController;
@@ -33,25 +28,28 @@ import io.micrometer.core.ipc.http.HttpSender.Response;
 @RequestMapping("/api/course")
 public class CourseControllerImp implements CourseController {
 
-    @Autowired
-    Logger logger;
+    private Logger logger;
+
+    private CourseService courseService;
+    private CourseMapper courseMapper;
 
     @Autowired
-    CourseService courseService;
-
-    @Autowired
-    CourseMapper courseMapper;
+    public CourseControllerImp(Logger logger, CourseService courseService, CourseMapper courseMapper) {
+        this.logger = logger;
+        this.courseService = courseService;
+        this.courseMapper = courseMapper;
+    }
 
     @Override
     @GetMapping("/load-courses")
-    public ResponseEntity<String> loadCourses() {
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity<?> loadCourses() {
         try {
             courseService.loadCourses();
-
-            return new ResponseEntity<String>("Success", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             logger.error("error", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -60,13 +58,28 @@ public class CourseControllerImp implements CourseController {
     public ResponseEntity<List<CourseDto>> getAllCourses() {
         try {
             List<Course> courses = courseService.getAllCourses();
-            List<CourseDto> courseDtos = new ArrayList<CourseDto>();
-            courses.forEach(course -> courseDtos.add(courseMapper.courseToDto(course)));
-
-            return new ResponseEntity<List<CourseDto>>(courseDtos, HttpStatus.OK);
+            List<CourseDto> courseDtos = courseMapper.toDtoList(courses);
+            return new ResponseEntity<>(courseDtos, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Error", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    @GetMapping("/{id}")
+    public ResponseEntity<CourseDto> getCourseById(@PathVariable Long id) {
+        try {
+            Optional<Course> course = courseService.getCourseById(id);
+
+            if (course.isPresent()) {
+                CourseDto courseDto = courseMapper.toDto(course.get());
+                return new ResponseEntity<>(courseDto, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            logger.error("Error", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

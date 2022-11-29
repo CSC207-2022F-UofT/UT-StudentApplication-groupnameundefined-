@@ -11,8 +11,10 @@ import backend.model.Course;
 
 public interface CourseController {
 
-    ResponseEntity<String> loadCourses();
+    ResponseEntity<?> loadCourses();
 
     ResponseEntity<List<CourseDto>> getAllCourses();
+
+    ResponseEntity<CourseDto> getCourseById(Long id);
 
 }

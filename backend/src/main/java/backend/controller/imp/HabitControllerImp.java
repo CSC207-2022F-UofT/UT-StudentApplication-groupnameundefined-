@@ -1,8 +1,11 @@
 package backend.controller.imp;
 
+import backend.dto.HabitDto;
+import backend.mappers.HabitMapper;
 import backend.model.Habit;
 import backend.model.User;
 import backend.service.HabitService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
@@ -34,80 +37,72 @@ import backend.service.HabitService;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/habits")
-public class HabitControllerImp implements HabitController{
+public class HabitControllerImp implements HabitController {
+
+    private Logger logger;
+
+    private HabitService habitService;
+    private HabitMapper habitMapper;
 
     @Autowired
-    HabitService habitService;
-
-    @Override
-    @GetMapping("/notification")
-    public ResponseEntity<String> getHabitNotification(){
-        return new ResponseEntity<>("Habits got.", HttpStatus.OK);
+    public HabitControllerImp(Logger logger, HabitService habitService, HabitMapper habitMapper) {
+        this.logger = logger;
+        this.habitService = habitService;
+        this.habitMapper = habitMapper;
     }
 
     @Override
+    @PostMapping("/")
+    public ResponseEntity<HabitDto> createHabit(CreateHabitForm input) {
+        try {
+            Habit habit = habitService.createHabit(input);
+            HabitDto habitDto = habitMapper.toDto(habit);
+            return new ResponseEntity<>(habitDto, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @Override
     @GetMapping("/")
-    public ResponseEntity<List<Habit>> getAllHabits(){
+    public ResponseEntity<List<HabitDto>> getAllHabits() {
         try {
             List<Habit> habits = habitService.getAllHabits();
-            return new ResponseEntity<>(habits, HttpStatus.OK);
+            List<HabitDto> habitDtos = habitMapper.toDtoList(habits);
+            return new ResponseEntity<>(habitDtos, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<Habit> getHabitById(Long id){
-        Optional<Habit> habit = habitService.getHabitById(id);
-        if (habit.isPresent()) {
-            return new ResponseEntity<>(habit.get(), HttpStatus.OK);
-        } else {
+    public ResponseEntity<HabitDto> getHabitById(@PathVariable Long id) {
+        try {
+            Optional<Habit> habit = habitService.getHabitById(id);
+
+            if (habit.isPresent()) {
+                HabitDto habitDto = habitMapper.toDto(habit.get());
+                return new ResponseEntity<>(habitDto, HttpStatus.OK);
+            }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
-    @PostMapping("/create")
-    public ResponseEntity<Habit> createHabit(Habit habit){
+    @GetMapping("/filter")
+    public ResponseEntity<List<HabitDto>> getFilteredHabits(@RequestParam(required = false) Integer mbti,
+                                                            @RequestParam(required = false) Integer talkative,
+                                                            @RequestParam(required = false) Integer collaborative) {
         try {
-            Habit _habit = habitService.createHabit(habit);
-            return new ResponseEntity<>(_habit, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+            List<Habit> habits = habitService.getFilteredHabits(mbti, talkative, collaborative);
+            List<HabitDto> habitDtos = habitMapper.toDtoList(habits);
 
-    @Override
-    @GetMapping("/mbti")
-    public ResponseEntity<Optional<Habit>>getSameHabitByMBTI(int MBTI){
-        try {
-            Optional<Habit> habits_MBTI = habitService.getSameHabitByMBTI(MBTI);
-            return new ResponseEntity<>(habits_MBTI, HttpStatus.OK);
+            return new ResponseEntity<>(habitDtos, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @Override
-    @GetMapping("/talkative")
-    public ResponseEntity<Optional<Habit>>getSameHabitByTalkative(int talkative){
-        try {
-            Optional<Habit> habits_Talkative = habitService.getSameHabitByTalkative(talkative);
-            return new ResponseEntity<>(habits_Talkative, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @Override
-    @GetMapping("/collaborate")
-    public ResponseEntity<Optional<Habit>>getSameHabitByCollaborate(int collaborate){
-        try {
-            Optional<Habit> habits_Collaborate = habitService.getSameHabitByTalkative(collaborate);
-            return new ResponseEntity<>(habits_Collaborate, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

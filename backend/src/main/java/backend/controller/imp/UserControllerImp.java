@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import backend.dto.UserDto;
 import backend.form.UserForm.*;
 import backend.service.imp.UserServiceImp;
+import lombok.extern.java.Log;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,67 +35,51 @@ import javax.validation.Valid;
 @RequestMapping("/api/user")
 public class UserControllerImp implements UserController {
 
+    private Logger logger;
+
+    private UserService userService;
+    private UserMapper userMapper;
+
     @Autowired
-    UserService userService;
-
-    @Override
-    @GetMapping("/greeting")
-    public ResponseEntity<String> getUserGreeting() {
-        return new ResponseEntity<>("User: Greetings!", HttpStatus.OK);
-    }
-
-    @Override
-    @GetMapping("/")
-    public ResponseEntity<List<User>> getAllUsers() {
-        try {
-            List<User> users = userService.getAllUsers();
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @Override
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
-        Optional<User> user = userService.getUserById(id);
-
-        if (user.isPresent()) {
-            return new ResponseEntity<>(user.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public UserControllerImp(Logger logger, UserService userService, UserMapper userMapper) {
+        this.logger = logger;
+        this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @Override
     @PostMapping("/")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<UserDto> createUser(@RequestBody CreateUserForm input) {
         try {
-            User _user = userService.createUser(user);
-
-            return new ResponseEntity<>(_user, HttpStatus.CREATED);
+            User user = userService.createUser(input);
+            UserDto userDto = userMapper.toDto(user);
+            return new ResponseEntity<>(userDto, HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
     @PostMapping("/register")
-    public ResponseEntity registerUser(@RequestBody @Valid UserRegisterForm userRegisterInput) {
+    public ResponseEntity<UserDto> registerUser(@RequestBody @Valid RegisterUserForm input) {
         try {
-            return new ResponseEntity<User>(userService.registerUser(userRegisterInput), HttpStatus.OK);
+            User user = userService.registerUser(input);
+            UserDto userDto = userMapper.toDto(user);
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity loginUser(@RequestBody UserLoginForm userLoginInput) {
+    public ResponseEntity<UserDto> loginUser(@RequestBody LoginUserForm input) {
         try {
-            return new ResponseEntity<User>(userService.loginUser(userLoginInput), HttpStatus.OK);
+            User user = userService.loginUser(input);
+            UserDto userDto = userMapper.toDto(user);
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -102,8 +89,36 @@ public class UserControllerImp implements UserController {
         try {
             return new ResponseEntity<User>(userService.logoutUser(id), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    @GetMapping("/")
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        try {
+            List<User> users = userService.getAllUsers();
+            List<UserDto> userDtos = userMapper.toDtos(users);
+            return new ResponseEntity<>(userDtos, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
+        try {
+            Optional<User> user = userService.getUserById(id);
+            if (user.isPresent()) {
+                UserDto userDto = userMapper.toDto(user.get());
+                return new ResponseEntity<>(userDto, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 }

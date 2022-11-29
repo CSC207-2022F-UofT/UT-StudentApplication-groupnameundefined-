@@ -2,25 +2,21 @@ package backend.controller;
 
 import java.util.List;
 
-import backend.form.UserForm;
+import backend.dto.UserDto;
+import backend.form.UserForm.*;
 import org.springframework.http.ResponseEntity;
 
-import backend.model.User;
-import org.springframework.web.bind.annotation.RequestBody;
 
 public interface UserController {
 
-    ResponseEntity<String> getUserGreeting();
+    ResponseEntity<UserDto> register(UserRegisterForm input);
 
-    ResponseEntity<List<User>> getAllUsers();
+    ResponseEntity<UserDto> login(UserLoginForm input);
 
-    ResponseEntity<User> getUserById(Long id);
+    ResponseEntity<Long> logout(Long id);
 
-    ResponseEntity<User> createUser(User user);
+    ResponseEntity<List<UserDto>> getAllUsers();
 
-    ResponseEntity<User> registerUser(UserForm.UserRegisterForm userRegisterInput);
+    ResponseEntity<UserDto> getUserById(Long id);
 
-    ResponseEntity<User> loginUser(UserForm.UserLoginForm userLoginInput);
-
-    ResponseEntity<User> logoutUser(Long id);
 }

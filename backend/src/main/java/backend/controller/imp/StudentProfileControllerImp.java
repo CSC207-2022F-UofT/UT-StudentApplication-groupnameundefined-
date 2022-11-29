@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import backend.dto.StudentProfileDto;
 import backend.mappers.StudentProfileMapper;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,44 +23,49 @@ import backend.service.StudentProfileService;
 @RequestMapping("/api/student-profile")
 public class StudentProfileControllerImp implements StudentProfileController {
 
-    @Autowired
-    StudentProfileService studentProfileService;
+    private Logger logger;
 
-    @Autowired
-    StudentProfileMapper studentProfileMapper;
+    private StudentProfileService studentProfileService;
+    private StudentProfileMapper studentProfileMapper;
 
     @Override
     @PostMapping("/")
-    public ResponseEntity<StudentProfile> createStudentProfile(@RequestBody @Valid CreateStudentProfileForm input) {
+    public ResponseEntity<StudentProfileDto> createStudentProfile(@RequestBody @Valid CreateStudentProfileForm input) {
         try {
-            StudentProfile _studentProfile = studentProfileService.createStudentProfile(input);
-            return new ResponseEntity<>(_studentProfile, HttpStatus.OK);
+            StudentProfile studentProfile = studentProfileService.createStudentProfile(input);
+            StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile);
+            return new ResponseEntity<>(studentProfileDto, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<List<StudentProfileDto>> getAllStudentProfiles() {
         try {
             List<StudentProfile> studentProfiles = studentProfileService.getAllStudentProfiles();
-            List<StudentProfileDto> studentProfileDtos = studentProfileMapper.studentProfilesToDtos(studentProfiles);
+            List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
 
             return new ResponseEntity<>(studentProfileDtos, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<StudentProfile> getStudentProfile(@PathVariable Long id) {
+    public ResponseEntity<StudentProfileDto> getStudentProfile(@PathVariable Long id) {
         try {
-            StudentProfile studentProfile = studentProfileService.getStudentProfile(id);
-            return new ResponseEntity<StudentProfile>(studentProfile, HttpStatus.OK);
+            Optional<StudentProfile> studentProfile = studentProfileService.getStudentProfileById(id);
+
+            if (studentProfile.isPresent()) {
+                StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile.get());
+                return new ResponseEntity<>(studentProfileDto, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
