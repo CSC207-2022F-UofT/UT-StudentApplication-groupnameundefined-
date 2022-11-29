@@ -43,10 +43,12 @@ public class User {
     @Column(name = "last_active_time")
     private Timestamp lastActiveTime;
 
+    @Setter(AccessLevel.NONE)
     @Column(name = "friends")
     @ManyToMany
     private Set<User> friends;
 
+    @Setter(AccessLevel.NONE)
     @Column(name = "black_list")
     @ManyToMany
     private Set<User> blackList;
@@ -74,15 +76,6 @@ public class User {
         this.lastActiveTime = new Timestamp(System.currentTimeMillis());
     }
 
-    public void setStudentProfile(StudentProfile studentProfile) {
-        this.studentProfile = studentProfile;
-        studentProfile.setUser(this);
-    }
-
-    public void initializeBlacklist() {
-        this.blackList = new HashSet<>();
-    }
-
     /**
      * Checks whether the target user is a friend of the current user
      *
@@ -101,7 +94,7 @@ public class User {
     public void addFriend(User user) {
         this.blackList.remove(user);
         this.friends.add(user);
-        user.friends.add(this);
+        user.getFriends().add(this);
     }
 
     /**
@@ -113,7 +106,7 @@ public class User {
      */
     public void removeFriend(User user) {
         this.friends.remove(user);
-        user.friends.remove(this);
+        user.getFriends().remove(this);
     }
 
     /**

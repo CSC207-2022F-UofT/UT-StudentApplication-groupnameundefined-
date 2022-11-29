@@ -38,9 +38,4 @@ public class SocialMediaProfile {
     public SocialMediaProfile() {
     }
 
-    public void setStudentProfile(StudentProfile studentProfile) {
-        this.studentProfile = studentProfile;
-        studentProfile.setSocialMediaProfile(this);
-    }
-
 }

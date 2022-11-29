@@ -30,22 +30,15 @@ public class Habit {
 
     // MBTI of users: [0,16], 0 refers to Not specified.
     // MBTI encoding: refer to documents.
-    @NotNull
-    @Column(name = "mbti", columnDefinition = "integer default ")
+    @Column(name = "mbti", columnDefinition = "integer default 0")
     private Integer mbti;
 
     // The user's self reported talkativeness(extrovert of introvert), rating 1~5
-    @NotNull
-    @Min(value = 1, message = "talkative: please choose a scale between 1 and 5(inclusive)")
-    @Max(value = 5, message = "talkative: please choose a scale between 1 and 5(inclusive)")
-    @Column(name = "talkative")
+    @Column(name = "talkative", columnDefinition = "integer default 5")
     private Integer talkative;
 
     // The user's willingness to collaborate with others, rating 1~5
-    @NotNull
-    @Min(value = 1, message = "Collaborative: please choose a scale between 1 and 5(inclusive)")
-    @Max(value = 5, message = "Collaborative: please choose a scale between 1 and 5(inclusive)")
-    @Column(name = "collaborative")
+    @Column(name = "collaborative", columnDefinition = "integer default 5")
     private Integer collaborative;
 
     // Visibility of talkative, Collaborate, MBTI
@@ -55,38 +48,10 @@ public class Habit {
     public Habit() {
     }
 
-    public Habit(StudentProfile studentProfile) {
-        this.studentProfile = studentProfile;
-
-        this.mbti = 0;
-        this.talkative = 5;
-        this.collaborative = 5;
-
-        HabitVisibility habitVisibility = new HabitVisibility();
-        habitVisibility.setHabit(this);
-        this.visibility = habitVisibility;
-    }
-
-    public Habit(StudentProfile studentProfile, int mbti, int talkative, int collaborative) {
-        this.studentProfile = studentProfile;
-        studentProfile.setHabit(this);
-
+    public Habit(int mbti, int talkative, int collaborative) {
         this.mbti = mbti;
         this.talkative = talkative;
         this.collaborative = collaborative;
-    }
-
-    public Habit(StudentProfile studentProfile, int mbti, int talkative, int collaborative,
-                 HabitVisibility habitVisibility) {
-        this.studentProfile = studentProfile;
-        studentProfile.setHabit(this);
-
-        this.mbti = mbti;
-        this.talkative = talkative;
-        this.collaborative = collaborative;
-
-        this.visibility = habitVisibility;
-        habitVisibility.setHabit(this);
     }
 
     @Override
@@ -95,11 +60,10 @@ public class Habit {
             return true;
         }
 
-        if (!(o instanceof Habit)) {
+        if (!(o instanceof Habit habit)) {
             return false;
         }
 
-        Habit habit = (Habit) o;
         return (Objects.equals(this.collaborative, habit.collaborative)) && (Objects.equals(this.talkative,
                 habit.talkative)) && (Objects.equals(this.mbti, habit.mbti));
     }

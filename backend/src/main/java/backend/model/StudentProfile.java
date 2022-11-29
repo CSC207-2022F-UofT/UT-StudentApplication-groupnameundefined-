@@ -25,24 +25,19 @@ public class StudentProfile {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @Size(max = 256)
     @Column(name = "program")
     private String program;
 
-    @Size(max = 256)
     @Column(name = "college")
     private String college;
 
-    @Max(value = 9999)
-    @Min(value = 1827)
     @Column(name = "enrolment_year")
     private Integer enrolmentYear;
 
     @OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
     private Timetable timetable;
 
-    @OneToOne
-    @JoinColumn(name = "socialmediaprofile_id", referencedColumnName = "id")
+    @OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
     private SocialMediaProfile socialMediaProfile;
 
     @OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
@@ -59,11 +54,6 @@ public class StudentProfile {
         this.program = program;
         this.college = college;
         this.enrolmentYear = enrolmentYear;
-    }
-
-    public void setTimetable(Timetable timetable) {
-        this.timetable = timetable;
-        timetable.setStudentProfile(this);
     }
 
 }

@@ -32,4 +32,5 @@ public class HabitVisibility {
 
     public HabitVisibility() {
     }
+
 }

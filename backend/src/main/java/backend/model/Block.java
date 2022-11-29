@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -45,9 +46,10 @@ public class Block {
     @Column(name = "repetition_time")
     private String repetitionTime;
 
+    @Setter(AccessLevel.NONE)
     @Expose(serialize = true, deserialize = false)
     @ManyToMany(mappedBy = "blocks")
-    private Set<Timetable> timetables;
+    private Set<Timetable> timetables = new HashSet<>();
 
     public Block() {
     }
@@ -63,6 +65,22 @@ public class Block {
     }
 
     public void addTimetable(Timetable timetable) {
-        timetables.add(timetable);
+        this.timetables.add(timetable);
+        timetable.getBlocks().add(this);
+    }
+
+    public void bulkAddTimetables(Set<Timetable> timetables) {
+        this.timetables.addAll(timetables);
+        timetables.forEach(timetable -> timetable.getBlocks().remove(this));
+    }
+
+    public void removeTimetable(Timetable timetable) {
+        this.timetables.remove(timetable);
+        timetable.getBlocks().remove(this);
+    }
+
+    public void bulkRemoveTimetables(Set<Timetable> timetables) {
+        this.timetables.removeAll(timetables);
+        timetables.forEach(timetable -> timetable.getBlocks().remove(this));
     }
 }

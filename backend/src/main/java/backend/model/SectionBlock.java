@@ -21,7 +21,6 @@ import javax.persistence.Table;
 @Table(name = "section_block")
 public class SectionBlock extends Block {
 
-    @Setter(AccessLevel.NONE)
     @Expose(serialize = true, deserialize = false)
     @ManyToOne
     @JoinColumn(name = "section_id", referencedColumnName = "id")
@@ -30,18 +29,9 @@ public class SectionBlock extends Block {
     public SectionBlock() {
     }
 
-    public SectionBlock(Section section) {
-        this.section = section;
-    }
-
     public SectionBlock(Integer startDay, Integer startMil, Integer endDay, Integer endMil, String repetition,
                         String repetitionTime) {
         super(startDay, startMil, endDay, endMil, repetition, repetitionTime);
-    }
-
-    public void setSection(Section section) {
-        section.addSectionBlock(this);
-        this.section = section;
     }
 
 }
