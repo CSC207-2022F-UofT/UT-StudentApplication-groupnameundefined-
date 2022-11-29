@@ -22,8 +22,11 @@ public class MainPanel extends JPanel {
         setLayout(new CardLayout());
         setBackground(new Color(128, 128, 255));
 
-        // JPanel jpLogin = new LoginPanel(this);
-        // add(jpLogin, "LoginPanel");
+        JPanel jpRegister = new RegisterPanel(this);
+        add(jpRegister, "RegisterPanel");
+
+        JPanel jpLogin = new LoginPanel(this);
+        add(jpLogin, "LoginPanel");
 
         // JPanel jpHome = new HomePanel(this);
         // add(jpHome, "HomePanel");
@@ -31,6 +34,7 @@ public class MainPanel extends JPanel {
         // JPanel jpCreateProfile = new CreateProfilePanel(this);
         // add(jpCreateProfile, "CpPanel");
 
-        setPanel("LoginPanel");
+        setPanel("RegisterPanel");
+//        setPanel("LoginPanel");
     }
 }

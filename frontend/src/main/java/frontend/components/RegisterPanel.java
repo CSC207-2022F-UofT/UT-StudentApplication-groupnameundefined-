@@ -3,14 +3,18 @@ package frontend.components;
 import javax.swing.*;
 import java.awt.*;
 
-public class RegisterPanel extends JFrame {
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        frame.setTitle("User Registration");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-        frame.setSize(420, 420);
-        frame.setVisible(true);
-        frame.getContentPane().setBackground(new Color(128, 128, 255));
+public class RegisterPanel extends JPanel {
+    public RegisterPanel(MainPanel mainPanel) {
+//        this.setTitle("User Registration");
+//        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        this.setResizable(false);
+        this.setBounds(0, 0, 250, 250);
+        this.setBackground(new Color(128, 128, 255));
+        this.add(new JLabel("User Registration"));
+        this.add(new JButton("Register"));
+        this.add(new JButton("Login"));
+        this.setVisible(true);
+//        this.getContentPane().setBackground(new Color(128, 128, 255));
+
     }
 }

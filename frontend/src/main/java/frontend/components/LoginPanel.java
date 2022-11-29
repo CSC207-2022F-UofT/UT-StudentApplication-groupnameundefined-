@@ -1,4 +1,9 @@
 package frontend.components;
 
-public class LoginPanel {
+import javax.swing.*;
+
+public class LoginPanel extends JPanel {
+    LoginPanel(JPanel mainPanel) {
+
+    }
 }
