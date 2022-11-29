@@ -21,10 +21,10 @@ import java.util.Optional;
 @RequestMapping("/api/section-block")
 public class SectionBlockControllerImp implements SectionBlockController {
 
-    private Logger logger;
+    private final Logger logger;
 
-    private SectionBlockService sectionBlockService;
-    private SectionBlockMapper sectionBlockMapper;
+    private final SectionBlockService sectionBlockService;
+    private final SectionBlockMapper sectionBlockMapper;
 
     @Autowired
     public SectionBlockControllerImp(Logger logger, SectionBlockService sectionBlockService,

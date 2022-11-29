@@ -19,10 +19,10 @@ import java.util.Optional;
 @RequestMapping("/api/section")
 public class SectionControllerImp implements SectionController {
 
-    private Logger logger;
+    private final Logger logger;
 
-    private SectionService sectionService;
-    private SectionMapper sectionMapper;
+    private final SectionService sectionService;
+    private final SectionMapper sectionMapper;
 
     @Autowired
     public SectionControllerImp(Logger logger, SectionService sectionService, SectionMapper sectionMapper) {

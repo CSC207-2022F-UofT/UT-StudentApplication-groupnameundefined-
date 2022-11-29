@@ -27,10 +27,10 @@ import backend.service.TimetableService;
 @RequestMapping("/api/timetable")
 public class TimetableControllerImp implements TimetableController {
 
-    private Logger logger;
+    private final Logger logger;
 
-    private TimetableService timetableService;
-    private TimetableMapper timetableMapper;
+    private final TimetableService timetableService;
+    private final TimetableMapper timetableMapper;
 
     public TimetableControllerImp(Logger logger, TimetableService timetableService, TimetableMapper timetableMapper) {
         this.logger = logger;

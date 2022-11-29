@@ -23,10 +23,17 @@ import backend.service.StudentProfileService;
 @RequestMapping("/api/student-profile")
 public class StudentProfileControllerImp implements StudentProfileController {
 
-    private Logger logger;
+    private final Logger logger;
 
-    private StudentProfileService studentProfileService;
-    private StudentProfileMapper studentProfileMapper;
+    private final StudentProfileService studentProfileService;
+    private final StudentProfileMapper studentProfileMapper;
+
+    public StudentProfileControllerImp(Logger logger, StudentProfileService studentProfileService,
+                                       StudentProfileMapper studentProfileMapper) {
+        this.logger = logger;
+        this.studentProfileService = studentProfileService;
+        this.studentProfileMapper = studentProfileMapper;
+    }
 
     @Override
     @PostMapping("/")

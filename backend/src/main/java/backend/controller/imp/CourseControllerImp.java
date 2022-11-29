@@ -28,10 +28,10 @@ import io.micrometer.core.ipc.http.HttpSender.Response;
 @RequestMapping("/api/course")
 public class CourseControllerImp implements CourseController {
 
-    private Logger logger;
+    private final Logger logger;
 
-    private CourseService courseService;
-    private CourseMapper courseMapper;
+    private final CourseService courseService;
+    private final CourseMapper courseMapper;
 
     @Autowired
     public CourseControllerImp(Logger logger, CourseService courseService, CourseMapper courseMapper) {

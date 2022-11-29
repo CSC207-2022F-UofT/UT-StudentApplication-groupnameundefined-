@@ -35,10 +35,10 @@ import javax.validation.Valid;
 @RequestMapping("/api/user")
 public class UserControllerImp implements UserController {
 
-    private Logger logger;
+    private final Logger logger;
 
-    private UserService userService;
-    private UserMapper userMapper;
+    private final UserService userService;
+    private final UserMapper userMapper;
 
     @Autowired
     public UserControllerImp(Logger logger, UserService userService, UserMapper userMapper) {

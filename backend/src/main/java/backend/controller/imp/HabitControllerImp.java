@@ -39,10 +39,10 @@ import backend.service.HabitService;
 @RequestMapping("/api/habits")
 public class HabitControllerImp implements HabitController {
 
-    private Logger logger;
+    private final Logger logger;
 
-    private HabitService habitService;
-    private HabitMapper habitMapper;
+    private final HabitService habitService;
+    private final HabitMapper habitMapper;
 
     @Autowired
     public HabitControllerImp(Logger logger, HabitService habitService, HabitMapper habitMapper) {
@@ -62,7 +62,7 @@ public class HabitControllerImp implements HabitController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     @Override
     @GetMapping("/")
     public ResponseEntity<List<HabitDto>> getAllHabits() {
