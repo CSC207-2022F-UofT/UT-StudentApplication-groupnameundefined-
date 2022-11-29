@@ -34,7 +34,7 @@ public class MainPanel extends JPanel {
         // JPanel jpCreateProfile = new CreateProfilePanel(this);
         // add(jpCreateProfile, "CpPanel");
 
-        setPanel("RegisterPanel");
-//        setPanel("LoginPanel");
+        setPanel("LoginPanel");
+//        setPanel("RegisterPanel");
     }
 }
