@@ -1,7 +1,11 @@
 package frontend.components;
 
+import com.google.gson.Gson;
 import frontend.schema.UserSchema;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.reactive.function.BodyInserter;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -9,12 +13,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class LoginPanel extends JPanel implements ActionListener {
 
-    @Autowired
-    WebClient webClient;
+
+    private WebClient webClient;
+
+    private UserSchema userSchema;
+
+    private Logger logger;
 
     private static MainPanel mainPanel;
     private static JLabel emailLabel;
@@ -27,7 +37,13 @@ public class LoginPanel extends JPanel implements ActionListener {
     private static JButton loginButton;
     private static JLabel successLabel;
 
-    LoginPanel(JPanel mainPanel) {
+    public LoginPanel(WebClient webClient, UserSchema userSchema, Logger logger) {
+        this.webClient = webClient;
+        this.userSchema = userSchema;
+        this.logger = logger;
+    }
+
+    public LoginPanel(JPanel mainPanel) {
 
         this.setBounds(0, 0, 500, 500);
         this.setBackground(new Color(128, 128, 255));
@@ -38,6 +54,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 
         emailField = new JTextField();
         emailField.setBounds(110, 75, 170, 20);
+        emailField.setText("");
 
         emailError = new JLabel("error");
         emailError.setBounds(115, 95, 170, 20);
@@ -80,7 +97,14 @@ public class LoginPanel extends JPanel implements ActionListener {
         if (e.getSource() == loginButton) {
             String email = emailField.getText();
             String password = new String(passwordField.getPassword());
-            Mono<UserSchema>
+            Map<String, String> body = new HashMap<>();
+            body.put("email", email);
+            body.put("password", password);
+            Mono<UserSchema> response = webClient.post().uri("/user/login").body(BodyInserters.fromValue(body))
+                    .exchangeToMono(r -> {return r.bodyToMono(UserSchema.class);});
+            response.subscribe(v -> userSchema.setEmail(v.getEmail()));
+            logger.info(userSchema.getEmail());
+
             if (1==1) {
                 successLabel.setText("Login Successfully.");
             } else {

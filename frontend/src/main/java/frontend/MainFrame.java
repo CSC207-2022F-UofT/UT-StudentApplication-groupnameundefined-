@@ -31,9 +31,9 @@ public class MainFrame extends JFrame {
         add(new MainPanel());
         pack();
 
-        Mono<String> response = webClient.get().uri("/users").exchangeToMono(r -> {
-            return r.bodyToMono(String.class);
-        });
-        response.subscribe(value -> logger.info(value));
+//        Mono<String> response = webClient.get().uri("/users").exchangeToMono(r -> {
+//            return r.bodyToMono(String.class);
+//        });
+//        response.subscribe(value -> logger.info(value));
     }
 }
