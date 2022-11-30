@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface AppointmentRequestService {
     List<AppointmentRequest> getAllAptReq();
 
-    Optional<AppointmentRequest> getAptReqById(Long id);
+    AppointmentRequest getAptRequestById(Long id);
     AppointmentRequest createAptRequest(User invitee, User attendee, Timestamp time, String location);
 
     String acceptAptRequest(AppointmentRequest aptRequest);
@@ -18,4 +18,6 @@ public interface AppointmentRequestService {
     String declineAptRequest(AppointmentRequest aptRequest);
 
     String  rescheduleAptRequest(AppointmentRequest aptRequest);
+
+    List<AppointmentRequest> getAptRequestByUserId(Long userId);
 }

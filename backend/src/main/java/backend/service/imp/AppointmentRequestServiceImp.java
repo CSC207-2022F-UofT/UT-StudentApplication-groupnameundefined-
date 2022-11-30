@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import backend.model.FriendRequest;
 import backend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import backend.model.AppointmentRequest;
 import backend.repository.AppointmentRequestRepository;
 import backend.service.AppointmentRequestService;
+
+import javax.persistence.EntityNotFoundException;
 
 @Service
 public class AppointmentRequestServiceImp implements AppointmentRequestService {
@@ -30,15 +33,23 @@ public class AppointmentRequestServiceImp implements AppointmentRequestService {
     }
 
     @Override
-    public Optional<AppointmentRequest> getAptReqById(Long aptid) {
-        Optional<AppointmentRequest> appointmentRequest = aptRepository.findById(aptid);
-        return appointmentRequest;
+    public AppointmentRequest getAptRequestById(Long id) {
+        Optional<AppointmentRequest> appointmentRequest = aptRepository.findById(id);
+        if(appointmentRequest.isPresent()){
+            return appointmentRequest.get();
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+    @Override
+    public List<AppointmentRequest> getAptRequestByUserId(Long userId) {
+        return aptRepository.findByUserId(userId);
     }
     @Override
     public AppointmentRequest createAptRequest(User invitee, User attendee, Timestamp time, String location) {
         AppointmentRequest _appointmentRequest = aptRepository.save(new AppointmentRequest());
-        _appointmentRequest.setInvitee(invitee);
-        _appointmentRequest.setAttendee(attendee);
+        _appointmentRequest.setFrom(invitee);
+        _appointmentRequest.setTo(attendee);
         _appointmentRequest.setTime(time);
         _appointmentRequest.setLocation(location);
         return _appointmentRequest;
@@ -59,6 +70,8 @@ public class AppointmentRequestServiceImp implements AppointmentRequestService {
         aptRequest.setStatus("RESCHEDULED");
         return aptRequest.getStatus();
     }
+
+
 
 
 }
