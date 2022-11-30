@@ -3,7 +3,9 @@ package backend.service.imp;
 import java.util.List;
 import java.util.Optional;
 
+import backend.exception.exceptions.EntityExistException;
 import backend.exception.exceptions.EntityNotFoundException;
+import backend.exception.exceptions.InvalidCredentialsException;
 import backend.form.UserForm.*;
 import backend.service.UserService;
 import org.slf4j.Logger;
@@ -27,63 +29,53 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
-	public User createUser(User user) {
+	public User registerUser(RegisterForm input) {
+		if (this.existEmail(input.getEmail())) {
+			throw new EntityExistException(String.format("User with email '%s' already exist.", input.getEmail()), User.class);
+		} else if (this.existEmail(input.getEmail())) {
+			throw new EntityExistException(String.format("User with email '%s' already exist.", input.getEmail()), User.class);
+		} else if (this.existPhone(input.getPhone())) {
+			throw new EntityExistException(String.format("User with email '%s' already exist.", input.getEmail()), User.class);
+		} else {
+			User user = new User(input.getName(), input.getEmail(), input.getPassword(), input.getPhone());
+			return userRepository.save(user);
+		}
+	}
+
+	@Override
+	public Optional<User> authenticateUser(String email, String password) {
+		try {
+			User user = this.getUserByEmail(email);
+			if (user.getPassword().equals(password)) {
+				return Optional.of(user);
+			}
+		} catch (EntityNotFoundException e) {
+			return Optional.empty();
+		}
+
+		return Optional.empty();
+	}
+
+	@Override
+	public User loginUser(LoginForm input) {
+		Optional<User> _user = authenticateUser(input.getEmail(), input.getPassword());
+		if (_user.isEmpty()) {
+			throw new InvalidCredentialsException("Invalid Credentials. Please check your email and password.");
+		}
+
+		User user = _user.get();
+		user.setLoginStatus(true);
+
 		return userRepository.save(user);
 	}
 
 	@Override
-	public User registerUser(RegisterUserForm) throws Exception {
-		if (this.existName(userRegisterInput.name)) {
-			logger.error("Name Already Exists.");
-			throw new Exception("Name Already Exists.");
-		} else if (this.existEmail(userRegisterInput.email)) {
-			logger.error("Email Already Exists.");
-			throw new Exception("Email Already Exists.");
-		} else if (this.existPhone(userRegisterInput.phone)) {
-			logger.error("Phone Already Exists.");
-			throw new Exception("Phone Already Exists.");
-			//        } else if (!this.nameIsValid(userRegisterInput.name)) {
-			//            logger.error("Invalid Name.");
-			//            throw new Exception("Invalid Name.");
-			//        } else if (!this.passwordIsValid(userRegisterInput.password)) {
-			//            logger.error("Invalid Password.");
-			//            throw new Exception("Invalid Password.");
-			//        } else if (! this.repeatPasswordMatch(userRegisterInput.password, userRegisterInput.repeatPassword)) {
-			//            logger.error("Password and RepeatPassword Don't Match.");
-			//            throw new Exception("Password and RepeatPassword Don't Match.");
-		} else {
-			return this.createUser(new User(userRegisterInput.name, userRegisterInput.email, userRegisterInput.password, userRegisterInput.phone));
-		}
-	}
+	public Long logoutUser(Long id) {
+		User user = this.getUserById(id);
+		user.setLoginStatus(false);
+		userRepository.save(user);
 
-	@Override
-	public User loginUser(UserForm.UserLoginForm userLoginInput) throws Exception {
-		Optional<User> user = this.getUserByEmail(userLoginInput.email);
-		if (!user.isPresent()) {
-			logger.error("User With This Email Doesn't Exist.");
-			throw new Exception("User With This Email Doesn't Exist.");
-		} else if (!(user.get().getPassword().equals(userLoginInput.password))) {
-			logger.error("Password Is Incorrect.");
-			throw new Exception("Password Is Incorrect.");
-		} else {
-			System.out.println("Login Successfully.");
-			User updatedUser = user.get();
-			updatedUser.setLogin();
-			return userRepository.save(updatedUser);
-		}
-	}
-
-	@Override
-	public User logoutUser(Long id) throws Exception {
-		Optional<User> user = this.getUserById(id);
-		if (!user.isPresent()) {
-			logger.error("User Doesn't Exist.");
-			throw new Exception("User Doesn't Exist.");
-		} else {
-			User updatedUser = user.get();
-			updatedUser.setLogout();
-			return userRepository.save(updatedUser);
-		}
+		return id;
 	}
 
 	@Override
@@ -109,18 +101,6 @@ public class UserServiceImp implements UserService {
 		}
 
 		throw new EntityNotFoundException(String.format("Unable to find user with email %s.", email), User.class);
-	}
-
-
-	//    @Override
-	//    public void saveUser(User user) {
-	//        userRepository.save(user);
-	//    }
-
-	@Override
-	public boolean existName(String name) {
-		Optional<User> user = userRepository.findByName(name);
-		return user.isPresent();
 	}
 
 	@Override

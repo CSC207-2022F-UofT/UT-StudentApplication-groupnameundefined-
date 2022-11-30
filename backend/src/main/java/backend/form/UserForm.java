@@ -8,7 +8,9 @@ import lombok.Setter;
 import javax.validation.constraints.*;
 
 public class UserForm {
-	public static class RegisterUserForm {
+
+	@Getter
+	public static class RegisterForm {
 
 		/**
 		 * Name has maximum length 20, and cannot be empty or white spaces.
@@ -42,8 +44,7 @@ public class UserForm {
 	}
 
 	@Getter
-	@Setter
-	public static class LoginUserForm {
+	public static class LoginForm {
 
 		@NotBlank
 		@Email

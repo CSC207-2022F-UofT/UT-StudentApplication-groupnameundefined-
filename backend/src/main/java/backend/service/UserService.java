@@ -1,30 +1,29 @@
 package backend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import backend.form.UserForm.*;
 import backend.model.User;
 
 public interface UserService {
 
-    User createUser(User user);
+	User registerUser(RegisterForm input);
 
-    User registerUser(RegisterUserForm input);
+	Optional<User> authenticateUser(String email, String password);
 
-    User loginUser(LoginUserForm input);
+	User loginUser(LoginForm input);
 
-    User logoutUser(Long id);
+	Long logoutUser(Long id);
 
-    List<User> getAllUsers();
+	List<User> getAllUsers();
 
-    User getUserById(Long id);
+	User getUserById(Long id);
 
-    User getUserByEmail(String email);
+	User getUserByEmail(String email);
 
-    boolean existName(String name);
+	boolean existEmail(String email);
 
-    boolean existEmail(String email);
-
-    boolean existPhone(String phone);
+	boolean existPhone(String phone);
 
 }

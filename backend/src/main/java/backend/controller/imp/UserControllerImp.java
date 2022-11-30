@@ -1,32 +1,24 @@
 package backend.controller.imp;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import backend.dto.UserDto;
 import backend.form.UserForm.*;
 import backend.mappers.UserMapper;
-import backend.service.imp.UserServiceImp;
-import lombok.extern.java.Log;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.controller.UserController;
 import backend.model.User;
-import backend.repository.UserRepository;
 import backend.service.UserService;
 
 import javax.validation.Valid;
@@ -50,7 +42,7 @@ public class UserControllerImp implements UserController {
 
 	@Override
 	@PostMapping("/register")
-	public ResponseEntity<UserDto> registerUser(@RequestBody @Valid RegisterUserForm input) {
+	public ResponseEntity<UserDto> registerUser(@RequestBody @Valid RegisterForm input) {
 		User user = userService.registerUser(input);
 		UserDto userDto = userMapper.toDto(user);
 
@@ -59,7 +51,7 @@ public class UserControllerImp implements UserController {
 
 	@Override
 	@PostMapping("/login")
-	public ResponseEntity<UserDto> loginUser(@RequestBody LoginUserForm input) {
+	public ResponseEntity<UserDto> loginUser(@RequestBody LoginForm input) {
 		User user = userService.loginUser(input);
 		UserDto userDto = userMapper.toDto(user);
 
