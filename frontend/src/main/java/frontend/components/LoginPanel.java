@@ -1,11 +1,20 @@
 package frontend.components;
 
+import frontend.schema.UserSchema;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 public class LoginPanel extends JPanel implements ActionListener {
+
+    @Autowired
+    WebClient webClient;
 
     private static MainPanel mainPanel;
     private static JLabel emailLabel;
@@ -71,7 +80,8 @@ public class LoginPanel extends JPanel implements ActionListener {
         if (e.getSource() == loginButton) {
             String email = emailField.getText();
             String password = new String(passwordField.getPassword());
-            if ( ) {
+            Mono<UserSchema>
+            if (1==1) {
                 successLabel.setText("Login Successfully.");
             } else {
                 successLabel.setText("Login Failed.");
@@ -82,4 +92,5 @@ public class LoginPanel extends JPanel implements ActionListener {
 
         }
     }
+
 }
