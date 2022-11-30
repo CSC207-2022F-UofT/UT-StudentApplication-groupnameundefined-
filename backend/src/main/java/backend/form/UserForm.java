@@ -2,52 +2,60 @@ package backend.form;
 
 //InputBoundary Layer
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.constraints.*;
 
 public class UserForm {
-    public static class UserRegisterForm {
 
-        //input name has maximum length 20, and cannot be empty or white spaces.
-        @Size(max = 20)
-        @NotBlank
-        public String name;
+	@Getter
+	public static class RegisterForm {
 
-        //input email must follow formal email format.
-        @NotBlank
-        @Email
-        public String email;
+		/**
+		 * Name has maximum length 20, and cannot be empty or white spaces.
+		 */
+		@NotBlank
+		@Size(min = 2, max = 20, message = "Name must be between 2 and 20 characters.")
+		public String name;
 
-        //input password must contain at least one number, one lower-case letter, one upper-case letter,
-        // no white spaces, and has minimum length of 8 and maximum length of 20.
-        @NotBlank
-        @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$")
-        public String password;
+		/**
+		 * Email must follow formal email format.
+		 */
+		@NotBlank
+		@Email(message = "Not a valid email.")
+		public String email;
 
-//        //input repeatPassword must not be empty.
-//        @NotBlank
-//        public String repeatPassword;
+		/**
+		 * Password must contain at least one number, one lower-case letter, one upper-case letter,
+		 * no white spaces, and has minimum length of 8 and maximum length of 20.
+		 */
+		@NotBlank
+		@Size(min = 8, max = 30, message = "Password must be between 8 and 30 characters")
+		@Pattern(
+				regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).*$",
+				message = "Password must contain at least one number, one lower-case letter, one upper-case letter"
+		)
+		public String password;
 
-        //input phone must be a sequence of 10 numbers.
-        @NotBlank
-        @Pattern(regexp = "^\\d{10}$")
-        public String phone;
+		/**
+		 * Phone must be a sequence of 10 numbers.
+		 */
+		@NotBlank
+		@Pattern(regexp = "^\\d{10}$")
+		public String phone;
 
-        public UserRegisterForm(){
+	}
 
-        }
-    }
+	@Getter
+	public static class LoginForm {
 
-    public static class UserLoginForm {
+		@NotBlank
+		@Email
+		public String email;
 
-        @NotBlank
-        @Email
-        public String email;
+		@NotBlank
+		public String password;
 
-        @NotBlank
-        public String password;
-
-        public UserLoginForm(){
-
-        }
-    }
+	}
 }

@@ -7,12 +7,12 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(uses = { TimetableMapper.class, SocialMediaProfileMapper.class })
+@Mapper(uses = {TimetableMapper.class, SocialMediaProfileMapper.class})
 public interface StudentProfileMapper {
 
     @Mapping(target = "userId", source = "user.id")
-    StudentProfileDto studentProfileToDto(StudentProfile studentProfile);
+    StudentProfileDto toDto(StudentProfile studentProfile);
 
-    List<StudentProfileDto> studentProfilesToDtos(List<StudentProfile> studentProfiles);
+    List<StudentProfileDto> toDtoList(List<StudentProfile> studentProfiles);
 
 }

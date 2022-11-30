@@ -1,5 +1,9 @@
 package backend.model;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
@@ -7,9 +11,13 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "timetable")
 public class Timetable {
+
+    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -18,60 +26,33 @@ public class Timetable {
     @JoinColumn(name = "studentprofile_id", referencedColumnName = "id")
     private StudentProfile studentProfile;
 
-    @ManyToMany(cascade = { CascadeType.REFRESH, CascadeType.DETACH })
-    @JoinTable(name = "timetable_x_block", joinColumns = @JoinColumn(name = "timetable_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "block_id", referencedColumnName = "id"))
+    @Setter(AccessLevel.NONE)
+    @ManyToMany
+    @JoinTable(name = "timetable_x_block", joinColumns = @JoinColumn(name = "timetable_id", referencedColumnName =
+            "id"), inverseJoinColumns = @JoinColumn(name = "block_id", referencedColumnName = "id"))
     private Set<Block> blocks;
 
     public Timetable() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Set<Block> getBlocks() {
-        return blocks;
-    }
-
-    public void initializeBlocks() {
-        blocks = new HashSet<>();
-    }
-
-    public void clearBlocks() {
-        blocks = null;
-    }
-
-
-    public void setBlocks(Set<Block> blocks) {
-        for (Block block : blocks) {
-            block.addTimetable(this);
-        }
-        this.blocks = blocks;
-    }
-
     public void addBlock(Block block) {
-        if (blocks == null) {
-            initializeBlocks();
-        }
-        blocks.add(block);
+        this.blocks.add(block);
+        block.getTimetables().add(this);
+    }
+
+    public void bulkAddBlocks(Set<Block> blocks) {
+        this.blocks.addAll(blocks);
+        blocks.forEach(block -> block.getTimetables().add(this));
     }
 
     public void removeBlock(Block block) {
-        if (blocks != null) {
-            blocks.remove(block);
-            if (blocks.size() == 0) {
-                clearBlocks();
-            }
-        }
+        this.blocks.remove(block);
+        block.getTimetables().remove(this);
     }
 
-    public StudentProfile getStudentProfile() {
-        return studentProfile;
-    }
-
-    public void setStudentProfile(StudentProfile studentProfile) {
-        this.studentProfile = studentProfile;
-        studentProfile.setTimetable(this);
+    public void bulkRemoveBlocks(Set<Block> blocks) {
+        this.blocks.removeAll(blocks);
+        blocks.forEach(block -> block.getTimetables().remove(this));
     }
 
 }

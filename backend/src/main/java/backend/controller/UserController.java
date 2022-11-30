@@ -2,25 +2,27 @@ package backend.controller;
 
 import java.util.List;
 
-import backend.form.UserForm;
+import backend.dto.UserDto;
+import backend.form.UserForm.*;
 import org.springframework.http.ResponseEntity;
-
-import backend.model.User;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.validation.Valid;
+
 
 public interface UserController {
 
-    ResponseEntity<String> getUserGreeting();
+	ResponseEntity<UserDto> registerUser(@RequestBody @Valid RegisterForm input);
 
-    ResponseEntity<List<User>> getAllUsers();
+	ResponseEntity<UserDto> loginUser(@RequestBody LoginForm input);
 
-    ResponseEntity<User> getUserById(Long id);
+	ResponseEntity<Long> logoutUser(@PathVariable("id") Long id);
 
-    ResponseEntity<User> createUser(User user);
+	ResponseEntity<List<UserDto>> getAllUsers();
 
-    ResponseEntity<User> registerUser(UserForm.UserRegisterForm userRegisterInput);
+	ResponseEntity<UserDto> getUserById(Long id);
 
-    ResponseEntity<User> loginUser(UserForm.UserLoginForm userLoginInput);
-
-    ResponseEntity<User> logoutUser(Long id);
 }

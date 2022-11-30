@@ -9,4 +9,7 @@ import java.util.List;
 public interface SectionBlockController {
 
     ResponseEntity<List<SectionBlockDto>> getAllSectionBlocks();
+
+    ResponseEntity<SectionBlockDto> getSectionBlockById(Long id);
+    
 }

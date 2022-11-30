@@ -11,10 +11,10 @@ import java.util.Set;
 
 public interface StudentProfileController {
 
-    ResponseEntity<StudentProfile> createStudentProfile(CreateStudentProfileForm input);
+	ResponseEntity<StudentProfileDto> createStudentProfile(CreateStudentProfileForm input);
 
-    ResponseEntity<StudentProfile> getStudentProfile(Long id);
+	ResponseEntity<List<StudentProfileDto>> getAllStudentProfiles();
 
-    ResponseEntity<List<StudentProfileDto>> getAllStudentProfiles();
+	ResponseEntity<StudentProfileDto> getStudentProfileById(Long id);
 
 }

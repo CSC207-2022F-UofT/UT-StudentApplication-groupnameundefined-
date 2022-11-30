@@ -4,9 +4,13 @@ import backend.dto.UserDto;
 import backend.model.User;
 import org.mapstruct.Mapper;
 
-@Mapper(uses = { StudentProfileMapper.class, TimetableMapper.class, BlockMapper.class })
+import java.util.List;
+
+@Mapper(uses = {StudentProfileMapper.class, TimetableMapper.class, BlockMapper.class})
 public interface UserMapper {
 
-    UserDto userToDto(User user);
+    UserDto toDto(User user);
+
+    List<UserDto> toDtoList(List<User> users);
 
 }

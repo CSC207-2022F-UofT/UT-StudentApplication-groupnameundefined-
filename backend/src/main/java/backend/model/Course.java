@@ -1,9 +1,10 @@
 package backend.model;
 
 import com.google.gson.annotations.Expose;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,9 +17,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "course")
 public class Course {
+
+    @Setter(AccessLevel.NONE)
     @Expose(serialize = true, deserialize = false)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,8 +45,9 @@ public class Course {
     @Column(name = "campus")
     private String campus;
 
+    @Setter(AccessLevel.NONE)
     @Expose(serialize = true, deserialize = false)
-    @OneToMany(mappedBy = "course", cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private Set<Section> sections;
 
     public Course() {
@@ -54,75 +60,22 @@ public class Course {
         this.campus = campus;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getSectionCode() {
-        return sectionCode;
-    }
-
-    public void setSectionCode(String sectionCode) {
-        this.sectionCode = sectionCode;
-    }
-
-    public String getCampus() {
-        return campus;
-    }
-
-    public void setCampus(String campus) {
-        this.campus = campus;
-    }
-
-    public Set<Section> getSections() {
-        return sections;
-    }
-
-    public void initializeSections() {
-        sections = new HashSet<>();
-    }
-
-    public void clearSections() {
-        sections = null;
-    }
-
-    public void setSections(Set<Section> sections) {
-        this.sections = sections;
-    }
-
     public void addSection(Section section) {
-        if (sections == null) {
-            initializeSections();
-        }
-        sections.add(section);
+        this.sections.add(section);
         section.setCourse(this);
     }
 
-    public void removeSection(Section section) {
-        if (sections != null) {
-            section.setCourse(null);
-            sections.remove(section);
+    public void bulkAddSections(Set<Section> sections) {
+        this.sections.addAll(sections);
+        sections.forEach(section -> section.setCourse(this));
+    }
 
-            if (sections.size() == 0) {
-                clearSections();
-            }
-        }
+    public void removeSection(Section section) {
+        this.sections.remove(section);
+    }
+
+    public void bulkRemoveSections(Set<Section> sections) {
+        this.sections.removeAll(sections);
     }
 
 }

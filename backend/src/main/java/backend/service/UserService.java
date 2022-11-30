@@ -3,37 +3,23 @@ package backend.service;
 import java.util.List;
 import java.util.Optional;
 
-import backend.form.UserForm;
+import backend.form.UserForm.*;
 import backend.model.User;
 
 public interface UserService {
 
-    List<User> getAllUsers();
+	User registerUser(RegisterForm input);
 
-    Optional<User> getUserById(Long id);
+	Optional<User> authenticateUser(String email, String password);
 
-    Optional<User> getUserByEmail(String email);
+	User loginUser(LoginForm input);
 
-    User createUser(User user);
+	Long logoutUser(Long id);
 
-//    void saveUser(User user);
+	List<User> getAllUsers();
 
-    boolean existName(String name);
+	User getUserById(Long id);
 
-    boolean existEmail(String email);
-
-    boolean existPhone(String phone);
-
-//    boolean nameIsValid(String name);
-//
-//    boolean passwordIsValid(String password);
-
-//    boolean repeatPasswordMatch(String password, String repeatPassword);
-
-    User registerUser(UserForm.UserRegisterForm userRegisterInput) throws Exception;
-
-    User loginUser(UserForm.UserLoginForm userLoginInput) throws Exception;
-
-    User logoutUser(Long id) throws Exception;
+	User getUserByEmail(String email);
 
 }

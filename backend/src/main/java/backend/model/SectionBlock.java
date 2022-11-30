@@ -1,6 +1,9 @@
 package backend.model;
 
 import com.google.gson.annotations.Expose;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "section_block")
 public class SectionBlock extends Block {
@@ -24,21 +29,9 @@ public class SectionBlock extends Block {
     public SectionBlock() {
     }
 
-    public SectionBlock(Section section) {
-        this.section = section;
-    }
-
-    public SectionBlock(Integer startDay, Integer startMil, Integer endDay, Integer endMil,
-            String repetition, String repetitionTime) {
+    public SectionBlock(Integer startDay, Integer startMil, Integer endDay, Integer endMil, String repetition,
+                        String repetitionTime) {
         super(startDay, startMil, endDay, endMil, repetition, repetitionTime);
-    }
-
-    public Section getSection() {
-        return section;
-    }
-
-    public void setSection(Section section) {
-        this.section = section;
     }
 
 }

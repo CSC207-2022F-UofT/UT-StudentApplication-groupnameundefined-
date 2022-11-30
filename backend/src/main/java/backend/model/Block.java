@@ -1,9 +1,11 @@
 package backend.model;
 
 import com.google.gson.annotations.Expose;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -14,6 +16,7 @@ import javax.persistence.*;
 @Entity
 public class Block {
 
+    @Setter(AccessLevel.NONE)
     @Expose(serialize = true, deserialize = true)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,14 +46,16 @@ public class Block {
     @Column(name = "repetition_time")
     private String repetitionTime;
 
+    @Setter(AccessLevel.NONE)
     @Expose(serialize = true, deserialize = false)
     @ManyToMany(mappedBy = "blocks")
-    private Set<Timetable> timetables;
+    private Set<Timetable> timetables = new HashSet<>();
 
     public Block() {
     }
 
-    public Block(Integer startDay, Integer startMil, Integer endDay, Integer endMil, String repetition, String repetitionTime) {
+    public Block(Integer startDay, Integer startMil, Integer endDay, Integer endMil, String repetition,
+                 String repetitionTime) {
         this.startDay = startDay;
         this.startMil = startMil;
         this.endDay = endDay;
@@ -60,6 +65,22 @@ public class Block {
     }
 
     public void addTimetable(Timetable timetable) {
-        timetables.add(timetable);
+        this.timetables.add(timetable);
+        timetable.getBlocks().add(this);
+    }
+
+    public void bulkAddTimetables(Set<Timetable> timetables) {
+        this.timetables.addAll(timetables);
+        timetables.forEach(timetable -> timetable.getBlocks().remove(this));
+    }
+
+    public void removeTimetable(Timetable timetable) {
+        this.timetables.remove(timetable);
+        timetable.getBlocks().remove(this);
+    }
+
+    public void bulkRemoveTimetables(Set<Timetable> timetables) {
+        this.timetables.removeAll(timetables);
+        timetables.forEach(timetable -> timetable.getBlocks().remove(this));
     }
 }

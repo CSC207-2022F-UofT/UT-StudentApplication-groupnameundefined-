@@ -1,14 +1,22 @@
 package backend.model;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "student_profile")
 public class StudentProfile {
+
+    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -17,25 +25,23 @@ public class StudentProfile {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @Size(max = 256)
     @Column(name = "program")
     private String program;
 
-    @Size(max = 256)
     @Column(name = "college")
     private String college;
 
-    @Max(value = 9999)
-    @Min(value = 1827)
     @Column(name = "enrolment_year")
     private Integer enrolmentYear;
 
-    @OneToOne(cascade = { CascadeType.ALL }, mappedBy = "studentProfile")
+    @OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
     private Timetable timetable;
 
-    @OneToOne
-    @JoinColumn(name = "socialmediaprofile_id", referencedColumnName = "id")
+    @OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
     private SocialMediaProfile socialMediaProfile;
+
+    @OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
+    private Habit habit;
 
     public StudentProfile() {
     }
@@ -50,58 +56,4 @@ public class StudentProfile {
         this.enrolmentYear = enrolmentYear;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getProgram() {
-        return program;
-    }
-
-    public void setProgram(String program) {
-        this.program = program;
-    }
-
-    public String getCollege() {
-        return college;
-    }
-
-    public void setCollege(String college) {
-        this.college = college;
-    }
-
-    public Integer getEnrolmentYear() {
-        return enrolmentYear;
-    }
-
-    public void setEnrolmentYear(Integer enrolmentYear) {
-        this.enrolmentYear = enrolmentYear;
-    }
-
-    public Timetable getTimetable() {
-        return timetable;
-    }
-
-    public void setTimetable(Timetable timetable) {
-        this.timetable = timetable;
-        timetable.setStudentProfile(this);
-    }
-
-    public void removeTimetable() { timetable = null; }
-
-    public SocialMediaProfile getSocialMediaProfile() {
-        return socialMediaProfile;
-    }
-
-    public void setSocialMediaProfile(SocialMediaProfile socialMediaProfile) {
-        this.socialMediaProfile = socialMediaProfile;
-    }
 }

@@ -12,12 +12,14 @@ import backend.model.Timetable;
 
 public interface TimetableService {
 
-    List<Map<String, String>> parseIcs(MultipartFile file);
+	List<Map<String, String>> parseIcs(MultipartFile file);
 
-    Timetable createTimetable(Timetable timetable);
+	Timetable createTimetable(StudentProfile studentProfile, Set<Block> blocks);
 
-    Timetable createTimetable(StudentProfile studentProfile, Set<Block> blocks);
+	Timetable createTimetable(Long studentProfileId, MultipartFile iCalendar);
 
-    Timetable createTimetable(Long studentProfileId, MultipartFile iCalendar);
+	List<Timetable> getAllTimetables();
+
+	Timetable getTimetableById(Long id);
 
 }

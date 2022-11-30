@@ -11,8 +11,10 @@ import backend.model.Course;
 
 public interface CourseService {
 
-    void loadCourses() throws FileNotFoundException, IOException, ParseException;
+    void loadCourses();
 
     List<Course> getAllCourses();
+
+    Course getCourseById(Long id);
 
 }
