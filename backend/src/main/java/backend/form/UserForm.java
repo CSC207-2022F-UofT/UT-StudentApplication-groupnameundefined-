@@ -16,14 +16,14 @@ public class UserForm {
 		 * Name has maximum length 20, and cannot be empty or white spaces.
 		 */
 		@NotBlank
-		@Size(max = 20)
+		@Size(min = 2, max = 20, message = "Name must be between 2 and 20 characters.")
 		public String name;
 
 		/**
 		 * Email must follow formal email format.
 		 */
 		@NotBlank
-		@Email
+		@Email(message = "Not a valid email.")
 		public String email;
 
 		/**
@@ -31,7 +31,11 @@ public class UserForm {
 		 * no white spaces, and has minimum length of 8 and maximum length of 20.
 		 */
 		@NotBlank
-		@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,20}$")
+		@Size(min = 8, max = 30, message = "Password must be between 8 and 30 characters")
+		@Pattern(
+				regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).*$",
+				message = "Password must contain at least one number, one lower-case letter, one upper-case letter"
+		)
 		public String password;
 
 		/**

@@ -12,35 +12,33 @@ import java.time.ZonedDateTime;
 @ControllerAdvice
 public class APIExceptionHandler {
 
-    private final Logger logger;
+	private final Logger logger;
 
-    @Autowired
-    public APIExceptionHandler(Logger logger) {
-        this.logger = logger;
-    }
+	@Autowired
+	public APIExceptionHandler(Logger logger) {
+		this.logger = logger;
+	}
 
-    @ExceptionHandler(APIException.class)
-    public ResponseEntity<APIExceptionPayload> handleApiException(APIException e) {
-        String message = e.getMessage();
-        String code = e.getCode();
-        ZonedDateTime timestamp = ZonedDateTime.now();
-        HttpStatus httpStatus = e.getHttpStatus();
+	@ExceptionHandler(APIException.class)
+	public ResponseEntity<APIExceptionPayload> handleApiException(APIException e) {
+		String message = e.getMessage();
+		String code = e.getCode();
+		ZonedDateTime timestamp = ZonedDateTime.now();
+		HttpStatus httpStatus = e.getHttpStatus();
 
-        APIExceptionPayload payload = new APIExceptionPayload(message, code, timestamp, httpStatus);
+		APIExceptionPayload payload = new APIExceptionPayload(message, code, timestamp, httpStatus);
+		return new ResponseEntity<>(payload, httpStatus);
+	}
 
-        return new ResponseEntity<>(payload, httpStatus);
-    }
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<APIExceptionPayload> handleUnknownException(Exception e) {
+		logger.error("Uncaught Exception", e);
+		String message = "An unknown error has occurred.";
+		String code = "UNKNOWN";
+		ZonedDateTime timestamp = ZonedDateTime.now();
+		HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<APIExceptionPayload> handleUnknownException(Exception e) {
-        logger.error("Uncaught Exception", e);
-        String message = "An unknown error has occurred.";
-        String code = "UNKNOWN";
-        ZonedDateTime timestamp = ZonedDateTime.now();
-        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-
-        APIExceptionPayload payload = new APIExceptionPayload(message, code, timestamp, httpStatus);
-
-        return new ResponseEntity<>(payload, httpStatus);
-    }
+		APIExceptionPayload payload = new APIExceptionPayload(message, code, timestamp, httpStatus);
+		return new ResponseEntity<>(payload, httpStatus);
+	}
 }
