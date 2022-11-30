@@ -30,11 +30,9 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public User registerUser(RegisterForm input) {
-		if (this.existEmail(input.getEmail())) {
+		if (userRepository.existsByEmail(input.getEmail())) {
 			throw new EntityExistException(String.format("User with email '%s' already exist.", input.getEmail()), User.class);
-		} else if (this.existEmail(input.getEmail())) {
-			throw new EntityExistException(String.format("User with email '%s' already exist.", input.getEmail()), User.class);
-		} else if (this.existPhone(input.getPhone())) {
+		} else if (userRepository.existsByPhone(input.getPhone())) {
 			throw new EntityExistException(String.format("User with email '%s' already exist.", input.getEmail()), User.class);
 		} else {
 			User user = new User(input.getName(), input.getEmail(), input.getPassword(), input.getPhone());
@@ -101,18 +99,6 @@ public class UserServiceImp implements UserService {
 		}
 
 		throw new EntityNotFoundException(String.format("Unable to find user with email %s.", email), User.class);
-	}
-
-	@Override
-	public boolean existEmail(String email) {
-		Optional<User> user = userRepository.findByEmail(email);
-		return user.isPresent();
-	}
-
-	@Override
-	public boolean existPhone(String phone) {
-		Optional<User> user = userRepository.findByPhone(phone);
-		return user.isPresent();
 	}
 
 }

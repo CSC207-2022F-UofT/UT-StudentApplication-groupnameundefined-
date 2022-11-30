@@ -4,21 +4,14 @@ import java.util.Optional;
 
 import backend.model.Habit;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface HabitRepository extends JpaRepository<Habit, Long> {
 
-    Optional<Habit> findByUserId(Long id);
+	@Query("SELECT h FROM Habit AS h WHERE h.studentProfile.user.id = :id")
+	Optional<Habit> findByUserId(@Param("id") Long id);
 
-    Optional<Habit> findByMBTI(int MBTI);
-
-    Optional<Habit> findByTalkative(int talkative);
-
-    Optional<Habit> findByCollaborate(int collaborate);
-
-    boolean existsByMBTI(int MBTI);
-
-    boolean existsByTalkative(int talkative);
-
-    boolean existsByCollaborate(int collaborate);
+	Optional<Habit> findByStudentProfileId(Long id);
 
 }

@@ -22,8 +22,4 @@ public interface UserService {
 
 	User getUserByEmail(String email);
 
-	boolean existEmail(String email);
-
-	boolean existPhone(String phone);
-
 }
