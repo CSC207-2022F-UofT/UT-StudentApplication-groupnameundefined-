@@ -64,8 +64,8 @@ public class CourseServiceImp implements CourseService {
 		if (course.isPresent()) {
 			return course.get();
 		}
-		
-		throw new EntityNotFoundException(String.format("Unable to find course with id %d.", id), Course.class);
+
+		throw new EntityNotFoundException(String.format("Unable to find course with id '%d'.", id), Course.class);
 	}
 
 	@Override

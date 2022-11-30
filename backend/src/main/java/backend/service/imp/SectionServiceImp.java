@@ -36,6 +36,6 @@ public class SectionServiceImp implements SectionService {
 			return section.get();
 		}
 
-		throw new EntityNotFoundException(String.format("Unable to find section with id %d", id), Section.class);
+		throw new EntityNotFoundException(String.format("Unable to find section with id '%d'", id), Section.class);
 	}
 }

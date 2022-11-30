@@ -69,7 +69,7 @@ public class StudentProfileServiceImp implements StudentProfileService {
 			return studentProfile.get();
 		}
 
-		throw new EntityNotFoundException(String.format("Unable to find student profile with id %d.", id), StudentProfile.class);
+		throw new EntityNotFoundException(String.format("Unable to find student profile with id '%d'.", id), StudentProfile.class);
 	}
 
 }

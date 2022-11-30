@@ -88,7 +88,7 @@ public class UserServiceImp implements UserService {
 			return user.get();
 		}
 
-		throw new EntityNotFoundException(String.format("Unable to find user with id %d.", id), User.class);
+		throw new EntityNotFoundException(String.format("Unable to find user with id '%d'.", id), User.class);
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class UserServiceImp implements UserService {
 			return user.get();
 		}
 
-		throw new EntityNotFoundException(String.format("Unable to find user with email %s.", email), User.class);
+		throw new EntityNotFoundException(String.format("Unable to find user with email '%s'.", email), User.class);
 	}
 
 }

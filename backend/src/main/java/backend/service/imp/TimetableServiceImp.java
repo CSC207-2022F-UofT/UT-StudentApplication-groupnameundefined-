@@ -66,7 +66,7 @@ public class TimetableServiceImp implements TimetableService {
 		Optional<StudentProfile> _studentProfile = studentProfileRepository.findById(studentProfileId);
 
 		if (_studentProfile.isEmpty()) {
-			throw new EntityNotFoundException(String.format("Unable to find student profile with id %d", studentProfileId), StudentProfile.class);
+			throw new EntityNotFoundException(String.format("Unable to find student profile with id '%d'", studentProfileId), StudentProfile.class);
 		}
 		StudentProfile studentProfile = _studentProfile.get();
 
@@ -93,7 +93,7 @@ public class TimetableServiceImp implements TimetableService {
 			return timetable.get();
 		}
 
-		throw new EntityNotFoundException(String.format("Unable to find timetable with id %d", id), Timetable.class);
+		throw new EntityNotFoundException(String.format("Unable to find timetable with id '%d'", id), Timetable.class);
 	}
 
 	@Override

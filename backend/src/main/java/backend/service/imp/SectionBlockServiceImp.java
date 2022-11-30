@@ -42,6 +42,6 @@ public class SectionBlockServiceImp implements SectionBlockService {
 			return sectionBlock.get();
 		}
 
-		throw new EntityNotFoundException(String.format("Unable to find section block with id %d.", id), SectionBlock.class);
+		throw new EntityNotFoundException(String.format("Unable to find section block with id '%d'.", id), SectionBlock.class);
 	}
 }

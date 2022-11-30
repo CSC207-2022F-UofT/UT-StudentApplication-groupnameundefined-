@@ -71,7 +71,7 @@ public class HabitServiceImp implements HabitService {
 			return habit.get();
 		}
 
-		throw new EntityNotFoundException(String.format("Unable to find course with id %d", id), Habit.class);
+		throw new EntityNotFoundException(String.format("Unable to find course with id '%d'", id), Habit.class);
 	}
 
 	@Override
