@@ -9,4 +9,6 @@ public interface SectionBlockService {
     List<SectionBlock> getAllSectionBlocks();
 
     List<SectionBlock> getSectionBlocksByCode(String course, String section);
+
+    SectionBlock getSectionBlockById(Long id);
 }

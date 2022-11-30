@@ -15,10 +15,10 @@ import backend.model.Block;
 
 public interface TimetableController {
 
-    ResponseEntity<TimetableDto> createTimetable(Long studentProfileId, MultipartFile file);
+	ResponseEntity<TimetableDto> createTimetable(Long studentProfileId, MultipartFile file);
 
-    ResponseEntity<List<Timetable>> getAllTimetables();
+	ResponseEntity<List<TimetableDto>> getAllTimetables();
 
-    ResponseEntity<TimetableDto> getTimetableById(Long id);
+	ResponseEntity<TimetableDto> getTimetableById(Long id);
 
 }

@@ -5,10 +5,14 @@ import backend.model.Timetable;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(uses = { BlockMapper.class })
+import java.util.List;
+
+@Mapper(uses = {BlockMapper.class})
 public interface TimetableMapper {
 
     @Mapping(target = "studentProfileId", source = "studentProfile.id")
-    TimetableDto timetableToDto(Timetable timetable);
+    TimetableDto toDto(Timetable timetable);
+
+    List<TimetableDto> toDtoList(List<Timetable> timetables);
 
 }

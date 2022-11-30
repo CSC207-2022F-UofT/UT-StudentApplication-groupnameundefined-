@@ -1,12 +1,11 @@
 package backend.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import backend.dto.HabitDto;
+import backend.form.HabitForm.*;
 import org.springframework.http.ResponseEntity;
 
-import backend.model.Habit;
 
 public interface HabitController {
 
@@ -15,7 +14,7 @@ public interface HabitController {
     ResponseEntity<List<HabitDto>> getAllHabits();
 
     ResponseEntity<HabitDto> getHabitById(Long id);
-    
+
     ResponseEntity<List<HabitDto>> getFilteredHabits(Integer mbti, Integer talktative, Integer collaborative);
 
 }

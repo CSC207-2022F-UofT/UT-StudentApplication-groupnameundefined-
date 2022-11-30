@@ -44,42 +44,25 @@ public class CourseControllerImp implements CourseController {
     @GetMapping("/load-courses")
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<?> loadCourses() {
-        try {
-            courseService.loadCourses();
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("error", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        courseService.loadCourses();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     @GetMapping("/")
     public ResponseEntity<List<CourseDto>> getAllCourses() {
-        try {
-            List<Course> courses = courseService.getAllCourses();
-            List<CourseDto> courseDtos = courseMapper.toDtoList(courses);
-            return new ResponseEntity<>(courseDtos, HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Error", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<Course> courses = courseService.getAllCourses();
+        List<CourseDto> courseDtos = courseMapper.toDtoList(courses);
+
+        return new ResponseEntity<>(courseDtos, HttpStatus.OK);
     }
 
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<CourseDto> getCourseById(@PathVariable Long id) {
-        try {
-            Optional<Course> course = courseService.getCourseById(id);
+        Course course = courseService.getCourseById(id);
+        CourseDto courseDto = courseMapper.toDto(course);
 
-            if (course.isPresent()) {
-                CourseDto courseDto = courseMapper.toDto(course.get());
-                return new ResponseEntity<>(courseDto, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            logger.error("Error", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(courseDto, HttpStatus.OK);
     }
 }

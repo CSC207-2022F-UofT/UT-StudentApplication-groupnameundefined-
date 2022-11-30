@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface SocialMediaProfileController {
 
-    ResponseEntity<List<SocialMediaProfile>> getAllSocialMediaProfiles();
+	ResponseEntity<List<SocialMediaProfileDto>> getAllSocialMediaProfiles();
 
-    ResponseEntity<SocialMediaProfileDto> getSocialMediaProfileById(Long id);
+	ResponseEntity<SocialMediaProfileDto> getSocialMediaProfileById(Long id);
 
 }

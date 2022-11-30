@@ -4,59 +4,79 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import backend.model.User;
+import backend.exception.exceptions.EntityNotFoundException;
+import backend.form.HabitForm.*;
+import backend.model.HabitVisibility;
+import backend.model.StudentProfile;
+import backend.repository.StudentProfileRepository;
+import backend.service.StudentProfileService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import backend.model.Habit;
 import backend.repository.HabitRepository;
 import backend.service.HabitService;
+import org.springframework.stereotype.Service;
 
-public class HabitServiceImp implements HabitService{
+@Service
+public class HabitServiceImp implements HabitService {
 
-    @Autowired
-    HabitRepository habitRepository;
+	private final Logger logger;
 
-    @Override
-    public List<Habit> getAllHabits(){
-        List<Habit> habits = new ArrayList<Habit>(habitRepository.findAll());
+	private final HabitRepository habitRepository;
+	private final StudentProfileService studentProfileService;
+	private final StudentProfileRepository studentProfileRepository;
 
-        return habits;
-    }
+	@Autowired
+	public HabitServiceImp(
+			Logger logger,
+			HabitRepository habitRepository,
+			StudentProfileService studentProfileService,
+			StudentProfileRepository studentProfileRepository
+	) {
+		this.logger = logger;
+		this.habitRepository = habitRepository;
+		this.studentProfileService = studentProfileService;
+		this.studentProfileRepository = studentProfileRepository;
+	}
 
-    @Override
-    public Optional<Habit> getHabitById(Long id){
-        Optional<Habit> habit = habitRepository.findById(id);
-        System.out.println("Get Habit By Id Success");
-        return habit;
-    }
+	@Override
+	public Habit createHabit(CreateHabitForm input) {
+		StudentProfile _studentProfile = studentProfileService.getStudentProfileById(input.getStudentProfileId());
+		Habit habit = new Habit(input.getMbti(), input.getTalkative(), input.getCollaborative());
 
-    @Override
-    public Habit createHabit(Habit habit){
-        Habit _habit = habitRepository.save(new Habit(habit.getUsername(),habit.getMBTI(), habit.getTalkative(), habit.getCollaborate(), habit.getVisibility()));
-        System.out.println("Create Habit Success");
-        return _habit;
-    }
+		_studentProfile.setHabit(habit);
+		habit.setStudentProfile(_studentProfile);
 
-    @Override
-    public Optional<Habit> getSameHabitByMBTI(int MBTI){
-        Optional<Habit> habit_MBTI = habitRepository.findByMBTI(MBTI);
-        System.out.println("Get Same Habit By MBTI Success");
-        return habit_MBTI;
-    }
+		HabitVisibility habitVisibility = new HabitVisibility(input.getMbtiVisibility(), input.getTalkativeVisibility(), input.getCollaborativeVisibility());
 
-    @Override
-    public Optional<Habit> getSameHabitByTalkative(int talkative){
-        Optional<Habit> habit_Talktive = habitRepository.findByTalkative(talkative);
-        System.out.println("Get Same Habit By Talktive Success");
-        return habit_Talktive;
-    }
+		habit.setVisibility(habitVisibility);
+		habitVisibility.setHabit(habit);
 
-    @Override
-    public Optional<Habit> getSameHabitByCollaborate(int collaborate){
-        Optional<Habit> habit_Collaborate = habitRepository.findByCollaborate(collaborate);
-        System.out.println("Get Same Habit By Collaborate Success");
-        return habit_Collaborate;
-    }
+		StudentProfile studentProfile = studentProfileRepository.save(_studentProfile);
+
+		return studentProfile.getHabit();
+	}
+
+
+	@Override
+	public List<Habit> getAllHabits() {
+		return new ArrayList<Habit>(habitRepository.findAll());
+	}
+
+	@Override
+	public Habit getHabitById(Long id) {
+		Optional<Habit> habit = habitRepository.findById(id);
+		if (habit.isPresent()) {
+			return habit.get();
+		}
+
+		throw new EntityNotFoundException(String.format("Unable to find course with id %d", id), Habit.class);
+	}
+
+	@Override
+	public List<Habit> getFilteredHabits(Integer mbti, Integer talktative, Integer collaborative) {
+		return new ArrayList<>();
+	}
 
 }

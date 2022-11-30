@@ -27,60 +27,44 @@ import backend.service.TimetableService;
 @RequestMapping("/api/timetable")
 public class TimetableControllerImp implements TimetableController {
 
-    private final Logger logger;
+	private final Logger logger;
 
-    private final TimetableService timetableService;
-    private final TimetableMapper timetableMapper;
+	private final TimetableService timetableService;
+	private final TimetableMapper timetableMapper;
 
-    public TimetableControllerImp(Logger logger, TimetableService timetableService, TimetableMapper timetableMapper) {
-        this.logger = logger;
-        this.timetableService = timetableService;
-        this.timetableMapper = timetableMapper;
-    }
+	public TimetableControllerImp(Logger logger, TimetableService timetableService, TimetableMapper timetableMapper) {
+		this.logger = logger;
+		this.timetableService = timetableService;
+		this.timetableMapper = timetableMapper;
+	}
 
-    @Override
-    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<TimetableDto> createTimetable(@RequestPart Long studentProfileId,
-                                                        @RequestPart MultipartFile file) {
-        try {
-            Timetable timetable = timetableService.createTimetable(studentProfileId, file);
-            TimetableDto timetableDto = timetableMapper.toDto(timetable);
+	@Override
+	@PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<TimetableDto> createTimetable(
+			@RequestPart Long studentProfileId, @RequestPart MultipartFile file
+	) {
+		Timetable timetable = timetableService.createTimetable(studentProfileId, file);
+		TimetableDto timetableDto = timetableMapper.toDto(timetable);
 
-            return new ResponseEntity<>(timetableDto, HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Error", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+		return new ResponseEntity<>(timetableDto, HttpStatus.OK);
+	}
 
-    @Override
-    @GetMapping("/")
-    public ResponseEntity<List<TimetableDto>> getAllTimetables() {
-        try {
-            List<Timetable> timetables = timetableService.getAllTimetables();
-            List<TimetableDto> timetableDtos = timetableMapper.toDtoList(timetables);
+	@Override
+	@GetMapping("/")
+	public ResponseEntity<List<TimetableDto>> getAllTimetables() {
+		List<Timetable> timetables = timetableService.getAllTimetables();
+		List<TimetableDto> timetableDtos = timetableMapper.toDtoList(timetables);
 
-            return new ResponseEntity<>(timetableDtos, HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Error", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+		return new ResponseEntity<>(timetableDtos, HttpStatus.OK);
+	}
 
-    @Override
-    @GetMapping("/{id}")
-    public ResponseEntity<TimetableDto> getTimetableById(@PathVariable Long id) {
-        try {
-            Optional<Timetable> timetable = timetableService.getTimetableByid(id);
+	@Override
+	@GetMapping("/{id}")
+	public ResponseEntity<TimetableDto> getTimetableById(@PathVariable Long id) {
+		Timetable timetable = timetableService.getTimetableById(id);
+		TimetableDto timetableDto = timetableMapper.toDto(timetable);
 
-            if (timetable.isPresent()) {
-                TimetableDto timetableDto = timetableMapper.toDto(timetable.get());
-                return new ResponseEntity<>(timetableDto, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+		return new ResponseEntity<>(timetableDto, HttpStatus.OK);
+	}
 
 }

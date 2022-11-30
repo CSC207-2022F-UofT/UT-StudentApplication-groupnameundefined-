@@ -1,5 +1,6 @@
 package backend.mappers;
 
+import java.util.List;
 import java.util.Set;
 
 import org.mapstruct.Mapper;
@@ -14,7 +15,8 @@ public interface SectionBlockMapper {
 
     @Mapping(target = "repetitionTime", source = "repetitionTime")
     @Mapping(target = "sectionId", source = "section.id")
-    SectionBlockDto sectionBlockToDto(SectionBlock sectionBlock);
+    SectionBlockDto toDto(SectionBlock sectionBlock);
 
-    Set<SectionBlockDto> sectionBlocksToDtos(Set<SectionBlock> sectionBlocks);
+    List<SectionBlockDto> toDtoList(List<SectionBlock> sectionBlocks);
+
 }

@@ -27,10 +27,16 @@ public class HabitVisibility {
     @Column(name = "talkative", columnDefinition = "boolean default false")
     private Boolean talkative;
 
-    @Column(name = "collaborate", columnDefinition = "boolean default false")
-    private Boolean collaborate;
+    @Column(name = "collaborative", columnDefinition = "boolean default false")
+    private Boolean collaborative;
 
     public HabitVisibility() {
+    }
+
+    public HabitVisibility(Boolean mbti, Boolean talkative, Boolean collaborative) {
+        this.mbti = mbti;
+        this.talkative = talkative;
+        this.collaborative = collaborative;
     }
 
 }

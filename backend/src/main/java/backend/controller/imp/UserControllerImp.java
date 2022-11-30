@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import backend.dto.UserDto;
 import backend.form.UserForm.*;
+import backend.mappers.UserMapper;
 import backend.service.imp.UserServiceImp;
 import lombok.extern.java.Log;
 import org.slf4j.Logger;
@@ -35,90 +36,59 @@ import javax.validation.Valid;
 @RequestMapping("/api/user")
 public class UserControllerImp implements UserController {
 
-    private final Logger logger;
+	private final Logger logger;
 
-    private final UserService userService;
-    private final UserMapper userMapper;
+	private final UserService userService;
+	private final UserMapper userMapper;
 
-    @Autowired
-    public UserControllerImp(Logger logger, UserService userService, UserMapper userMapper) {
-        this.logger = logger;
-        this.userService = userService;
-        this.userMapper = userMapper;
-    }
+	@Autowired
+	public UserControllerImp(Logger logger, UserService userService, UserMapper userMapper) {
+		this.logger = logger;
+		this.userService = userService;
+		this.userMapper = userMapper;
+	}
 
-    @Override
-    @PostMapping("/")
-    public ResponseEntity<UserDto> createUser(@RequestBody CreateUserForm input) {
-        try {
-            User user = userService.createUser(input);
-            UserDto userDto = userMapper.toDto(user);
-            return new ResponseEntity<>(userDto, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+	@Override
+	@PostMapping("/register")
+	public ResponseEntity<UserDto> registerUser(@RequestBody @Valid RegisterUserForm input) {
+		User user = userService.registerUser(input);
+		UserDto userDto = userMapper.toDto(user);
 
-    @Override
-    @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@RequestBody @Valid RegisterUserForm input) {
-        try {
-            User user = userService.registerUser(input);
-            UserDto userDto = userMapper.toDto(user);
-            return new ResponseEntity<>(userDto, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+		return new ResponseEntity<>(userDto, HttpStatus.OK);
+	}
 
-    @Override
-    @PostMapping("/login")
-    public ResponseEntity<UserDto> loginUser(@RequestBody LoginUserForm input) {
-        try {
-            User user = userService.loginUser(input);
-            UserDto userDto = userMapper.toDto(user);
-            return new ResponseEntity<>(userDto, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+	@Override
+	@PostMapping("/login")
+	public ResponseEntity<UserDto> loginUser(@RequestBody LoginUserForm input) {
+		User user = userService.loginUser(input);
+		UserDto userDto = userMapper.toDto(user);
 
-    @Override
-    @GetMapping("/logout/{id}")
-    public ResponseEntity logoutUser(@PathVariable("id") Long id) {
-        try {
-            return new ResponseEntity<User>(userService.logoutUser(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+		return new ResponseEntity<>(userDto, HttpStatus.OK);
+	}
 
-    @Override
-    @GetMapping("/")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        try {
-            List<User> users = userService.getAllUsers();
-            List<UserDto> userDtos = userMapper.toDtos(users);
-            return new ResponseEntity<>(userDtos, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+	@Override
+	@GetMapping("/logout/{id}")
+	public ResponseEntity<Long> logoutUser(@PathVariable("id") Long id) {
+		return new ResponseEntity<>(userService.logoutUser(id), HttpStatus.OK);
+	}
 
-    @Override
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
-        try {
-            Optional<User> user = userService.getUserById(id);
-            if (user.isPresent()) {
-                UserDto userDto = userMapper.toDto(user.get());
-                return new ResponseEntity<>(userDto, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+	@Override
+	@GetMapping("/")
+	public ResponseEntity<List<UserDto>> getAllUsers() {
+		List<User> users = userService.getAllUsers();
+		List<UserDto> userDtos = userMapper.toDtoList(users);
 
-    }
+		return new ResponseEntity<>(userDtos, HttpStatus.OK);
+	}
+
+	@Override
+	@GetMapping("/{id}")
+	public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
+		User user = userService.getUserById(id);
+		UserDto userDto = userMapper.toDto(user);
+
+		return new ResponseEntity<>(userDto, HttpStatus.OK);
+
+	}
 
 }

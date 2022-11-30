@@ -27,8 +27,9 @@ public class SectionBlockControllerImp implements SectionBlockController {
     private final SectionBlockMapper sectionBlockMapper;
 
     @Autowired
-    public SectionBlockControllerImp(Logger logger, SectionBlockService sectionBlockService,
-                                     SectionBlockMapper sectionBlockMapper) {
+    public SectionBlockControllerImp(
+            Logger logger, SectionBlockService sectionBlockService, SectionBlockMapper sectionBlockMapper
+    ) {
         this.logger = logger;
         this.sectionBlockService = sectionBlockService;
         this.sectionBlockMapper = sectionBlockMapper;
@@ -37,31 +38,19 @@ public class SectionBlockControllerImp implements SectionBlockController {
     @Override
     @GetMapping("/")
     public ResponseEntity<List<SectionBlockDto>> getAllSectionBlocks() {
-        try {
-            List<SectionBlock> sectionBlocks = sectionBlockService.getAllSectionBlocks();
-            List<SectionBlockDto> sectionBlockDtos = sectionBlockMapper.toDtoList(sectionBlocks);
-            return new ResponseEntity<>(sectionBlockDtos, HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Error", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<SectionBlock> sectionBlocks = sectionBlockService.getAllSectionBlocks();
+        List<SectionBlockDto> sectionBlockDtos = sectionBlockMapper.toDtoList(sectionBlocks);
+
+        return new ResponseEntity<>(sectionBlockDtos, HttpStatus.OK);
     }
 
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<SectionBlockDto> getSectionBlockById(@PathVariable Long id) {
-        try {
-            Optional<SectionBlock> sectionBlock = sectionBlockService.getSectionBlockById(id);
+        SectionBlock sectionBlock = sectionBlockService.getSectionBlockById(id);
+        SectionBlockDto sectionBlockDto = sectionBlockMapper.toDto(sectionBlock);
 
-            if (sectionBlock.isPresent()) {
-                SectionBlockDto sectionBlockDto = sectionBlockMapper.toDto(sectionBlock.get());
-                return new ResponseEntity<>(sectionBlockDto, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            logger.error("Error", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(sectionBlockDto, HttpStatus.OK);
     }
 
 

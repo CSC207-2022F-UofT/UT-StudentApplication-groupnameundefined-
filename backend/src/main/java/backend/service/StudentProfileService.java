@@ -9,14 +9,10 @@ import backend.model.StudentProfile;
 
 public interface StudentProfileService {
 
-    StudentProfile createStudentProfile(CreateStudentProfileForm input);
+	StudentProfile createStudentProfile(CreateStudentProfileForm input);
 
-    StudentProfile getStudentProfile(Long id);
+	List<StudentProfile> getAllStudentProfiles();
 
-    List<StudentProfile> getAllStudentProfiles();
-
-    // StudentProfile updateStudentProfile(StudentProfile studentProfile);
-
-    // void deleteStudentProfile(StudentProfile studentProfile);
+	StudentProfile getStudentProfileById(Long id);
 
 }

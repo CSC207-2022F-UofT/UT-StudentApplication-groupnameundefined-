@@ -3,9 +3,11 @@ package backend.service.imp;
 import java.io.File;
 import java.util.*;
 
+import backend.exception.exceptions.EntityNotFoundException;
 import backend.model.*;
 import backend.repository.SectionBlockRepository;
 import backend.service.TimetableService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,57 +15,61 @@ import backend.form.StudentProfileForm.CreateStudentProfileForm;
 import backend.repository.StudentProfileRepository;
 import backend.repository.UserRepository;
 import backend.service.StudentProfileService;
-import org.springframework.web.multipart.MultipartFile;;import javax.persistence.EntityNotFoundException;
+import org.springframework.web.multipart.MultipartFile;;
 
 @Service
 public class StudentProfileServiceImp implements StudentProfileService {
 
-    @Autowired
-    private StudentProfileRepository studentProfileRepository;
+	private final Logger logger;
+	private final StudentProfileRepository studentProfileRepository;
+	private final UserRepository userRepository;
+	private final SectionBlockRepository sectionBlockRepository;
+	private final TimetableService timetableService;
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	public StudentProfileServiceImp(
+			Logger logger,
+			StudentProfileRepository studentProfileRepository,
+			UserRepository userRepository,
+			SectionBlockRepository sectionBlockRepository,
+			TimetableService timetableService
+	) {
+		this.logger = logger;
+		this.studentProfileRepository = studentProfileRepository;
+		this.userRepository = userRepository;
+		this.sectionBlockRepository = sectionBlockRepository;
+		this.timetableService = timetableService;
+	}
 
-    @Autowired
-    private SectionBlockRepository sectionBlockRepository;
+	@Override
+	public StudentProfile createStudentProfile(CreateStudentProfileForm input) {
+		Optional<User> _user = userRepository.findById(input.getUserId());
+		if (_user.isEmpty()) {
+			throw new EntityNotFoundException(String.format("Unable to find user with id %d", input.getUserId()), User.class);
+		}
 
-    @Autowired
-    private TimetableService timetableService;
+		User user = _user.get();
+		StudentProfile studentProfile = new StudentProfile(input.getProgram(), input.getCollege(), input.getEnrolmentYear());
 
-    @Override
-    public StudentProfile createStudentProfile(CreateStudentProfileForm input) {
-        Optional<User> _user = userRepository.findById(input.getUserId());
-        StudentProfile _studentProfile = new StudentProfile(input.getProgram(), input.getCollege(), input.getEnrolmentYear());
+		user.setStudentProfile(studentProfile);
+		studentProfile.setUser(user);
 
-        _user.ifPresent(_studentProfile::setUser);
+		return userRepository.save(user).getStudentProfile();
+	}
 
-        return studentProfileRepository.save(_studentProfile);
-    }
+	@Override
+	public List<StudentProfile> getAllStudentProfiles() {
+		return studentProfileRepository.findAll();
+	}
 
-    @Override
-    public StudentProfile getStudentProfile(Long id) {
-        Optional<StudentProfile> _studentProfile = studentProfileRepository.findById(id);
+	@Override
+	public StudentProfile getStudentProfileById(Long id) {
+		Optional<StudentProfile> studentProfile = studentProfileRepository.findById(id);
+		if (studentProfile.isPresent()) {
+			return studentProfile.get();
+		}
 
-        if (_studentProfile.isPresent()) {
-            return _studentProfile.get();
-        } else {
-            throw new EntityNotFoundException();
-        }
-    }
-
-    @Override
-    public List<StudentProfile> getAllStudentProfiles() {
-        return new ArrayList<>(studentProfileRepository.findAll());
-    }
-
-    // @Override
-    // public StudentProfile updateStudentProfile(Long id) {
-    // return studentProfile;
-    // }
-
-    // @Override
-    // public void deleteStudentProfile(Long id) {
-
-    // }
+		throw new EntityNotFoundException(String.format("Unable to find student profile with id %d.", id), StudentProfile.class);
+	}
 
 }
