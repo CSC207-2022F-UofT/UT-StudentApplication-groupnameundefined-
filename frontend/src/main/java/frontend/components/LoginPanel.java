@@ -101,7 +101,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == loginButton) {
-
+			logger.info("login clicked");
 			String email = emailField.getText();
 			String password = new String(passwordField.getPassword());
 
@@ -123,7 +123,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 					userSchema.setName(v.getName());
 					userSchema.setEmail(v.getEmail());
 					userSchema.setPhone(v.getPhone());
-					//					userSchema.setLoginStatus(v.getLoginStatus());
+//					userSchema.setLoginStatus(v.getLoginStatus());
 					userSchema.setJoinedTime(v.getJoinedTime());
 					userSchema.setLastActiveTime(v.getLastActiveTime());
 				});
