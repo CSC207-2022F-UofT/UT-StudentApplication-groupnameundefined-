@@ -60,7 +60,7 @@ public class RegisterPanel extends JPanel implements ActionListener {
 		nameField.setBounds(110, 75, 170, 20);
 
 		nameError = new JLabel("");
-		nameError.setBounds(115, 95, 170, 20);
+		nameError.setBounds(115, 95, 300, 20);
 
 		emailLabel = new JLabel("Email: ");
 		emailLabel.setBounds(100, 110, 70, 20);
@@ -69,7 +69,7 @@ public class RegisterPanel extends JPanel implements ActionListener {
 		emailField.setBounds(110, 135, 170, 20);
 
 		emailError = new JLabel("");
-		emailError.setBounds(115, 155, 170, 20);
+		emailError.setBounds(115, 155, 300, 20);
 
 		passwordLabel = new JLabel("Password: ");
 		passwordLabel.setBounds(100, 170, 70, 20);
@@ -78,7 +78,7 @@ public class RegisterPanel extends JPanel implements ActionListener {
 		passwordField.setBounds(110, 195, 170, 20);
 
 		passwordError = new JLabel("");
-		passwordError.setBounds(115, 215, 170, 20);
+		passwordError.setBounds(115, 215, 300, 20);
 
 		phoneLabel = new JLabel("Phone: ");
 		phoneLabel.setBounds(100, 230, 70, 20);
@@ -87,7 +87,7 @@ public class RegisterPanel extends JPanel implements ActionListener {
 		phoneField.setBounds(110, 255, 170, 20);
 
 		phoneError = new JLabel("");
-		phoneError.setBounds(115, 275, 170, 20);
+		phoneError.setBounds(115, 275, 300, 20);
 
 		registerButton = new JButton("Sign Up");
 		registerButton.setBounds(155, 295, 80, 30);
@@ -120,7 +120,6 @@ public class RegisterPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		String name = nameField.getText();
 		String email = emailField.getText();
 		String password = new String(passwordField.getPassword());
@@ -149,7 +148,7 @@ public class RegisterPanel extends JPanel implements ActionListener {
 				userSchema.setName(v.getName());
 				userSchema.setEmail(v.getEmail());
 				userSchema.setPhone(v.getPhone());
-//					userSchema.setLoginStatus(v.getLoginStatus());
+				//					userSchema.setLoginStatus(v.getLoginStatus());
 				userSchema.setJoinedTime(v.getJoinedTime());
 				userSchema.setLastActiveTime(v.getLastActiveTime());
 			});
@@ -157,6 +156,8 @@ public class RegisterPanel extends JPanel implements ActionListener {
 			mainPanel.getLoginPanel().initialize(mainPanel);
 			mainPanel.setPanel("LoginPanel");
 			this.close();
+			JOptionPane.showMessageDialog(null, "Register Successfully! Login Please.");
 		}
 	}
+
 }

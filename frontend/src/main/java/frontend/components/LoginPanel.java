@@ -59,7 +59,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 		emailField.setBounds(110, 75, 170, 20);
 
 		emailError = new JLabel("");
-		emailError.setBounds(115, 95, 170, 20);
+		emailError.setBounds(115, 95, 300, 20);
 
 		passwordLabel = new JLabel("Password: ");
 		passwordLabel.setBounds(100, 115, 193, 28);
@@ -68,7 +68,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 		passwordField.setBounds(110, 140, 170, 20);
 
 		passwordError = new JLabel("");
-		passwordError.setBounds(115, 160, 170, 20);
+		passwordError.setBounds(115, 160, 300, 20);
 
 		registerButton = new JButton("Sign Up");
 		registerButton.setBounds(110, 180, 80, 30);
@@ -100,7 +100,6 @@ public class LoginPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		if (e.getSource() == loginButton) {
 
 			String email = emailField.getText();
@@ -124,18 +123,16 @@ public class LoginPanel extends JPanel implements ActionListener {
 					userSchema.setName(v.getName());
 					userSchema.setEmail(v.getEmail());
 					userSchema.setPhone(v.getPhone());
-//					userSchema.setLoginStatus(v.getLoginStatus());
+					//					userSchema.setLoginStatus(v.getLoginStatus());
 					userSchema.setJoinedTime(v.getJoinedTime());
 					userSchema.setLastActiveTime(v.getLastActiveTime());
 				});
 				successLabel.setText("Login Successfully!");
 			}
 		} else if (e.getSource() == registerButton) {
-			logger.info("Pressed register button");
 			mainPanel.getRegisterPanel().initialize(mainPanel);
 			mainPanel.setPanel("RegisterPanel");
 			this.close();
 		}
 	}
-
 }
