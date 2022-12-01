@@ -4,12 +4,16 @@ import frontend.schema.UserSchema;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class RegisterPanel extends JPanel implements ActionListener {
@@ -55,7 +59,7 @@ public class RegisterPanel extends JPanel implements ActionListener {
 		nameField = new JTextField();
 		nameField.setBounds(110, 75, 170, 20);
 
-		nameError = new JLabel("error");
+		nameError = new JLabel("");
 		nameError.setBounds(115, 95, 170, 20);
 
 		emailLabel = new JLabel("Email: ");
@@ -64,7 +68,7 @@ public class RegisterPanel extends JPanel implements ActionListener {
 		emailField = new JTextField();
 		emailField.setBounds(110, 135, 170, 20);
 
-		emailError = new JLabel("error");
+		emailError = new JLabel("");
 		emailError.setBounds(115, 155, 170, 20);
 
 		passwordLabel = new JLabel("Password: ");
@@ -73,7 +77,7 @@ public class RegisterPanel extends JPanel implements ActionListener {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(110, 195, 170, 20);
 
-		passwordError = new JLabel("error");
+		passwordError = new JLabel("");
 		passwordError.setBounds(115, 215, 170, 20);
 
 		phoneLabel = new JLabel("Phone: ");
@@ -82,14 +86,14 @@ public class RegisterPanel extends JPanel implements ActionListener {
 		phoneField = new JTextField();
 		phoneField.setBounds(110, 255, 170, 20);
 
-		phoneError = new JLabel("error");
+		phoneError = new JLabel("");
 		phoneError.setBounds(115, 275, 170, 20);
 
 		registerButton = new JButton("Sign Up");
 		registerButton.setBounds(155, 295, 80, 30);
 		registerButton.addActionListener(this);
 
-		successLabel = new JLabel("Register Successfully!");
+		successLabel = new JLabel("");
 		successLabel.setBounds(115, 320, 150, 20);
 
 		this.add(nameLabel);
@@ -110,8 +114,49 @@ public class RegisterPanel extends JPanel implements ActionListener {
 		this.setVisible(true);
 	}
 
+	public void close() {
+		this.setVisible(false);
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//		mainPanel.setPanel("LoginPanel");
+
+		String name = nameField.getText();
+		String email = emailField.getText();
+		String password = new String(passwordField.getPassword());
+		String phone = phoneField.getText();
+
+		if (name == null || name.isEmpty() || name.isBlank()) {
+			nameError.setText("Name cannot be empty or white spaces.");
+		} else if (email == null || email.isEmpty() || email.isBlank()) {
+			emailError.setText("Email cannot be empty or white spaces.");
+		} else if (password == null || password.isEmpty() || password.isBlank()) {
+			passwordError.setText("Password cannot be empty or white spaces.");
+		} else if (phone == null || phone.isEmpty() || phone.isBlank()) {
+			phoneError.setText("Phone cannot be empty or white spaces.");
+		} else {
+			Map<String, String> body = new HashMap<>();
+			body.put("name", name);
+			body.put("email", email);
+			body.put("password", password);
+			body.put("phone", phone);
+			Mono<UserSchema> response = webClient.post().uri("/user/register").body(BodyInserters.fromValue(body))
+					.exchangeToMono(r -> {
+						return r.bodyToMono(UserSchema.class);
+					});
+			response.subscribe(v -> {
+				userSchema.setId(v.getId());
+				userSchema.setName(v.getName());
+				userSchema.setEmail(v.getEmail());
+				userSchema.setPhone(v.getPhone());
+//					userSchema.setLoginStatus(v.getLoginStatus());
+				userSchema.setJoinedTime(v.getJoinedTime());
+				userSchema.setLastActiveTime(v.getLastActiveTime());
+			});
+			successLabel.setText("Register Successfully!");
+			mainPanel.getLoginPanel().initialize(mainPanel);
+			mainPanel.setPanel("LoginPanel");
+			this.close();
+		}
 	}
 }

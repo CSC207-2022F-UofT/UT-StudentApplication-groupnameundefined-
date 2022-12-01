@@ -22,13 +22,11 @@ import java.util.Map;
 @Component
 public class LoginPanel extends JPanel implements ActionListener {
 
-
 	private final WebClient webClient;
-	private final Logger logger;
 	private final UserSchema userSchema;
+    private final Logger logger;
 
 	private MainPanel mainPanel;
-
 
 	private static JLabel emailLabel;
 	private static JTextField emailField;
@@ -59,9 +57,8 @@ public class LoginPanel extends JPanel implements ActionListener {
 
 		emailField = new JTextField();
 		emailField.setBounds(110, 75, 170, 20);
-		emailField.setText("");
 
-		emailError = new JLabel("error");
+		emailError = new JLabel("");
 		emailError.setBounds(115, 95, 170, 20);
 
 		passwordLabel = new JLabel("Password: ");
@@ -70,7 +67,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(110, 140, 170, 20);
 
-		passwordError = new JLabel("error");
+		passwordError = new JLabel("");
 		passwordError.setBounds(115, 160, 170, 20);
 
 		registerButton = new JButton("Sign Up");
@@ -105,31 +102,38 @@ public class LoginPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == loginButton) {
+
 			String email = emailField.getText();
 			String password = new String(passwordField.getPassword());
-			Map<String, String> body = new HashMap<>();
-			body.put("email", email);
-			body.put("password", password);
-			Mono<UserSchema> response = webClient.post().uri("/user/login").body(BodyInserters.fromValue(body))
-					.exchangeToMono(r -> {
-						return r.bodyToMono(UserSchema.class);
-					});
 
-			response.subscribe(v -> {
-				userSchema.setEmail(v.getEmail());
-				userSchema.setId(v.getId());
-				userSchema.setName(v.getName());
-				userSchema.setPhone(v.getPhone());
-				userSchema.setJoinedTime(v.getJoinedTime());
-				userSchema.setLastActiveTime(v.getLastActiveTime());
-			});
-		}
+			if (email == null || email.isEmpty() || email.isBlank()) {
+				emailError.setText("Email cannot be empty or white spaces.");
+			} else if (password == null || password.isEmpty() || password.isBlank()) {
+				passwordError.setText("Password cannot be empty or white spaces.");
+			} else {
+				Map<String, String> body = new HashMap<>();
+				body.put("email", email);
+				body.put("password", password);
+				Mono<UserSchema> response = webClient.post().uri("/user/login").body(BodyInserters.fromValue(body))
+						.exchangeToMono(r -> {
+							return r.bodyToMono(UserSchema.class);
+						});
 
-		if (e.getSource() == registerButton) {
+				response.subscribe(v -> {
+					userSchema.setId(v.getId());
+					userSchema.setName(v.getName());
+					userSchema.setEmail(v.getEmail());
+					userSchema.setPhone(v.getPhone());
+//					userSchema.setLoginStatus(v.getLoginStatus());
+					userSchema.setJoinedTime(v.getJoinedTime());
+					userSchema.setLastActiveTime(v.getLastActiveTime());
+				});
+				successLabel.setText("Login Successfully!");
+			}
+		} else if (e.getSource() == registerButton) {
 			logger.info("Pressed register button");
 			mainPanel.getRegisterPanel().initialize(mainPanel);
 			mainPanel.setPanel("RegisterPanel");
-
 			this.close();
 		}
 	}
