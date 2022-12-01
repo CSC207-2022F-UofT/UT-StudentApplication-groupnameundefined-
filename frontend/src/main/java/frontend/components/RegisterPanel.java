@@ -118,6 +118,18 @@ public class RegisterPanel extends JPanel implements ActionListener {
 		this.setVisible(false);
 	}
 
+	public void clean() {
+		nameField.setText("");
+		nameError.setText("");
+		emailField.setText("");
+		emailError.setText("");
+		passwordField.setText("");
+		passwordError.setText("");
+		phoneField.setText("");
+		phoneError.setText("");
+		successLabel.setText("");
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String name = nameField.getText();
@@ -143,21 +155,20 @@ public class RegisterPanel extends JPanel implements ActionListener {
 					.exchangeToMono(r -> {
 						return r.bodyToMono(UserSchema.class);
 					});
+
 			response.subscribe(v -> {
 				userSchema.setId(v.getId());
 				userSchema.setName(v.getName());
 				userSchema.setEmail(v.getEmail());
 				userSchema.setPhone(v.getPhone());
-				//					userSchema.setLoginStatus(v.getLoginStatus());
 				userSchema.setJoinedTime(v.getJoinedTime());
 				userSchema.setLastActiveTime(v.getLastActiveTime());
 			});
 			successLabel.setText("Register Successfully!");
-			mainPanel.getLoginPanel().initialize(mainPanel);
 			mainPanel.setPanel("LoginPanel");
+			this.clean();
 			this.close();
 			JOptionPane.showMessageDialog(null, "Register Successfully! Login Please.");
 		}
 	}
-
 }
