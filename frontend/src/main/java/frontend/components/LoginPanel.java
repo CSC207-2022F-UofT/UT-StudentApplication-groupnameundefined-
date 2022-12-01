@@ -1,13 +1,13 @@
 package frontend.components;
 
-import com.google.gson.Gson;
+import frontend.exception.APIException;
+import frontend.schema.APIExceptionSchema;
+import frontend.schema.FieldExceptionSchema;
 import frontend.schema.UserSchema;
-import lombok.Getter;
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -24,7 +24,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 
 	private final WebClient webClient;
 	private final UserSchema userSchema;
-    private final Logger logger;
+	private final Logger logger;
 
 	private MainPanel mainPanel;
 
@@ -113,17 +113,24 @@ public class LoginPanel extends JPanel implements ActionListener {
 				Map<String, String> body = new HashMap<>();
 				body.put("email", email);
 				body.put("password", password);
-				Mono<UserSchema> response = webClient.post().uri("/user/login").body(BodyInserters.fromValue(body))
-						.exchangeToMono(r -> {
-							return r.bodyToMono(UserSchema.class);
-						});
+				Mono<UserSchema> response = webClient.post()
+						.uri("/user/login")
+						.body(BodyInserters.fromValue(body))
+						.retrieve()
+						.onStatus(
+								status -> HttpStatus.UNAUTHORIZED.equals(status) || HttpStatus.INTERNAL_SERVER_ERROR.equals(status),
+								clientResponse -> clientResponse
+										.bodyToMono(APIExceptionSchema.class)
+										.flatMap(error -> Mono.error(new APIException(error)))
+						)
+						.bodyToMono(UserSchema.class);
 
 				response.subscribe(v -> {
 					userSchema.setId(v.getId());
 					userSchema.setName(v.getName());
 					userSchema.setEmail(v.getEmail());
 					userSchema.setPhone(v.getPhone());
-//					userSchema.setLoginStatus(v.getLoginStatus());
+					//					userSchema.setLoginStatus(v.getLoginStatus());
 					userSchema.setJoinedTime(v.getJoinedTime());
 					userSchema.setLastActiveTime(v.getLastActiveTime());
 				});
