@@ -1,8 +1,6 @@
 package frontend.components;
 
-import frontend.exception.APIException;
-import frontend.schema.APIExceptionSchema;
-import frontend.schema.FieldExceptionSchema;
+import frontend.exception.ResponseException;
 import frontend.schema.UserSchema;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 @Component
 public class LoginPanel extends JPanel implements ActionListener {
@@ -117,13 +116,17 @@ public class LoginPanel extends JPanel implements ActionListener {
 						.uri("/user/login")
 						.body(BodyInserters.fromValue(body))
 						.retrieve()
-						.onStatus(
-								status -> HttpStatus.UNAUTHORIZED.equals(status) || HttpStatus.INTERNAL_SERVER_ERROR.equals(status),
-								clientResponse -> clientResponse
-										.bodyToMono(APIExceptionSchema.class)
-										.flatMap(error -> Mono.error(new APIException(error)))
-						)
-						.bodyToMono(UserSchema.class);
+						.bodyToMono(UserSchema.class)
+						.doOnError(ResponseException.class, exception -> {
+							if (exception.hasFieldErrors()) {
+								for (Map<String, String> fieldError : exception.getErrors()) {
+									logger.error(fieldError.get("message"));
+								}
+							} else {
+								emailError.setText(exception.getMessage());
+							}
+						})
+						.onErrorComplete();
 
 				response.subscribe(v -> {
 					userSchema.setId(v.getId());
@@ -134,6 +137,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 					userSchema.setJoinedTime(v.getJoinedTime());
 					userSchema.setLastActiveTime(v.getLastActiveTime());
 				});
+
 				successLabel.setText("Login Successfully!");
 			}
 		} else if (e.getSource() == registerButton) {
