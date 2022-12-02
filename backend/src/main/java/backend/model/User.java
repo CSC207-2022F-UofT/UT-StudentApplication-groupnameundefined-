@@ -58,11 +58,11 @@ public class User {
 
 	@Setter(AccessLevel.NONE)
 	@OneToMany(mappedBy = "from", cascade = {CascadeType.ALL}, orphanRemoval = true)
-	private Set<FriendRequest> sentFriendRequests;
+	private Set<FriendRequest> sentFriendRequests = new HashSet<>();
 
 	@Setter(AccessLevel.NONE)
 	@OneToMany(mappedBy = "to", cascade = {CascadeType.ALL}, orphanRemoval = true)
-	private Set<FriendRequest> receivedFriendRequests;
+	private Set<FriendRequest> receivedFriendRequests = new HashSet<>();
 
 	public User() {
 	}
