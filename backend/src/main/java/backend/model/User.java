@@ -35,7 +35,7 @@ public class User {
 	private String phone;
 
 	@Column(name = "login_status")
-	private boolean loginStatus;
+	private Boolean loginStatus;
 
 	@Column(name = "joined_time")
 	private Timestamp joinedTime;
