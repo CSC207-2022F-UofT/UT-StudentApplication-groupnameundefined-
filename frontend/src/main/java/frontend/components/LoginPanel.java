@@ -77,8 +77,8 @@ public class LoginPanel extends JPanel implements ActionListener {
 		loginButton.setBounds(200, 180, 80, 30);
 		loginButton.addActionListener(this);
 
-		successLabel = new JLabel("");
-		successLabel.setBounds(135, 210, 150, 20);
+		successLabel = new JLabel("", SwingConstants.CENTER);
+		successLabel.setBounds(30, 210, 400, 20);
 
 		this.add(emailLabel);
 		this.add(emailField);
@@ -108,14 +108,14 @@ public class LoginPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == loginButton) {
-			logger.info("login clicked");
+			logger.info("login button clicked");
 			String email = emailField.getText();
 			String password = new String(passwordField.getPassword());
 
 			if (email == null || email.isEmpty() || email.isBlank()) {
-				emailError.setText("Email cannot be empty or white spaces.");
+				emailError.setText("Email cannot be empty or white spaces");
 			} else if (password == null || password.isEmpty() || password.isBlank()) {
-				passwordError.setText("Password cannot be empty or white spaces.");
+				passwordError.setText("Password cannot be empty or white spaces");
 			} else {
 				Map<String, String> body = new HashMap<>();
 				body.put("email", email);
@@ -129,9 +129,15 @@ public class LoginPanel extends JPanel implements ActionListener {
 							if (exception.hasFieldErrors()) {
 								for (Map<String, String> fieldError : exception.getErrors()) {
 									logger.error(fieldError.get("message"));
+									if (fieldError.get("field").equals("email")) {
+										emailError.setText(fieldError.get("message"));
+									} else if (fieldError.get("field").equals("password")) {
+										passwordError.setText(fieldError.get("message"));
+									}
 								}
 							} else {
-								emailError.setText(exception.getMessage());
+								logger.error(exception.getMessage());
+								successLabel.setText(exception.getMessage());
 							}
 						})
 						.onErrorComplete();
@@ -141,13 +147,12 @@ public class LoginPanel extends JPanel implements ActionListener {
 					userSchema.setName(v.getName());
 					userSchema.setEmail(v.getEmail());
 					userSchema.setPhone(v.getPhone());
-					//					userSchema.setLoginStatus(v.getLoginStatus());
+					userSchema.setLoginStatus(v.getLoginStatus());
 					userSchema.setJoinedTime(v.getJoinedTime());
 					userSchema.setLastActiveTime(v.getLastActiveTime());
+
+					successLabel.setText("Login Successfully!");
 				});
-
-				successLabel.setText("Login Successfully!");
-
 			}
 		} else if (e.getSource() == registerButton) {
 			mainPanel.getRegisterPanel().initialize(mainPanel);

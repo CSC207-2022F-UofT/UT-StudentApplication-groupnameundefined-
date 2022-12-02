@@ -51,7 +51,7 @@ public class UserControllerImp implements UserController {
 
 	@Override
 	@PostMapping("/login")
-	public ResponseEntity<UserDto> loginUser(@RequestBody LoginForm input) {
+	public ResponseEntity<UserDto> loginUser(@RequestBody @Valid LoginForm input) {
 		User user = userService.loginUser(input);
 		UserDto userDto = userMapper.toDto(user);
 

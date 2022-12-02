@@ -94,7 +94,7 @@ public class RegisterPanel extends JPanel implements ActionListener {
 		registerButton.addActionListener(this);
 
 		successLabel = new JLabel("");
-		successLabel.setBounds(115, 320, 150, 20);
+		successLabel.setBounds(115, 320, 300, 20);
 
 		this.add(nameLabel);
 		this.add(nameField);

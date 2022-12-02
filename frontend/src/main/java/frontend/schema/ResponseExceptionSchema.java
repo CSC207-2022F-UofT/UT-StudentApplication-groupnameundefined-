@@ -16,31 +16,4 @@ public class ResponseExceptionSchema {
 	private String code;
 	private ZonedDateTime timestamp;
 	private HttpStatus httpStatus;
-
-	public ResponseExceptionSchema(
-			String message,
-			String code,
-			ZonedDateTime timestamp,
-			HttpStatus httpStatus
-	) {
-		this.message = message;
-		this.code = code;
-		this.timestamp = timestamp;
-		this.httpStatus = httpStatus;
-	}
-
-	public ResponseExceptionSchema() {
-	}
-
-	public ResponseExceptionSchema(
-			List<Map<String, String>> errors,
-			String code,
-			ZonedDateTime timestamp,
-			HttpStatus httpStatus
-	) {
-		this.errors = errors;
-		this.code = code;
-		this.timestamp = timestamp;
-		this.httpStatus = httpStatus;
-	}
 }

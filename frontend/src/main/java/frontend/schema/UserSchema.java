@@ -18,7 +18,7 @@ public class UserSchema {
 	private Timestamp joinedTime;
 	private Timestamp lastActiveTime;
 
-	//    private StudentProfileDto studentProfile;
+//	private StudentProfileDto studentProfile;
 
 	public UserSchema() {
 
