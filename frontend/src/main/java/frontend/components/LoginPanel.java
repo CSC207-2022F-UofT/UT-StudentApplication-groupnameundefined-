@@ -97,6 +97,14 @@ public class LoginPanel extends JPanel implements ActionListener {
 		this.setVisible(false);
 	}
 
+	public void clean() {
+		emailField.setText("");
+		emailError.setText("");
+		passwordField.setText("");
+		passwordError.setText("");
+		successLabel.setText("");
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == loginButton) {
@@ -140,33 +148,11 @@ public class LoginPanel extends JPanel implements ActionListener {
 
 				successLabel.setText("Login Successfully!");
 
-
-//				Map<String, String> body = new HashMap<>();
-//				body.put("email", email);
-//				body.put("password", password);
-//				Mono<UserSchema> response = webClient.post().uri("/user/login").body(BodyInserters.fromValue(body))
-//						.retrieve().onStatus(
-//								status -> status.value() == HttpStatus.BAD_REQUEST.value() ||
-//										status.value() == HttpStatus.UNAUTHORIZED.value() ||
-//										status.value() == HttpStatus.INTERNAL_SERVER_ERROR.value(),
-//								clientResponse -> clientResponse.bodyToMono(APIExceptionSchema.class)
-//										.flatMap(error -> Mono.error(new APIException(error)))
-//						).bodyToMono(UserSchema.class);
-//
-//				response.subscribe(v -> {
-//					userSchema.setId(v.getId());
-//					userSchema.setName(v.getName());
-//					userSchema.setEmail(v.getEmail());
-//					userSchema.setPhone(v.getPhone());
-//					userSchema.setJoinedTime(v.getJoinedTime());
-//					userSchema.setLastActiveTime(v.getLastActiveTime());
-//				});
-
-
 			}
 		} else if (e.getSource() == registerButton) {
 			mainPanel.getRegisterPanel().initialize(mainPanel);
 			mainPanel.setPanel("RegisterPanel");
+			this.clean();
 			this.close();
 		}
 	}
