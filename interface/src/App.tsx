@@ -1,26 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+// MUI Designated Fonts
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
+// Views
+import Home from './view/Home';
+
+import { createTheme, CssBaseline, ThemeProvider, useMediaQuery } from '@mui/material';
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+	const theme = React.useMemo(
+		() =>
+			createTheme({
+				palette: {
+					mode: prefersDarkMode ? 'dark' : 'light',
+				},
+			}),
+		[prefersDarkMode]
+	);
+
+	return (
+		<ThemeProvider theme={theme}>
+			<CssBaseline />
+			<Home />
+		</ThemeProvider>
+	);
 }
 
 export default App;
