@@ -32,6 +32,7 @@ public class TimetableControllerImp implements TimetableController {
 	private final TimetableService timetableService;
 	private final TimetableMapper timetableMapper;
 
+	@Autowired
 	public TimetableControllerImp(Logger logger, TimetableService timetableService, TimetableMapper timetableMapper) {
 		this.logger = logger;
 		this.timetableService = timetableService;

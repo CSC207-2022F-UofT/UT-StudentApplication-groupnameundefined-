@@ -53,15 +53,16 @@ public class User {
 	@ManyToMany
 	private Set<User> blackList;
 
-	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "user")
+	@OneToOne(mappedBy = "user", cascade = {CascadeType.ALL})
 	private StudentProfile studentProfile;
 
-	//    @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "from")
-	//    private List<FriendRequest> sentFriendRequests;
-	//
-	//    @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "to")
-	//    private List<FriendRequest> receivedFriendRequests;
+	@Setter(AccessLevel.NONE)
+	@OneToMany(mappedBy = "from", cascade = {CascadeType.ALL}, orphanRemoval = true)
+	private Set<FriendRequest> sentFriendRequests;
 
+	@Setter(AccessLevel.NONE)
+	@OneToMany(mappedBy = "to", cascade = {CascadeType.ALL}, orphanRemoval = true)
+	private Set<FriendRequest> receivedFriendRequests;
 
 	public User() {
 	}
@@ -127,6 +128,24 @@ public class User {
 	 */
 	public void unghostFriend(User user) {
 		this.blackList.remove(user);
+	}
+
+	public void addSentFriendRequest(FriendRequest friendRequest) {
+		this.sentFriendRequests.add(friendRequest);
+		friendRequest.setFrom(this);
+	}
+
+	public void addReceivedFriendRequest(FriendRequest friendRequest) {
+		this.receivedFriendRequests.add(friendRequest);
+		friendRequest.setTo(this);
+	}
+
+	public void removeSentFriendRequest(FriendRequest friendRequest) {
+		this.sentFriendRequests.remove(friendRequest);
+	}
+
+	public void removeReceivedFriendRequest(FriendRequest friendRequest) {
+		this.receivedFriendRequests.remove(friendRequest);
 	}
 
 

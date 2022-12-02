@@ -9,14 +9,14 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "friend_request")
-public class FriendRequest extends Request {
+@Table(name = "appointment_request")
+public class AppointmentRequest extends Request {
 
-	public FriendRequest() {
+	public AppointmentRequest() {
 		super();
 	}
 
-	public FriendRequest(String message) {
+	public AppointmentRequest(String message) {
 		super(message);
 	}
 

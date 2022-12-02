@@ -23,43 +23,44 @@ import backend.service.StudentProfileService;
 @RequestMapping("/api/student-profile")
 public class StudentProfileControllerImp implements StudentProfileController {
 
-    private final Logger logger;
+	private final Logger logger;
 
-    private final StudentProfileService studentProfileService;
-    private final StudentProfileMapper studentProfileMapper;
+	private final StudentProfileService studentProfileService;
+	private final StudentProfileMapper studentProfileMapper;
 
-    public StudentProfileControllerImp(
-            Logger logger, StudentProfileService studentProfileService, StudentProfileMapper studentProfileMapper
-    ) {
-        this.logger = logger;
-        this.studentProfileService = studentProfileService;
-        this.studentProfileMapper = studentProfileMapper;
-    }
+	@Autowired
+	public StudentProfileControllerImp(
+			Logger logger, StudentProfileService studentProfileService, StudentProfileMapper studentProfileMapper
+	) {
+		this.logger = logger;
+		this.studentProfileService = studentProfileService;
+		this.studentProfileMapper = studentProfileMapper;
+	}
 
-    @Override
-    @PostMapping("/")
-    public ResponseEntity<StudentProfileDto> createStudentProfile(@RequestBody @Valid CreateStudentProfileForm input) {
-        StudentProfile studentProfile = studentProfileService.createStudentProfile(input);
-        StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile);
+	@Override
+	@PostMapping("/")
+	public ResponseEntity<StudentProfileDto> createStudentProfile(@RequestBody @Valid CreateStudentProfileForm input) {
+		StudentProfile studentProfile = studentProfileService.createStudentProfile(input);
+		StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile);
 
-        return new ResponseEntity<>(studentProfileDto, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(studentProfileDto, HttpStatus.OK);
+	}
 
-    @Override
-    @GetMapping("/")
-    public ResponseEntity<List<StudentProfileDto>> getAllStudentProfiles() {
-        List<StudentProfile> studentProfiles = studentProfileService.getAllStudentProfiles();
-        List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
+	@Override
+	@GetMapping("/")
+	public ResponseEntity<List<StudentProfileDto>> getAllStudentProfiles() {
+		List<StudentProfile> studentProfiles = studentProfileService.getAllStudentProfiles();
+		List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
 
-        return new ResponseEntity<>(studentProfileDtos, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(studentProfileDtos, HttpStatus.OK);
+	}
 
-    @Override
-    @GetMapping("/{id}")
-    public ResponseEntity<StudentProfileDto> getStudentProfileById(@PathVariable Long id) {
-        StudentProfile studentProfile = studentProfileService.getStudentProfileById(id);
-        StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile);
+	@Override
+	@GetMapping("/{id}")
+	public ResponseEntity<StudentProfileDto> getStudentProfileById(@PathVariable Long id) {
+		StudentProfile studentProfile = studentProfileService.getStudentProfileById(id);
+		StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile);
 
-        return new ResponseEntity<>(studentProfileDto, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(studentProfileDto, HttpStatus.OK);
+	}
 }

@@ -1,7 +1,9 @@
 package backend.controller.imp;
 
 import backend.controller.FriendRequestController;
+import backend.dto.FriendRequestDto;
 import backend.form.FriendRequestForm.*;
+import backend.mappers.FriendRequestMapper;
 import backend.model.FriendRequest;
 import backend.service.FriendRequestService;
 import org.slf4j.Logger;
@@ -17,99 +19,101 @@ import java.util.List;
 @RequestMapping("/api/friend-request")
 public class FriendRequestControllerImp implements FriendRequestController {
 
-    @Autowired
-    private FriendRequestService friendRequestService;
+    private final Logger logger;
+
+    private final FriendRequestService friendRequestService;
+    private final FriendRequestMapper friendRequestMapper;
 
     @Autowired
-    Logger logger;
+    public FriendRequestControllerImp(
+            Logger logger,
+            FriendRequestService friendRequestService,
+            FriendRequestMapper friendRequestMapper
+    ) {
+        this.logger = logger;
+        this.friendRequestService = friendRequestService;
+        this.friendRequestMapper = friendRequestMapper;
+    }
 
     @Override
     @GetMapping("/")
-    public ResponseEntity<List<FriendRequest>> getAllFriendRequests() {
-        try{
-            List<FriendRequest> allFriendRequests = friendRequestService.getAllFriendRequests();
-            return new ResponseEntity<List<FriendRequest>>(allFriendRequests, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<List<FriendRequestDto>> getAllFriendRequests() {
+        List<FriendRequest> friendRequests = friendRequestService.getAllFriendRequests();
+        List<FriendRequestDto> friendRequestDtos = friendRequestMapper.toDtoList(friendRequests);
+
+        return new ResponseEntity<>(friendRequestDtos, HttpStatus.OK);
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<FriendRequest> getFriendRequestById(@PathVariable Long id) {
-        try{
-            FriendRequest friendRequest = friendRequestService.getFriendRequestById(id);
-            return new ResponseEntity<FriendRequest>(friendRequest, HttpStatus.OK);
-        } catch (Exception e){
-            logger.error("error", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<FriendRequestDto> getFriendRequestById(@PathVariable Long id) {
+        FriendRequest friendRequest = friendRequestService.getFriendRequestById(id);
+        FriendRequestDto friendRequestDto = friendRequestMapper.toDto(friendRequest);
+
+        return new ResponseEntity<>(friendRequestDto, HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<FriendRequest>> getFriendRequestByUserId(@PathVariable Long userId) {
-        try{
-            List<FriendRequest> allFriendRequests = friendRequestService.getFriendRequestByUserId(userId);
-            return new ResponseEntity<List<FriendRequest>>(allFriendRequests, HttpStatus.OK);
-        } catch (Exception e){
-            logger.error("error", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @GetMapping("/from/{fromId}")
+    public ResponseEntity<List<FriendRequestDto>> getFriendRequestByFromId(@PathVariable Long fromId) {
+        List<FriendRequest> friendRequests = friendRequestService.getFriendRequestByFromId(fromId);
+        List<FriendRequestDto> friendRequestDtos = friendRequestMapper.toDtoList(friendRequests);
+
+        return new ResponseEntity<>(friendRequestDtos, HttpStatus.OK);
+    }
+
+    @Override
+    @GetMapping("/to/{toId}")
+    public ResponseEntity<List<FriendRequestDto>> getFriendRequestByToId(@PathVariable Long toId) {
+        List<FriendRequest> friendRequests = friendRequestService.getFriendRequestByToId(toId);
+        List<FriendRequestDto> friendRequestDtos = friendRequestMapper.toDtoList(friendRequests);
+
+        return new ResponseEntity<>(friendRequestDtos, HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/create")
-    public ResponseEntity<FriendRequest> createFriendRequest(@RequestBody CreateFriendRequestForm input) {
-        try{
-            FriendRequest newFriendRequest = friendRequestService.createFriendRequest(input);
-            return new ResponseEntity<FriendRequest>(newFriendRequest, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<FriendRequestDto> createFriendRequest(@RequestBody CreateFriendRequestForm input) {
+        FriendRequest friendRequest = friendRequestService.createFriendRequest(input);
+        FriendRequestDto friendRequestDto = friendRequestMapper.toDto(friendRequest);
+
+        return new ResponseEntity<>(friendRequestDto, HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/approve")
-    public ResponseEntity<FriendRequest> approveFriendRequest(@RequestBody Long id) {
-        try{
-            FriendRequest friendRequest = friendRequestService.approveFriendRequest(id);
-            return new ResponseEntity<FriendRequest>(friendRequest, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<FriendRequestDto> approveFriendRequest(@RequestBody Long id) {
+        FriendRequest friendRequest = friendRequestService.approveFriendRequest(id);
+        FriendRequestDto friendRequestDto = friendRequestMapper.toDto(friendRequest);
+
+        return new ResponseEntity<FriendRequestDto>(friendRequestDto, HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/deny")
-    public ResponseEntity<FriendRequest> denyFriendRequest(@RequestBody Long id) {
-        try{
-            FriendRequest friendRequest = friendRequestService.denyFriendRequest(id);
-            return new ResponseEntity<FriendRequest>(friendRequest, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<FriendRequestDto> denyFriendRequest(@RequestBody Long id) {
+        FriendRequest friendRequest = friendRequestService.denyFriendRequest(id);
+        FriendRequestDto friendRequestDto = friendRequestMapper.toDto(friendRequest);
+
+        return new ResponseEntity<FriendRequestDto>(friendRequestDto, HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/delete")
     public ResponseEntity<Long> deleteFriendRequest(@RequestBody Long id) {
-        try{
-            Long deletedId = friendRequestService.deleteFriendRequest(id);
-            return new ResponseEntity<Long>(deletedId, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Long deletedId = friendRequestService.deleteFriendRequest(id);
+
+        return new ResponseEntity<Long>(deletedId, HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/update")
-    public ResponseEntity<FriendRequest> updateFriendRequest(@RequestBody FriendRequest friendRequest) {
-        try{
-            FriendRequest updatedFriendRequest = friendRequestService.updateFriendRequest(friendRequest);
-            return new ResponseEntity<FriendRequest>(updatedFriendRequest, HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<FriendRequestDto> updateFriendRequest(@RequestBody UpdateFriendRequestForm input) {
+        FriendRequest friendRequest = friendRequestService.updateFriendRequest(input);
+        FriendRequestDto friendRequestDto = friendRequestMapper.toDto(friendRequest);
+
+        return new ResponseEntity<FriendRequestDto>(friendRequestDto, HttpStatus.OK);
     }
+
+
 }

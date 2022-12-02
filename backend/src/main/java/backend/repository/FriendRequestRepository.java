@@ -11,7 +11,8 @@ import java.util.Optional;
 
 public interface FriendRequestRepository extends JpaRepository<FriendRequest, Long> {
 
-    @Query("SELECT r FROM Request AS r WHERE r.from = :userId")
-    List<FriendRequest> findByUserId(@Param("userId") Long userId);
+    List<FriendRequest> findByFromId(Long fromId);
+
+    List<FriendRequest> findByToId(Long toId);
 
 }

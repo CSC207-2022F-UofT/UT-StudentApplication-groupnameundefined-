@@ -1,5 +1,6 @@
 package backend.controller;
 
+import backend.dto.FriendRequestDto;
 import backend.form.FriendRequestForm.*;
 import backend.model.FriendRequest;
 import org.springframework.http.ResponseEntity;
@@ -9,21 +10,22 @@ import java.util.List;
 
 public interface FriendRequestController {
 
-    ResponseEntity<List<FriendRequest>> getAllFriendRequests();
+	ResponseEntity<FriendRequestDto> createFriendRequest(CreateFriendRequestForm input);
 
-    ResponseEntity<FriendRequest> getFriendRequestById(Long id);
+	ResponseEntity<FriendRequestDto> updateFriendRequest(UpdateFriendRequestForm input);
 
-    ResponseEntity<List<FriendRequest>> getFriendRequestByUserId(Long userId);
+	ResponseEntity<FriendRequestDto> approveFriendRequest(Long id);
 
-    ResponseEntity<FriendRequest> createFriendRequest(CreateFriendRequestForm input);
+	ResponseEntity<FriendRequestDto> denyFriendRequest(Long id);
 
-    ResponseEntity<FriendRequest> approveFriendRequest(Long id);
+	ResponseEntity<Long> deleteFriendRequest(Long id);
 
-    ResponseEntity<FriendRequest> denyFriendRequest(Long id);
+	ResponseEntity<List<FriendRequestDto>> getAllFriendRequests();
 
-    ResponseEntity<Long> deleteFriendRequest(Long id);
+	ResponseEntity<FriendRequestDto> getFriendRequestById(Long id);
 
-    ResponseEntity<FriendRequest> updateFriendRequest(FriendRequest friendRequest);
+	ResponseEntity<List<FriendRequestDto>> getFriendRequestByFromId(Long fromId);
 
+	ResponseEntity<List<FriendRequestDto>> getFriendRequestByToId(Long toId);
 
 }

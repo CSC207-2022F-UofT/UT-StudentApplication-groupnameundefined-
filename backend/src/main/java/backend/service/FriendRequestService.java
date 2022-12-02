@@ -10,9 +10,13 @@ public interface FriendRequestService {
 
     FriendRequest getFriendRequestById(Long id);
 
-    List<FriendRequest> getFriendRequestByUserId(Long userId);
+    List<FriendRequest> getFriendRequestByFromId(Long fromId);
+
+    List<FriendRequest> getFriendRequestByToId(Long toId);
 
     FriendRequest createFriendRequest(CreateFriendRequestForm input);
+
+    FriendRequest updateFriendRequest(UpdateFriendRequestForm input);
 
     FriendRequest approveFriendRequest(Long id);
 
@@ -20,5 +24,4 @@ public interface FriendRequestService {
 
     Long deleteFriendRequest(Long id);
 
-    FriendRequest updateFriendRequest(FriendRequest friendRequest);
 }
