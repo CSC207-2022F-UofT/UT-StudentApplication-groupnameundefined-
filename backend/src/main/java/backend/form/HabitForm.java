@@ -11,36 +11,54 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class HabitForm {
 
-    @Getter
-    public static class CreateHabitForm {
+	@Getter
+	public static class CreateHabitForm {
 
-        @NotNull
-        private Long studentProfileId;
+		@NotNull
+		private final Long studentProfileId;
 
-        @NotNull
-        @Max(5)
-        @Min(1)
-        private Integer mbti;
+		@NotNull
+		@Max(5)
+		@Min(1)
+		private final Integer mbti;
 
-        @NotNull
-        @Max(5)
-        @Max(1)
-        private Integer talkative;
+		@NotNull
+		@Max(5)
+		@Max(1)
+		private final Integer talkative;
 
-        @NotNull
-        @Max(5)
-        @Min(1)
-        private Integer collaborative;
+		@NotNull
+		@Max(5)
+		@Min(1)
+		private final Integer collaborative;
 
-        @NotNull
-        private Boolean mbtiVisibility;
+		@NotNull
+		private final Boolean mbtiVisibility;
 
-        @NotNull
-        private Boolean talkativeVisibility;
+		@NotNull
+		private final Boolean talkativeVisibility;
 
-        @NotNull
-        private Boolean collaborativeVisibility;
+		@NotNull
+		private final Boolean collaborativeVisibility;
 
-    }
+		public CreateHabitForm(
+				Long studentProfileId,
+				Integer mbti,
+				Integer talkative,
+				Integer collaborative,
+				Boolean mbtiVisibility,
+				Boolean talkativeVisibility,
+				Boolean collaborativeVisibility
+		) {
+			this.studentProfileId = studentProfileId;
+			this.mbti = mbti;
+			this.talkative = talkative;
+			this.collaborative = collaborative;
+			this.mbtiVisibility = mbtiVisibility;
+			this.talkativeVisibility = talkativeVisibility;
+			this.collaborativeVisibility = collaborativeVisibility;
+		}
+
+	}
 
 }

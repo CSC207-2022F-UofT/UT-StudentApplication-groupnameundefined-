@@ -17,14 +17,14 @@ public class UserForm {
 		 */
 		@NotBlank
 		@Size(min = 2, max = 20, message = "Name must be between 2-20 characters")
-		public String name;
+		public final String name;
 
 		/**
 		 * Email must follow formal email format.
 		 */
 		@NotBlank
 		@Email(message = "Not a valid email")
-		public String email;
+		public final String email;
 
 		/**
 		 * Password must contain at least one number, one lower-case letter, one upper-case letter,
@@ -37,14 +37,21 @@ public class UserForm {
 				message = "Password must contain at least one number, one lower-case letter, " +
 						"one upper-case letter, and no white spaces."
 		)
-		public String password;
+		public final String password;
 
 		/**
 		 * Phone must be a sequence of 10 numbers.
 		 */
 		@NotBlank
 		@Pattern(regexp = "^\\d{10}$", message = "Phone must have 10 digits")
-		public String phone;
+		public final String phone;
+
+		public RegisterForm(String name, String email, String password, String phone) {
+			this.name = name;
+			this.email = email;
+			this.password = password;
+			this.phone = phone;
+		}
 
 	}
 
@@ -53,10 +60,15 @@ public class UserForm {
 
 		@NotBlank
 		@Email(message = "Not a valid email")
-		public String email;
+		public final String email;
 
 		@NotBlank
-		public String password;
+		public final String password;
+
+		public LoginForm(String email, String password) {
+			this.email = email;
+			this.password = password;
+		}
 
 	}
 }

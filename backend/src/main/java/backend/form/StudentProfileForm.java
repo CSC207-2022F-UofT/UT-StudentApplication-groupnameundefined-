@@ -13,24 +13,31 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class StudentProfileForm {
 
-    @Getter
-    public static class CreateStudentProfileForm {
+	@Getter
+	public static class CreateStudentProfileForm {
 
-        private Long userId;
+		private final Long userId;
 
-        @Size(max = 256)
-        private String program;
+		@Size(max = 256)
+		private final String program;
 
-        @Size(max = 256)
-        private String college;
+		@Size(max = 256)
+		private final String college;
 
-        @Max(value = 9999)
-        @Min(value = 1827)
-        private Integer enrolmentYear;
-        
-    }
+		@Max(value = 9999)
+		@Min(value = 1827)
+		private final Integer enrolmentYear;
 
-    public class updateStudentProfileForm {
-        private StudentProfile studentProfile;
-    }
+		public CreateStudentProfileForm(Long userId, String program, String college, Integer enrolmentYear) {
+			this.userId = userId;
+			this.program = program;
+			this.college = college;
+			this.enrolmentYear = enrolmentYear;
+		}
+
+	}
+
+	//    public class updateStudentProfileForm {
+	//        private StudentProfile studentProfile;
+	//    }
 }
