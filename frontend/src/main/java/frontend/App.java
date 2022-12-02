@@ -28,7 +28,7 @@ public class App implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		mainFrame.initalize();
+		mainFrame.initialize();
 	}
 
 }

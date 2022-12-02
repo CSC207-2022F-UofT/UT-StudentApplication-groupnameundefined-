@@ -52,33 +52,33 @@ public class LoginPanel extends JPanel implements ActionListener {
 		this.setLayout(null);
 
 		emailLabel = new JLabel("Email: ");
-		emailLabel.setBounds(100, 50, 70, 20);
+		emailLabel.setBounds(150, 90, 70, 20);
 
 		emailField = new JTextField();
-		emailField.setBounds(110, 75, 170, 20);
+		emailField.setBounds(160, 115, 170, 20);
 
 		emailError = new JLabel("");
-		emailError.setBounds(115, 95, 300, 20);
+		emailError.setBounds(165, 135, 300, 20);
 
 		passwordLabel = new JLabel("Password: ");
-		passwordLabel.setBounds(100, 115, 193, 28);
+		passwordLabel.setBounds(150, 155, 193, 28);
 
 		passwordField = new JPasswordField();
-		passwordField.setBounds(110, 140, 170, 20);
+		passwordField.setBounds(160, 180, 170, 20);
 
 		passwordError = new JLabel("");
-		passwordError.setBounds(115, 160, 300, 20);
+		passwordError.setBounds(165, 200, 300, 20);
 
 		registerButton = new JButton("Sign Up");
-		registerButton.setBounds(110, 180, 80, 30);
+		registerButton.setBounds(160, 230, 80, 30);
 		registerButton.addActionListener(this);
 
 		loginButton = new JButton("Sign In");
-		loginButton.setBounds(200, 180, 80, 30);
+		loginButton.setBounds(250, 230, 80, 30);
 		loginButton.addActionListener(this);
 
 		successLabel = new JLabel("", SwingConstants.CENTER);
-		successLabel.setBounds(30, 210, 400, 20);
+		successLabel.setBounds(45, 270, 400, 20);
 
 		this.add(emailLabel);
 		this.add(emailField);
@@ -97,7 +97,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 		this.setVisible(false);
 	}
 
-	public void clean() {
+	public void cleanAll() {
 		emailField.setText("");
 		emailError.setText("");
 		passwordField.setText("");
@@ -105,10 +105,21 @@ public class LoginPanel extends JPanel implements ActionListener {
 		successLabel.setText("");
 	}
 
+	public void cleanErrors() {
+		emailError.setText("");
+		passwordError.setText("");
+		successLabel.setText("");
+	}
+
+	public void disableRegisterButton() {
+		registerButton.setEnabled(false);
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == loginButton) {
 			logger.info("login button clicked");
+			this.cleanErrors();
 			String email = emailField.getText();
 			String password = new String(passwordField.getPassword());
 
@@ -152,12 +163,17 @@ public class LoginPanel extends JPanel implements ActionListener {
 					userSchema.setLastActiveTime(v.getLastActiveTime());
 
 					successLabel.setText("Login Successfully!");
+					JOptionPane.showMessageDialog(null,
+							"Login successfully!");
+//					mainPanel.setPanel("NextPanel");
+//					this.cleanAll();
+//					this.close();
 				});
 			}
 		} else if (e.getSource() == registerButton) {
 			mainPanel.getRegisterPanel().initialize(mainPanel);
 			mainPanel.setPanel("RegisterPanel");
-			this.clean();
+			this.cleanAll();
 			this.close();
 		}
 	}

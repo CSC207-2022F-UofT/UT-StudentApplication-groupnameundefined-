@@ -30,10 +30,12 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public User registerUser(RegisterForm input) {
-		if (userRepository.existsByEmail(input.getEmail())) {
+		if (userRepository.existsByName(input.getName())) {
+			throw new EntityExistException(String.format("User with name '%s' already exist.", input.getName()), User.class);
+		} else if (userRepository.existsByEmail(input.getEmail())) {
 			throw new EntityExistException(String.format("User with email '%s' already exist.", input.getEmail()), User.class);
 		} else if (userRepository.existsByPhone(input.getPhone())) {
-			throw new EntityExistException(String.format("User with email '%s' already exist.", input.getEmail()), User.class);
+			throw new EntityExistException(String.format("User with phone '%s' already exist.", input.getPhone()), User.class);
 		} else {
 			User user = new User(input.getName(), input.getEmail(), input.getPassword(), input.getPhone());
 			return userRepository.save(user);

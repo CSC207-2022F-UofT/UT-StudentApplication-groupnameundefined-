@@ -25,10 +25,10 @@ public class MainFrame extends JFrame {
 	@Autowired
 	private MainPanel mainPanel;
 
-	public void initalize() {
+	public void initialize() {
 		setTitle("UT Student Application");
 		setSize(1400, 800);
-		setMinimumSize(new Dimension(400, 300));
+		setMinimumSize(new Dimension(500, 430));
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setVisible(true);
 
