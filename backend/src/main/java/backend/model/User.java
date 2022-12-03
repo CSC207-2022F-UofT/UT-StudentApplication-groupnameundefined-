@@ -64,6 +64,14 @@ public class User {
 	@OneToMany(mappedBy = "to", cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private Set<FriendRequest> receivedFriendRequests = new HashSet<>();
 
+	@Setter(AccessLevel.NONE)
+	@OneToMany(mappedBy = "from", cascade = {CascadeType.ALL}, orphanRemoval = true)
+	private Set<AppointmentRequest> sentAptRequests = new HashSet<>();
+
+	@Setter(AccessLevel.NONE)
+	@OneToMany(mappedBy = "to", cascade = {CascadeType.ALL}, orphanRemoval = true)
+	private Set<AppointmentRequest> receivedAptRequests = new HashSet<>();
+
 	public User() {
 	}
 
@@ -147,6 +155,26 @@ public class User {
 	public void removeReceivedFriendRequest(FriendRequest friendRequest) {
 		this.receivedFriendRequests.remove(friendRequest);
 	}
+
+
+	public void addSentApttRequest(FriendRequest friendRequest) {
+		this.sentFriendRequests.add(friendRequest);
+		friendRequest.setFrom(this);
+	}
+
+	public void addReceivedFriendRequest(FriendRequest friendRequest) {
+		this.receivedFriendRequests.add(friendRequest);
+		friendRequest.setTo(this);
+	}
+
+	public void removeSentFriendRequest(FriendRequest friendRequest) {
+		this.sentFriendRequests.remove(friendRequest);
+	}
+
+	public void removeReceivedFriendRequest(FriendRequest friendRequest) {
+		this.receivedFriendRequests.remove(friendRequest);
+	}
+
 
 
 	@Override
