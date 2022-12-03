@@ -38,7 +38,7 @@ public class StudentProfileControllerImp implements StudentProfileController {
 	}
 
 	@Override
-	@PostMapping("/")
+	@PostMapping("/create")
 	public ResponseEntity<StudentProfileDto> createStudentProfile(@RequestBody @Valid CreateStudentProfileForm input) {
 		StudentProfile studentProfile = studentProfileService.createStudentProfile(input);
 		StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile);
