@@ -28,7 +28,7 @@ public class UserControllerIntegrationTest extends ControllerIntegrationTest {
 	@Test
 	@Order(1)
 	public void registerUser_expectSuccess() throws Exception {
-		RegisterForm registerInput = new RegisterForm(
+		RegisterForm input = new RegisterForm(
 				"Test Name",
 				"test.name@email.com",
 				"1234567Abc",
@@ -37,7 +37,7 @@ public class UserControllerIntegrationTest extends ControllerIntegrationTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(toJsonString(registerInput)))
+						.content(toJsonString(input)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.email", is("test.name@email.com")))
 				.andExpect(jsonPath("$.studentProfile", nullValue()))
@@ -48,7 +48,7 @@ public class UserControllerIntegrationTest extends ControllerIntegrationTest {
 	@Order(2)
 	public void registerUser_expectInvalidInput() throws Exception {
 		// Input with invalid email, password not meeting requirement, phone too short
-		RegisterForm registerInput = new RegisterForm(
+		RegisterForm input = new RegisterForm(
 				"Test Name",
 				"test.nameemail.com",
 				"1234567A",
@@ -57,7 +57,7 @@ public class UserControllerIntegrationTest extends ControllerIntegrationTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(toJsonString(registerInput)))
+						.content(toJsonString(input)))
 				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.errors", hasSize(3)))
 				.andExpect(jsonPath("$.errors[*].field", containsInAnyOrder("email", "password", "phone")));
@@ -66,7 +66,7 @@ public class UserControllerIntegrationTest extends ControllerIntegrationTest {
 	@Test
 	@Order(3)
 	public void registerUser_expectEntityExist() throws Exception {
-		RegisterForm registerInput = new RegisterForm(
+		RegisterForm input = new RegisterForm(
 				"Test Name",
 				"test.name@email.com",
 				"1234567Abc",
@@ -74,7 +74,7 @@ public class UserControllerIntegrationTest extends ControllerIntegrationTest {
 		);
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(toJsonString(registerInput)))
+						.content(toJsonString(input)))
 				.andExpect(status().isConflict())
 				.andExpect(jsonPath("$.code", is("EXIST-USER")));
 	}
@@ -106,14 +106,14 @@ public class UserControllerIntegrationTest extends ControllerIntegrationTest {
 	@Test
 	@Order(7)
 	public void loginUser_expectSuccess() throws Exception {
-		LoginForm loginInput = new LoginForm(
+		LoginForm input = new LoginForm(
 				"test.name@email.com",
 				"1234567Abc"
 		);
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(toJsonString(loginInput)))
+						.content(toJsonString(input)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.loginStatus", is(true)))
 				.andExpect(jsonPath("$.id", is(1)));
@@ -123,14 +123,14 @@ public class UserControllerIntegrationTest extends ControllerIntegrationTest {
 	@Order(8)
 	public void loginUser_expectInvalidInput() throws Exception {
 		// Invalid email and password, but should only check email validity
-		LoginForm loginInput = new LoginForm(
+		LoginForm input = new LoginForm(
 				"test.nameemail.com",
 				"1234567abc"
 		);
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(toJsonString(loginInput)))
+						.content(toJsonString(input)))
 				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.errors", hasSize(1)))
 				.andExpect(jsonPath("$.errors[*].field", contains("email")));
@@ -140,14 +140,14 @@ public class UserControllerIntegrationTest extends ControllerIntegrationTest {
 	@Order(9)
 	public void loginUser_expectUnauthorized() throws Exception {
 		// Incorrect password (extra 'd')
-		LoginForm loginInput = new LoginForm(
+		LoginForm input = new LoginForm(
 				"test.name@email.com",
 				"1234567Abcd"
 		);
 
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(toJsonString(loginInput)))
+						.content(toJsonString(input)))
 				.andExpect(status().isUnauthorized());
 	}
 
