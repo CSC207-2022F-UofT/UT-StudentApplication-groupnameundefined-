@@ -15,6 +15,7 @@ import backend.form.UserForm.*;
 import backend.model.User;
 import backend.service.UserService;
 
+@Order(1)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserControllerIntegrationTest extends ControllerIntegrationTest {
 
