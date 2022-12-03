@@ -19,6 +19,7 @@ function App() {
 			createTheme({
 				palette: {
 					mode: 'light',
+					primary: {},
 				},
 			}),
 		[]
