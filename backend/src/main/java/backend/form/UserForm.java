@@ -2,6 +2,7 @@ package backend.form;
 
 //InputBoundary Layer
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -71,4 +72,5 @@ public class UserForm {
 		}
 
 	}
+
 }

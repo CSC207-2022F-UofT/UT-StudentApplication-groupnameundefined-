@@ -1,5 +1,6 @@
 package backend.model;
 
+import backend.form.AppointmentRequestForm;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -157,21 +158,21 @@ public class User {
 	}
 
 
-	public void addSentApttRequest(FriendRequest friendRequest) {
+	public void addSentAptRequest(FriendRequest friendRequest) {
 		this.sentFriendRequests.add(friendRequest);
 		friendRequest.setFrom(this);
 	}
 
-	public void addReceivedFriendRequest(FriendRequest friendRequest) {
+	public void addReceivedAptRequest(FriendRequest friendRequest) {
 		this.receivedFriendRequests.add(friendRequest);
 		friendRequest.setTo(this);
 	}
 
-	public void removeSentFriendRequest(FriendRequest friendRequest) {
+	public void removeSentAptRequest(FriendRequest friendRequest) {
 		this.sentFriendRequests.remove(friendRequest);
 	}
 
-	public void removeReceivedFriendRequest(FriendRequest friendRequest) {
+	public void removeReceivedAptRequest(FriendRequest friendRequest) {
 		this.receivedFriendRequests.remove(friendRequest);
 	}
 

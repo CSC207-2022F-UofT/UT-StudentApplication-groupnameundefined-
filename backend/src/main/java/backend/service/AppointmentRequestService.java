@@ -2,6 +2,7 @@ package backend.service;
 
 import backend.form.AppointmentRequestForm.*;
 import backend.model.AppointmentRequest;
+import backend.model.User;
 
 import java.util.List;
 
@@ -10,7 +11,8 @@ public interface AppointmentRequestService {
 
 	AppointmentRequest getAppointmentRequestById(Long id);
 
-	List<AppointmentRequest> getAppointmentRequestByUserId(Long userId);
+	List<AppointmentRequest> getAppointmentRequestByFromId(Long fromId);
+	List<AppointmentRequest> getAppointmentRequestByToId(Long toId);
 
 	AppointmentRequest createAppointmentRequest(CreateAppointmentRequestForm input);
 
@@ -21,4 +23,5 @@ public interface AppointmentRequestService {
 	Long deleteAppointmentRequest(Long id);
 
 	AppointmentRequest updateAppointmentRequest(UpdateAppointmentRequestForm input);
+
 }

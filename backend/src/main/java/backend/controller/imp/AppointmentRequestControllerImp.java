@@ -18,7 +18,7 @@ import java.util.List;
 public class AppointmentRequestControllerImp implements AppointmentRequestController {
 
 	@Autowired
-	private AppointmentRequestService AppointmentRequestService;
+	private AppointmentRequestService appointmentRequestService;
 
 	@Autowired
 	Logger logger;
@@ -27,7 +27,7 @@ public class AppointmentRequestControllerImp implements AppointmentRequestContro
 	@GetMapping("/")
 	public ResponseEntity<List<AppointmentRequest>> getAllAppointmentRequests() {
 		try {
-			List<AppointmentRequest> allAppointmentRequests = AppointmentRequestService.getAllAppointmentRequests();
+			List<AppointmentRequest> allAppointmentRequests = appointmentRequestService.getAllAppointmentRequests();
 			return new ResponseEntity<List<AppointmentRequest>>(allAppointmentRequests, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -38,7 +38,7 @@ public class AppointmentRequestControllerImp implements AppointmentRequestContro
 	@GetMapping("/{id}")
 	public ResponseEntity<AppointmentRequest> getAppointmentRequestById(@PathVariable Long id) {
 		try {
-			AppointmentRequest AppointmentRequest = AppointmentRequestService.getAppointmentRequestById(id);
+			AppointmentRequest AppointmentRequest = appointmentRequestService.getAppointmentRequestById(id);
 			return new ResponseEntity<AppointmentRequest>(AppointmentRequest, HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("error", e);
@@ -47,10 +47,9 @@ public class AppointmentRequestControllerImp implements AppointmentRequestContro
 	}
 
 	@Override
-	@GetMapping("/user/{userId}")
-	public ResponseEntity<List<AppointmentRequest>> getAppointmentRequestByUserId(@PathVariable Long userId) {
+	public ResponseEntity<List<AppointmentRequest>> getAppointmentRequestByFromId(Long fromId) {
 		try {
-			List<AppointmentRequest> allAppointmentRequests = AppointmentRequestService.getAppointmentRequestByUserId(userId);
+			List<AppointmentRequest> allAppointmentRequests = appointmentRequestService.getAppointmentRequestByFromId(fromId);
 			return new ResponseEntity<List<AppointmentRequest>>(allAppointmentRequests, HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("error", e);
@@ -59,10 +58,22 @@ public class AppointmentRequestControllerImp implements AppointmentRequestContro
 	}
 
 	@Override
+	public ResponseEntity<List<AppointmentRequest>> getAppointmentRequestByToId(Long toId) {
+		try {
+			List<AppointmentRequest> allAppointmentRequests = appointmentRequestService.getAppointmentRequestByToId(toId);
+			return new ResponseEntity<List<AppointmentRequest>>(allAppointmentRequests, HttpStatus.OK);
+		} catch (Exception e) {
+			logger.error("error", e);
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+
+	@Override
 	@PostMapping("/create")
 	public ResponseEntity<AppointmentRequest> createAppointmentRequest(@RequestBody CreateAppointmentRequestForm input) {
 		try {
-			AppointmentRequest newAppointmentRequest = AppointmentRequestService.createAppointmentRequest(input);
+			AppointmentRequest newAppointmentRequest = appointmentRequestService.createAppointmentRequest(input);
 			return new ResponseEntity<AppointmentRequest>(newAppointmentRequest, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -73,7 +84,7 @@ public class AppointmentRequestControllerImp implements AppointmentRequestContro
 	@GetMapping("/approve/{id}")
 	public ResponseEntity<AppointmentRequest> approveAppointmentRequest(@PathVariable Long id) {
 		try {
-			AppointmentRequest AppointmentRequest = AppointmentRequestService.approveAppointmentRequest(id);
+			AppointmentRequest AppointmentRequest = appointmentRequestService.approveAppointmentRequest(id);
 			return new ResponseEntity<AppointmentRequest>(AppointmentRequest, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -84,7 +95,7 @@ public class AppointmentRequestControllerImp implements AppointmentRequestContro
 	@GetMapping("/deny/{id}")
 	public ResponseEntity<AppointmentRequest> denyAppointmentRequest(@PathVariable Long id) {
 		try {
-			AppointmentRequest AppointmentRequest = AppointmentRequestService.denyAppointmentRequest(id);
+			AppointmentRequest AppointmentRequest = appointmentRequestService.denyAppointmentRequest(id);
 			return new ResponseEntity<AppointmentRequest>(AppointmentRequest, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -95,7 +106,7 @@ public class AppointmentRequestControllerImp implements AppointmentRequestContro
 	@GetMapping("/delete/{id}")
 	public ResponseEntity<Long> deleteAppointmentRequest(@PathVariable Long id) {
 		try {
-			Long deletedId = AppointmentRequestService.deleteAppointmentRequest(id);
+			Long deletedId = appointmentRequestService.deleteAppointmentRequest(id);
 			return new ResponseEntity<Long>(deletedId, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -106,7 +117,7 @@ public class AppointmentRequestControllerImp implements AppointmentRequestContro
 	@PostMapping("/post")
 	public ResponseEntity<AppointmentRequest> updateAppointmentRequest(@RequestBody UpdateAppointmentRequestForm input) {
 		try {
-			AppointmentRequest updatedAppointmentRequest = AppointmentRequestService.updateAppointmentRequest(input);
+			AppointmentRequest updatedAppointmentRequest = appointmentRequestService.updateAppointmentRequest(input);
 			return new ResponseEntity<AppointmentRequest>(updatedAppointmentRequest, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

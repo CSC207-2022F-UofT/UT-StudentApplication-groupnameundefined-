@@ -45,27 +45,38 @@ public class AppointmentRequestServiceImp implements AppointmentRequestService {
 	}
 
 	@Override
-	public List<AppointmentRequest> getAppointmentRequestByUserId(Long userId) {
-		return aptRepository.findByFromId(userId);
+	public List<AppointmentRequest> getAppointmentRequestByFromId(Long fromId) {
+		return aptRepository.findByFromId(fromId);
+	}
+
+	@Override
+	public List<AppointmentRequest> getAppointmentRequestByToId(Long toId) {
+		return aptRepository.findByToId(toId);
 	}
 
 	public AppointmentRequest createAppointmentRequest(CreateAppointmentRequestForm input) {
+
 		Optional<User> fromUser = userRepository.findById(input.getFrom());
 		Optional<User> toUser = userRepository.findById(input.getTo());
 
-		if (!(fromUser.isPresent() && toUser.isPresent())) {
-			throw new EntityNotFoundException();
+		if (fromUser.isEmpty()) {
+			throw new backend.exception.exceptions.EntityNotFoundException(
+					String.format("Unable to find user with id '%s'.", input.getFrom()), User.class);
 		}
 
-		String message = input.getMessage();
-		String location = input.getLocation();
-		Integer startDay = input.getStartDay();
-		Integer startMil = input.getStartMil();
-		Integer endDay = input.getEndDay();
-		Integer endMil = input.getEndMil();
-
+		if (toUser.isEmpty()) {
+			throw new backend.exception.exceptions.EntityNotFoundException(
+					String.format("Unable to find user with id '%s'.", input.getTo()), User.class);
+		}
 		AppointmentRequest appointmentRequest = new AppointmentRequest(
-				fromUser.get(), toUser.get(), message, location, startDay, startMil, endDay, endMil);
+				fromUser.get(),
+				toUser.get(),
+				input.getMessage(),
+				input.getLocation(),
+				input.getStartDay(),
+				input.getStartMil(),
+				input.getEndDay(),
+				input.getEndMil());
 
 		return aptRepository.save(appointmentRequest);
 	}
@@ -122,15 +133,13 @@ public class AppointmentRequestServiceImp implements AppointmentRequestService {
 			throw new EntityNotFoundException();
 		}
 		AppointmentRequest updateApt = _updateApt.get();
-
 		updateApt.updateAppointmentRequest(
 				input.getMessage(),
 				input.getLocation(),
 				input.getStartDay(),
 				input.getStartMil(),
 				input.getEndDay(),
-				input.getEndMil()
-		);
+				input.getEndMil());
 
 		return aptRepository.save(updateApt);
 	}

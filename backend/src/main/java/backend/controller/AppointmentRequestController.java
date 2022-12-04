@@ -13,7 +13,9 @@ public interface AppointmentRequestController {
 
 	ResponseEntity<AppointmentRequest> getAppointmentRequestById(Long id);
 
-	ResponseEntity<List<AppointmentRequest>> getAppointmentRequestByUserId(Long userId);
+	ResponseEntity<List<AppointmentRequest>> getAppointmentRequestByFromId(Long fromId);
+
+	ResponseEntity<List<AppointmentRequest>>  getAppointmentRequestByToId(Long toId);
 
 	ResponseEntity<AppointmentRequest> createAppointmentRequest(CreateAppointmentRequestForm input);
 
