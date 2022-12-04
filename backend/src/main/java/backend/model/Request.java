@@ -55,6 +55,18 @@ public class Request {
 		this.timestamp = new Timestamp(System.currentTimeMillis());
 	}
 
+	public Request(User from, User to, String message) {
+		this.from = from;
+		this.to = to;
+		this.message = message;
+
+		// Default status without explicitly addressing is PENDING
+		this.status = "PENDING";
+		// Keep track of the time when the request is created.
+		Date date = new Date();
+		this.timestamp = new Timestamp(date.getTime());
+	}
+
 	@Override
 	public String toString() {
 		return "Request " + this.id + ": from " + this.from.getName()

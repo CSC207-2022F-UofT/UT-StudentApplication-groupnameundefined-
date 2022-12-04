@@ -36,17 +36,6 @@ public class AppointmentRequest extends Request {
 		this.endMil = endMil;
 	}
 
-	public AppointmentRequest(
-			User from, User to, String location, Integer startDay,
-			Integer startMil, Integer endDay, Integer endMil
-	) {
-		super(from, to);
-		this.location = location;
-		this.startDay = startDay;
-		this.startMil = startMil;
-		this.endDay = endDay;
-		this.endMil = endMil;
-	}
 
 	public void updateAppointmentRequest(
 			String message, String location, Integer startDay,

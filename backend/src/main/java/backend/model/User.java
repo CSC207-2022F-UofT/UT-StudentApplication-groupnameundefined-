@@ -1,5 +1,6 @@
 package backend.model;
 
+import backend.form.AppointmentRequestForm;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -63,6 +64,14 @@ public class User {
 	@Setter(AccessLevel.NONE)
 	@OneToMany(mappedBy = "to", cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private Set<FriendRequest> receivedFriendRequests = new HashSet<>();
+
+	@Setter(AccessLevel.NONE)
+	@OneToMany(mappedBy = "from", cascade = {CascadeType.ALL}, orphanRemoval = true)
+	private Set<AppointmentRequest> sentAptRequests = new HashSet<>();
+
+	@Setter(AccessLevel.NONE)
+	@OneToMany(mappedBy = "to", cascade = {CascadeType.ALL}, orphanRemoval = true)
+	private Set<AppointmentRequest> receivedAptRequests = new HashSet<>();
 
 	public User() {
 	}
@@ -147,6 +156,26 @@ public class User {
 	public void removeReceivedFriendRequest(FriendRequest friendRequest) {
 		this.receivedFriendRequests.remove(friendRequest);
 	}
+
+
+	public void addSentAptRequest(FriendRequest friendRequest) {
+		this.sentFriendRequests.add(friendRequest);
+		friendRequest.setFrom(this);
+	}
+
+	public void addReceivedAptRequest(FriendRequest friendRequest) {
+		this.receivedFriendRequests.add(friendRequest);
+		friendRequest.setTo(this);
+	}
+
+	public void removeSentAptRequest(FriendRequest friendRequest) {
+		this.sentFriendRequests.remove(friendRequest);
+	}
+
+	public void removeReceivedAptRequest(FriendRequest friendRequest) {
+		this.receivedFriendRequests.remove(friendRequest);
+	}
+
 
 
 	@Override

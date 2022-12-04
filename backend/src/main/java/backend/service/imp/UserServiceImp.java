@@ -6,7 +6,13 @@ import java.util.Optional;
 import backend.exception.exceptions.EntityExistException;
 import backend.exception.exceptions.EntityNotFoundException;
 import backend.exception.exceptions.InvalidCredentialsException;
+import backend.form.AppointmentRequestForm.*;
 import backend.form.UserForm.*;
+
+import backend.model.AppointmentBlock;
+import backend.model.AppointmentRequest;
+import backend.model.Timetable;
+import backend.service.AppointmentRequestService;
 import backend.service.UserService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +28,15 @@ public class UserServiceImp implements UserService {
 
 	private final UserRepository userRepository;
 
+	private final AppointmentRequestService appointmentRequestService;
+
 	@Autowired
-	public UserServiceImp(Logger logger, UserRepository userRepository) {
+	public UserServiceImp(Logger logger, UserRepository userRepository,
+						  AppointmentRequestService appointmentRequestService) {
 		this.logger = logger;
 		this.userRepository = userRepository;
+		this.appointmentRequestService = appointmentRequestService;
+
 	}
 
 	@Override
@@ -101,6 +112,32 @@ public class UserServiceImp implements UserService {
 		}
 
 		throw new EntityNotFoundException(String.format("Unable to find user with email '%s'.", email), User.class);
+	}
+
+	@Override
+	public AppointmentRequest sendAptRequest(CreateAppointmentRequestForm input) {
+		AppointmentRequest apt = appointmentRequestService.createAppointmentRequest(input);
+
+		User user = apt.getFrom();
+		Timetable timetable = user.getStudentProfile().getTimetable();
+		AppointmentBlock aptBlock = new AppointmentBlock();
+		timetable.addBlock(aptBlock);
+		userRepository.save(user);
+
+		return apt;
+	}
+
+	@Override
+	public AppointmentRequest updateAptRequest(UpdateAppointmentRequestForm input) {
+		AppointmentRequest apt = appointmentRequestService.updateAppointmentRequest(input);
+
+		User user = apt.getFrom();
+		Timetable timetable = user.getStudentProfile().getTimetable();
+		AppointmentBlock aptBlock = new AppointmentBlock();
+		timetable.addBlock(aptBlock);
+		userRepository.save(user);
+
+		return apt;
 	}
 
 }
