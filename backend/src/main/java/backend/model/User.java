@@ -1,15 +1,11 @@
 package backend.model;
 
-import backend.form.AppointmentRequestForm;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -56,22 +52,6 @@ public class User {
 
 	@OneToOne(mappedBy = "user", cascade = {CascadeType.ALL})
 	private StudentProfile studentProfile;
-
-	@Setter(AccessLevel.NONE)
-	@OneToMany(mappedBy = "from", cascade = {CascadeType.ALL}, orphanRemoval = true)
-	private Set<FriendRequest> sentFriendRequests = new HashSet<>();
-
-	@Setter(AccessLevel.NONE)
-	@OneToMany(mappedBy = "to", cascade = {CascadeType.ALL}, orphanRemoval = true)
-	private Set<FriendRequest> receivedFriendRequests = new HashSet<>();
-
-	@Setter(AccessLevel.NONE)
-	@OneToMany(mappedBy = "from", cascade = {CascadeType.ALL}, orphanRemoval = true)
-	private Set<AppointmentRequest> sentAptRequests = new HashSet<>();
-
-	@Setter(AccessLevel.NONE)
-	@OneToMany(mappedBy = "to", cascade = {CascadeType.ALL}, orphanRemoval = true)
-	private Set<AppointmentRequest> receivedAptRequests = new HashSet<>();
 
 	public User() {
 	}
@@ -138,45 +118,6 @@ public class User {
 	public void unghostFriend(User user) {
 		this.blackList.remove(user);
 	}
-
-	public void addSentFriendRequest(FriendRequest friendRequest) {
-		this.sentFriendRequests.add(friendRequest);
-		friendRequest.setFrom(this);
-	}
-
-	public void addReceivedFriendRequest(FriendRequest friendRequest) {
-		this.receivedFriendRequests.add(friendRequest);
-		friendRequest.setTo(this);
-	}
-
-	public void removeSentFriendRequest(FriendRequest friendRequest) {
-		this.sentFriendRequests.remove(friendRequest);
-	}
-
-	public void removeReceivedFriendRequest(FriendRequest friendRequest) {
-		this.receivedFriendRequests.remove(friendRequest);
-	}
-
-
-	public void addSentAptRequest(FriendRequest friendRequest) {
-		this.sentFriendRequests.add(friendRequest);
-		friendRequest.setFrom(this);
-	}
-
-	public void addReceivedAptRequest(FriendRequest friendRequest) {
-		this.receivedFriendRequests.add(friendRequest);
-		friendRequest.setTo(this);
-	}
-
-	public void removeSentAptRequest(FriendRequest friendRequest) {
-		this.sentFriendRequests.remove(friendRequest);
-	}
-
-	public void removeReceivedAptRequest(FriendRequest friendRequest) {
-		this.receivedFriendRequests.remove(friendRequest);
-	}
-
-
 
 	@Override
 	public String toString() {

@@ -6,13 +6,15 @@ import java.util.Optional;
 import backend.exception.exceptions.EntityExistException;
 import backend.exception.exceptions.EntityNotFoundException;
 import backend.exception.exceptions.InvalidCredentialsException;
-import backend.form.AppointmentRequestForm.*;
+import backend.form.AptRequestForm.*;
 import backend.form.UserForm.*;
 
-import backend.model.AppointmentBlock;
-import backend.model.AppointmentRequest;
+import backend.model.AptBlock;
+import backend.model.AptRequest;
 import backend.model.Timetable;
-import backend.service.AppointmentRequestService;
+import backend.repository.TimetableRepository;
+import backend.service.AptRequestService;
+import backend.service.FriendRequestService;
 import backend.service.UserService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +30,25 @@ public class UserServiceImp implements UserService {
 
 	private final UserRepository userRepository;
 
-	private final AppointmentRequestService appointmentRequestService;
+	private final AptRequestService aptRequestService;
+
+	private final TimetableRepository timetableRepository;
+
+	private final FriendRequestService friendRequestService;
 
 	@Autowired
-	public UserServiceImp(Logger logger, UserRepository userRepository,
-						  AppointmentRequestService appointmentRequestService) {
+	public UserServiceImp(
+			Logger logger,
+			UserRepository userRepository,
+			AptRequestService aptRequestService,
+			TimetableRepository timetableRepository,
+			FriendRequestService friendRequestService
+	) {
 		this.logger = logger;
 		this.userRepository = userRepository;
-		this.appointmentRequestService = appointmentRequestService;
+		this.aptRequestService = aptRequestService;
+		this.timetableRepository = timetableRepository;
+		this.friendRequestService = friendRequestService;
 
 	}
 
@@ -115,25 +128,34 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
-	public AppointmentRequest sendAptRequest(CreateAppointmentRequestForm input) {
-		AppointmentRequest apt = appointmentRequestService.createAppointmentRequest(input);
+	public AptRequest sendAptRequest(CreateAptRequestForm input) {
+		AptRequest aptRequest = aptRequestService.createAptRequest(input);
 
-		User user = apt.getFrom();
+		User user = aptRequest.getFrom();
 		Timetable timetable = user.getStudentProfile().getTimetable();
-		AppointmentBlock aptBlock = new AppointmentBlock();
-		timetable.addBlock(aptBlock);
-		userRepository.save(user);
 
-		return apt;
+		AptBlock aptBlock = new AptBlock(
+				aptRequest.getStartDay(),
+				aptRequest.getStartMil(),
+				aptRequest.getEndDay(),
+				aptRequest.getEndMil(),
+				aptRequest.getRepetition(),
+				aptRequest.getRepetitionTime()
+		);
+
+		timetable.addBlock(aptBlock);
+		timetableRepository.save(timetable);
+
+		return aptRequest;
 	}
 
 	@Override
-	public AppointmentRequest updateAptRequest(UpdateAppointmentRequestForm input) {
-		AppointmentRequest apt = appointmentRequestService.updateAppointmentRequest(input);
+	public AptRequest updateAptRequest(UpdateAptRequestForm input) {
+		AptRequest apt = aptRequestService.updateAptRequest(input);
 
 		User user = apt.getFrom();
 		Timetable timetable = user.getStudentProfile().getTimetable();
-		AppointmentBlock aptBlock = new AppointmentBlock();
+		AptBlock aptBlock = new AptBlock();
 		timetable.addBlock(aptBlock);
 		userRepository.save(user);
 

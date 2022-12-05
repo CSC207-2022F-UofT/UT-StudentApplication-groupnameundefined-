@@ -18,6 +18,7 @@ public class FriendRequestForm {
 		@NotNull
 		private final Long toId;
 
+		@NotNull
 		@Size(min = 0, max = 128, message = "Request message must not exceed 128 characters.")
 		private final String message;
 
@@ -35,6 +36,7 @@ public class FriendRequestForm {
 		@NotNull
 		private final Long id;
 
+		@NotNull
 		@Size(min = 0, max = 128, message = "Request message must not exceed 128 characters.")
 		private final String message;
 

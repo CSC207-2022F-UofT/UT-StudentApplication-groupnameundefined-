@@ -1,11 +1,15 @@
 package backend.model;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
+
+@Getter
+@Setter
 @Entity
 @Table(name = "appointment_request")
-public class AppointmentRequest extends Request {
+public class AptRequest extends Request {
 	@Column(name = "location")
 	private String location;
 
@@ -21,12 +25,18 @@ public class AppointmentRequest extends Request {
 	@Column(name = "end_mil")
 	private Integer endMil;
 
-	public AppointmentRequest() {
+	@Column(name = "repetition")
+	private String repetition;
+
+	@Column(name = "repetitionTime")
+	private String repetitionTime;
+
+	public AptRequest() {
 	}
 
-	public AppointmentRequest(
+	public AptRequest(
 			User from, User to, String message, String location, Integer startDay,
-			Integer startMil, Integer endDay, Integer endMil
+			Integer startMil, Integer endDay, Integer endMil, String repetition, String repetitionTime
 	) {
 		super(from, to, message);
 		this.location = location;
@@ -34,12 +44,14 @@ public class AppointmentRequest extends Request {
 		this.startMil = startMil;
 		this.endDay = endDay;
 		this.endMil = endMil;
+		this.repetition = repetition;
+		this.repetitionTime = repetitionTime;
 	}
 
 
 	public void updateAppointmentRequest(
 			String message, String location, Integer startDay,
-			Integer startMil, Integer endDay, Integer endMil
+			Integer startMil, Integer endDay, Integer endMil, String repetition, String repetitionTime
 	) {
 		this.setMessage(message);
 		this.location = location;
@@ -47,45 +59,8 @@ public class AppointmentRequest extends Request {
 		this.startMil = startMil;
 		this.endDay = endDay;
 		this.endMil = endMil;
+		this.repetition = repetition;
+		this.repetitionTime = repetitionTime;
 	}
 
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	public Integer getStartDay() {
-		return startDay;
-	}
-
-	public void setStartDay(Integer startDay) {
-		this.startDay = startDay;
-	}
-
-	public Integer getStartMil() {
-		return startMil;
-	}
-
-	public void setStartMil(Integer startMil) {
-		this.startMil = startMil;
-	}
-
-	public Integer getEndDay() {
-		return endDay;
-	}
-
-	public void setEndDay(Integer endDay) {
-		this.endDay = endDay;
-	}
-
-	public Integer getEndMil() {
-		return endMil;
-	}
-
-	public void setEndMil(Integer endMil) {
-		this.endMil = endMil;
-	}
 }

@@ -11,8 +11,8 @@ import java.util.Optional;
 
 public interface FriendRequestRepository extends JpaRepository<FriendRequest, Long> {
 
-    List<FriendRequest> findByFromId(Long fromId);
+	List<FriendRequest> findByFromId(Long fromId);
 
-    List<FriendRequest> findByToId(Long toId);
+	List<FriendRequest> findByToId(Long toId);
 
 }

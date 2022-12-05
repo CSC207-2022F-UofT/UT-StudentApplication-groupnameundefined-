@@ -41,18 +41,6 @@ public class Request {
 	private Timestamp timestamp;
 
 	public Request() {
-		// Default status without explicitly addressing is PENDING
-		this.status = "PENDING";
-		// Keep track of the time when the request is created.
-		this.timestamp = new Timestamp(System.currentTimeMillis());
-	}
-
-	public Request(String message) {
-		this.message = message;
-		// Default status without explicitly addressing is PENDING
-		this.status = "PENDING";
-		// Keep track of the time when the request is created.
-		this.timestamp = new Timestamp(System.currentTimeMillis());
 	}
 
 	public Request(User from, User to, String message) {

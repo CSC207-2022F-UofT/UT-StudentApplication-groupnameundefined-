@@ -3,9 +3,9 @@ package backend.service;
 import java.util.List;
 import java.util.Optional;
 
-import backend.form.AppointmentRequestForm.*;
+import backend.form.AptRequestForm.*;
 import backend.form.UserForm.*;
-import backend.model.AppointmentRequest;
+import backend.model.AptRequest;
 import backend.model.User;
 
 public interface UserService {
@@ -24,7 +24,7 @@ public interface UserService {
 
 	User getUserByEmail(String email);
 
-	AppointmentRequest sendAptRequest(CreateAppointmentRequestForm input);
+	AptRequest sendAptRequest(CreateAptRequestForm input);
 
-	AppointmentRequest updateAptRequest(UpdateAppointmentRequestForm input);
+	AptRequest updateAptRequest(UpdateAptRequestForm input);
 }

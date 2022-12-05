@@ -78,16 +78,9 @@ public class FriendRequestServiceImp implements FriendRequestService {
 
 		String message = input.getMessage();
 
-		FriendRequest _friendRequest = new FriendRequest(message);
-		FriendRequest friendRequest = friendRequestRepository.save(_friendRequest);
+		FriendRequest friendRequest = new FriendRequest(fromUser, toUser, message);
 
-		fromUser.addSentFriendRequest(friendRequest);
-		toUser.addReceivedFriendRequest(friendRequest);
-
-		userRepository.save(fromUser);
-		userRepository.save(toUser);
-
-		return friendRequest;
+		return friendRequestRepository.save(friendRequest);
 	}
 
 	@Override

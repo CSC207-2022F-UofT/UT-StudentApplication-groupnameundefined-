@@ -7,15 +7,16 @@ import backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByName(String name);
+	Optional<User> findByName(String name);
 
-    Optional<User> findByEmail(String email);
+	Optional<User> findByEmail(String email);
 
-    Optional<User> findByPhone(String phone);
+	Optional<User> findByPhone(String phone);
 
-    Boolean existsByName(String name);
-    Boolean existsByEmail(String email);
+	Boolean existsByName(String name);
 
-    Boolean existsByPhone(String Phone);
+	Boolean existsByEmail(String email);
+
+	Boolean existsByPhone(String Phone);
 
 }
