@@ -26,7 +26,7 @@ public class Course {
 	@Setter(AccessLevel.NONE)
 	@Expose(serialize = true, deserialize = false)
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Expose(serialize = true, deserialize = true)
@@ -45,11 +45,6 @@ public class Course {
 	@Column(name = "campus")
 	private String campus;
 
-	@Setter(AccessLevel.NONE)
-	@Expose(serialize = true, deserialize = false)
-	@OneToMany(mappedBy = "course", cascade = {CascadeType.ALL}, orphanRemoval = true)
-	private Set<Section> sections = new HashSet<>();
-
 	public Course() {
 	}
 
@@ -58,24 +53,6 @@ public class Course {
 		this.code = code;
 		this.sectionCode = sectionCode;
 		this.campus = campus;
-	}
-
-	public void addSection(Section section) {
-		this.sections.add(section);
-		section.setCourse(this);
-	}
-
-	public void bulkAddSections(Set<Section> sections) {
-		this.sections.addAll(sections);
-		sections.forEach(section -> section.setCourse(this));
-	}
-
-	public void removeSection(Section section) {
-		this.sections.remove(section);
-	}
-
-	public void bulkRemoveSections(Set<Section> sections) {
-		this.sections.removeAll(sections);
 	}
 
 }

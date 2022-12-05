@@ -10,9 +10,8 @@ import java.util.List;
 @Mapper
 public interface SocialMediaProfileMapper {
 
-    @Mapping(target = "studentProfileId", source = "studentProfile.id")
-    SocialMediaProfileDto toDto(SocialMediaProfile socialMediaProfile);
+	SocialMediaProfileDto toDto(SocialMediaProfile socialMediaProfile);
 
-    List<SocialMediaProfileDto> toDtoList(List<SocialMediaProfile> socialMediaProfiles);
+	List<SocialMediaProfileDto> toDtoList(List<SocialMediaProfile> socialMediaProfiles);
 
 }

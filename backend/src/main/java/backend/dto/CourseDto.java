@@ -10,22 +10,19 @@ import lombok.Setter;
 @Setter
 public class CourseDto {
 
-    @JsonProperty("id")
-    private Long id;
+	@JsonProperty("id")
+	private Long id;
 
-    @JsonProperty("name")
-    private String name;
+	@JsonProperty("name")
+	private String name;
 
-    @JsonProperty("code")
-    private String code;
+	@JsonProperty("code")
+	private String code;
 
-    @JsonProperty("sectionCode")
-    private String sectionCode;
+	@JsonProperty("sectionCode")
+	private String sectionCode;
 
-    @JsonProperty("campus")
-    private String campus;
-
-    @JsonProperty("sections")
-    private Set<SectionDto> sections;
+	@JsonProperty("campus")
+	private String campus;
 
 }

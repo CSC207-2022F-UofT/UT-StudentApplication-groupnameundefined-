@@ -20,22 +20,22 @@ import lombok.Setter;
 @Table(name = "social_media_profile")
 public class SocialMediaProfile {
 
-    @Setter(AccessLevel.NONE)
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@Setter(AccessLevel.NONE)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "instagram_id")
-    private String instagramId;
+	@Column(name = "instagram_id")
+	private String instagramId;
 
-    @Column(name = "facebook_id")
-    private String facebookId;
+	@Column(name = "facebook_id")
+	private String facebookId;
 
-    @OneToOne
-    @JoinColumn(name = "studentprofile_id", referencedColumnName = "id")
-    private StudentProfile studentProfile;
+	@OneToOne
+	@JoinColumn(name = "studentprofile_id", referencedColumnName = "id")
+	private StudentProfile studentProfile;
 
-    public SocialMediaProfile() {
-    }
+	public SocialMediaProfile() {
+	}
 
 }

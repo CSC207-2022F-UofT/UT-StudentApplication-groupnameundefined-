@@ -16,44 +16,44 @@ import javax.validation.constraints.Size;
 @Table(name = "student_profile")
 public class StudentProfile {
 
-    @Setter(AccessLevel.NONE)
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@Setter(AccessLevel.NONE)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private User user;
+	@OneToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+	private User user;
 
-    @Column(name = "program")
-    private String program;
+	@Column(name = "program")
+	private String program;
 
-    @Column(name = "college")
-    private String college;
+	@Column(name = "college")
+	private String college;
 
-    @Column(name = "enrolment_year")
-    private Integer enrolmentYear;
+	@Column(name = "enrolment_year")
+	private Integer enrolmentYear;
 
-    @OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
-    private Timetable timetable;
+	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
+	private Timetable timetable;
 
-    @OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
-    private SocialMediaProfile socialMediaProfile;
+	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
+	private SocialMediaProfile socialMediaProfile;
 
-    @OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
-    private Habit habit;
+	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
+	private Habit habit;
 
-    public StudentProfile() {
-    }
+	public StudentProfile() {
+	}
 
-    public StudentProfile(User user) {
-        this.user = user;
-    }
+	public StudentProfile(User user) {
+		this.user = user;
+	}
 
-    public StudentProfile(String program, String college, Integer enrolmentYear) {
-        this.program = program;
-        this.college = college;
-        this.enrolmentYear = enrolmentYear;
-    }
+	public StudentProfile(String program, String college, Integer enrolmentYear) {
+		this.program = program;
+		this.college = college;
+		this.enrolmentYear = enrolmentYear;
+	}
 
 }

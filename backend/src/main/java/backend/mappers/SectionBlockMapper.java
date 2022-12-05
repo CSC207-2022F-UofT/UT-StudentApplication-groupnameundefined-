@@ -10,13 +10,11 @@ import org.mapstruct.factory.Mappers;
 import backend.dto.SectionBlockDto;
 import backend.model.SectionBlock;
 
-@Mapper
+@Mapper(uses = {SectionMapper.class})
 public interface SectionBlockMapper {
 
-    @Mapping(target = "repetitionTime", source = "repetitionTime")
-    @Mapping(target = "sectionId", source = "section.id")
-    SectionBlockDto toDto(SectionBlock sectionBlock);
+	SectionBlockDto toDto(SectionBlock sectionBlock);
 
-    List<SectionBlockDto> toDtoList(List<SectionBlock> sectionBlocks);
+	List<SectionBlockDto> toDtoList(List<SectionBlock> sectionBlocks);
 
 }

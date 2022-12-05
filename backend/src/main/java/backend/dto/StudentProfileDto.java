@@ -8,25 +8,22 @@ import lombok.Setter;
 @Setter
 public class StudentProfileDto {
 
-    @JsonProperty("id")
-    private Long id;
+	@JsonProperty("id")
+	private Long id;
 
-    @JsonProperty("userId")
-    private Long userId;
+	@JsonProperty("program")
+	private String program;
 
-    @JsonProperty("program")
-    private String program;
+	@JsonProperty("college")
+	private String college;
 
-    @JsonProperty("college")
-    private String college;
+	@JsonProperty("enrolmentYear")
+	private Integer enrolmentYear;
 
-    @JsonProperty("enrolmentYear")
-    private Integer enrolmentYear;
+	@JsonProperty("socialMediaProfile")
+	private SocialMediaProfileDto socialMediaProfile;
 
-    @JsonProperty("timetable")
-    private TimetableDto timetable;
-
-    @JsonProperty("socialMediaProfile")
-    private SocialMediaProfileDto socialMediaProfile;
+	@JsonProperty("habit")
+	private HabitDto habit;
 
 }

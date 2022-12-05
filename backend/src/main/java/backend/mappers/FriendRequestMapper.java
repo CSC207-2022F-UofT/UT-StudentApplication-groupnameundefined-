@@ -7,11 +7,9 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {UserMapper.class})
 public interface FriendRequestMapper {
 
-	@Mapping(target = "fromId", source = "from.id")
-	@Mapping(target = "toId", source = "to.id")
 	FriendRequestDto toDto(FriendRequest friendRequest);
 
 	List<FriendRequestDto> toDtoList(List<FriendRequest> friendRequests);

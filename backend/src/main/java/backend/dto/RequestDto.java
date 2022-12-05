@@ -16,12 +16,6 @@ public class RequestDto {
 	@JsonProperty("status")
 	private String status;
 
-	@JsonProperty("fromId")
-	private Long fromId;
-
-	@JsonProperty("toId")
-	private Long toId;
-
 	@JsonProperty("message")
 	private String message;
 

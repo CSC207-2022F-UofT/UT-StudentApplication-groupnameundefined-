@@ -7,12 +7,11 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(uses = {HabitVisibilityMapper.class})
+@Mapper
 public interface HabitMapper {
 
-    @Mapping(target = "studentProfileId", source = "studentProfile.id")
-    HabitDto toDto(Habit habit);
+	HabitDto toDto(Habit habit);
 
-    List<HabitDto> toDtoList(List<Habit> habits);
+	List<HabitDto> toDtoList(List<Habit> habits);
 
 }

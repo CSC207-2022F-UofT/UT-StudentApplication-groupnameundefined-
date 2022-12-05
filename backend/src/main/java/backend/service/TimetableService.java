@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import backend.model.Block;
+import backend.model.SectionBlock;
 import backend.model.StudentProfile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +15,7 @@ public interface TimetableService {
 
 	List<Map<String, String>> parseIcs(MultipartFile file);
 
-	Timetable createTimetable(StudentProfile studentProfile, Set<Block> blocks);
+	Timetable createTimetable(StudentProfile studentProfile, Set<Block> sectionBlocks);
 
 	Timetable createTimetable(Long studentProfileId, MultipartFile iCalendar);
 

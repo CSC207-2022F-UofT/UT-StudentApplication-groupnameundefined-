@@ -10,22 +10,16 @@ import lombok.Setter;
 @Setter
 public class HabitDto {
 
-    @JsonProperty("id")
-    private Long id;
+	@JsonProperty("id")
+	private Long id;
 
-    @JsonProperty("studentProfileId")
-    private Long studentProfileId;
+	@JsonProperty("mbti")
+	private Integer mbti;
 
-    @JsonProperty("mbti")
-    private Integer mbti;
+	@JsonProperty("talkative")
+	private Integer talkative;
 
-    @JsonProperty("talkative")
-    private Integer talkative;
-
-    @JsonProperty("collaborative")
-    private Integer collaborative;
-
-    @JsonProperty("visibility")
-    private HabitVisibilityDto visibility;
+	@JsonProperty("collaborative")
+	private Integer collaborative;
 
 }

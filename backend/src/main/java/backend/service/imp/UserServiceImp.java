@@ -134,16 +134,7 @@ public class UserServiceImp implements UserService {
 		User user = aptRequest.getFrom();
 		Timetable timetable = user.getStudentProfile().getTimetable();
 
-		AptBlock aptBlock = new AptBlock(
-				aptRequest.getStartDay(),
-				aptRequest.getStartMil(),
-				aptRequest.getEndDay(),
-				aptRequest.getEndMil(),
-				aptRequest.getRepetition(),
-				aptRequest.getRepetitionTime()
-		);
-
-		timetable.addBlock(aptBlock);
+		timetable.addBlock(aptRequest.getAptBlock());
 		timetableRepository.save(timetable);
 
 		return aptRequest;
@@ -151,15 +142,7 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public AptRequest updateAptRequest(UpdateAptRequestForm input) {
-		AptRequest apt = aptRequestService.updateAptRequest(input);
-
-		User user = apt.getFrom();
-		Timetable timetable = user.getStudentProfile().getTimetable();
-		AptBlock aptBlock = new AptBlock();
-		timetable.addBlock(aptBlock);
-		userRepository.save(user);
-
-		return apt;
+		return aptRequestService.updateAptRequest(input);
 	}
 
 }

@@ -8,16 +8,13 @@ import lombok.Setter;
 @Setter
 public class SocialMediaProfileDto {
 
-    @JsonProperty("id")
-    private Long id;
+	@JsonProperty("id")
+	private Long id;
 
-    @JsonProperty("instagram_id")
-    private String instagramId;
+	@JsonProperty("instagram_id")
+	private String instagramId;
 
-    @JsonProperty("facebook_id")
-    private String facebookId;
-
-    @JsonProperty("studentProfileId")
-    private Long studentProfileId;
+	@JsonProperty("facebook_id")
+	private String facebookId;
 
 }

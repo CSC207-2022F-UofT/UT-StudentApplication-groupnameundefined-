@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(uses = {StudentProfileMapper.class, TimetableMapper.class, BlockMapper.class, FriendRequestMapper.class})
+@Mapper(uses = {StudentProfileMapper.class})
 public interface UserMapper {
 
 	UserDto toDto(User user);

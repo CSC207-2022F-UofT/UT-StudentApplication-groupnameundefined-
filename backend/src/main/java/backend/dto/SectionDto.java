@@ -10,16 +10,13 @@ import lombok.Setter;
 @Setter
 public class SectionDto {
 
-    @JsonProperty("id")
-    private Long id;
+	@JsonProperty("id")
+	private Long id;
 
-    @JsonProperty("name")
-    private String name;
+	@JsonProperty("name")
+	private String name;
 
-    @JsonProperty("courseId")
-    private Long courseId;
-
-    @JsonProperty("sectionBlocks")
-    private Set<SectionBlockDto> sectionBlocks;
+	@JsonProperty("course")
+	private CourseDto course;
 
 }

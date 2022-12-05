@@ -52,11 +52,13 @@ public class TimetableServiceImp implements TimetableService {
 	}
 
 	@Override
-	public Timetable createTimetable(StudentProfile studentProfile, Set<Block> blocks) {
+	public Timetable createTimetable(StudentProfile studentProfile, Set<Block> sectionBlocks) {
 		Timetable timetable = new Timetable();
 
 		timetable.setStudentProfile(studentProfile);
-		timetable.bulkAddBlocks(blocks);
+		studentProfile.setTimetable(timetable);
+
+		timetable.bulkAddBlocks(sectionBlocks);
 
 		return studentProfileRepository.save(studentProfile).getTimetable();
 	}
@@ -66,11 +68,15 @@ public class TimetableServiceImp implements TimetableService {
 		Optional<StudentProfile> _studentProfile = studentProfileRepository.findById(studentProfileId);
 
 		if (_studentProfile.isEmpty()) {
-			throw new EntityNotFoundException(String.format("Unable to find student profile with id '%d'", studentProfileId), StudentProfile.class);
+			throw new EntityNotFoundException(
+					String.format("Unable to find student profile with id '%d'", studentProfileId),
+					StudentProfile.class
+			);
 		}
 		StudentProfile studentProfile = _studentProfile.get();
 
 		List<Map<String, String>> sectionData = this.parseIcs(iCalendar);
+		logger.info(sectionData.toString());
 
 		Set<Block> sectionBlocks = new HashSet<>();
 		for (Map<String, String> sec : sectionData) {

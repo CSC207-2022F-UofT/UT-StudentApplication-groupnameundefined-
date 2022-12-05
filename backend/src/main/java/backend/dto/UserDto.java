@@ -35,10 +35,4 @@ public class UserDto {
 	@JsonProperty("studentProfile")
 	private StudentProfileDto studentProfile;
 
-	@JsonProperty("sentFriendRequests")
-	private Set<FriendRequestDto> sentFriendRequests;
-
-	@JsonProperty("receivedFriendRequests")
-	private Set<FriendRequestDto> receivedFriendRequests;
-
 }

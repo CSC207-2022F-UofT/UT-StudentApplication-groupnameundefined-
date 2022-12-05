@@ -90,24 +90,26 @@ public class CourseServiceImp implements CourseService {
 					continue;
 				}
 
+				courseRepository.save(course);
+
 				for (Object s : courseSections) {
 					JSONObject _section = (JSONObject) s;
-					JSONArray sectionBlocks = (JSONArray) _section.get("sectionBlocks");
+					JSONArray sectionBlockData = (JSONArray) _section.get("sectionBlocks");
 
 					Section section = gson.fromJson(_section.toJSONString(), Section.class);
+					section.setCourse(course);
+					sectionRepository.save(section);
 
-					if (sectionBlocks != null) {
-						for (Object secB : sectionBlocks) {
+					if (sectionBlockData != null) {
+						for (Object secB : sectionBlockData) {
 							JSONObject _sectionBlock = (JSONObject) secB;
 
 							SectionBlock sectionBlock = gson.fromJson(_sectionBlock.toJSONString(), SectionBlock.class);
-
-							section.addSectionBlock(sectionBlock);
+							sectionBlock.setSection(section);
+							sectionBlockRepository.save(sectionBlock);
 						}
 					}
-					course.addSection(section);
 				}
-				courseRepository.save(course);
 			}
 		} catch (IOException | ParseException e) {
 			// Chained exception captured by APIExceptionHandler

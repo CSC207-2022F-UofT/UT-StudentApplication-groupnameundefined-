@@ -11,6 +11,9 @@ public class BlockDto {
     @JsonProperty("id")
     private Long id;
 
+    @JsonProperty("type")
+    private String type;
+
     @JsonProperty("startDay")
     private Integer startDay;
 

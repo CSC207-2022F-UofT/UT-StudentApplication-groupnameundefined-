@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import backend.exception.exceptions.BadRequestException;
 import backend.form.AptRequestForm.*;
+import backend.model.AptBlock;
 import backend.model.AptRequest;
 import backend.model.User;
 import backend.repository.AptRequestRepository;
@@ -48,7 +49,10 @@ public class AptRequestServiceImp implements AptRequestService {
 			return aptRequest.get();
 		}
 
-		throw new EntityNotFoundException(String.format("Unable to find appointment request with id '%d'", id), AptRequest.class);
+		throw new EntityNotFoundException(
+				String.format("Unable to find appointment request with id '%d'", id),
+				AptRequest.class
+		);
 	}
 
 	@Override
@@ -68,19 +72,25 @@ public class AptRequestServiceImp implements AptRequestService {
 
 		if (fromUser.isEmpty()) {
 			throw new backend.exception.exceptions.EntityNotFoundException(
-					String.format("Unable to find user with id '%s'.", input.getFromId()), User.class);
+					String.format("Unable to find user with id '%s'.", input.getFromId()),
+					User.class
+			);
 		}
 
 		if (toUser.isEmpty()) {
 			throw new backend.exception.exceptions.EntityNotFoundException(
-					String.format("Unable to find user with id '%s'.", input.getToId()), User.class);
+					String.format("Unable to find user with id '%s'.", input.getToId()),
+					User.class
+			);
 		}
 
 		AptRequest aptRequest = new AptRequest(
 				fromUser.get(),
 				toUser.get(),
-				input.getMessage(),
-				input.getLocation(),
+				input.getMessage()
+		);
+
+		AptBlock aptBlock = new AptBlock(
 				input.getStartDay(),
 				input.getStartMil(),
 				input.getEndDay(),
@@ -88,6 +98,9 @@ public class AptRequestServiceImp implements AptRequestService {
 				input.getRepetition(),
 				input.getRepetitionTime()
 		);
+
+		aptRequest.setAptBlock(aptBlock);
+		aptBlock.setAptRequest(aptRequest);
 
 		return aptRequestRepository.save(aptRequest);
 	}
@@ -97,18 +110,25 @@ public class AptRequestServiceImp implements AptRequestService {
 		Optional<AptRequest> _aptRequest = aptRequestRepository.findById(input.getId());
 
 		if (_aptRequest.isEmpty()) {
-			throw new EntityNotFoundException(String.format("Unable to find appointment request with id '%s'.", input.getId()), AptRequest.class);
+			throw new EntityNotFoundException(
+					String.format("Unable to find appointment request with id '%s'.", input.getId()),
+					AptRequest.class
+			);
 		}
+
 		AptRequest aptRequest = _aptRequest.get();
-		aptRequest.updateAppointmentRequest(
-				input.getMessage(),
-				input.getLocation(),
+		aptRequest.setMessage(input.getMessage());
+
+		AptBlock aptBlock = aptRequest.getAptBlock();
+
+		aptBlock.update(
 				input.getStartDay(),
 				input.getStartMil(),
 				input.getEndDay(),
 				input.getEndMil(),
 				input.getRepetition(),
-				input.getRepetitionTime()
+				input.getRepetitionTime(),
+				input.getLocation()
 		);
 
 		return aptRequestRepository.save(aptRequest);
@@ -132,6 +152,8 @@ public class AptRequestServiceImp implements AptRequestService {
 
 		if (aptRequest.getStatus().equals("PENDING")) {
 			aptRequest.setStatus("DENIED");
+			aptRequest.setAptBlock(null);
+			
 			return aptRequestRepository.save(aptRequest);
 		}
 
@@ -145,7 +167,10 @@ public class AptRequestServiceImp implements AptRequestService {
 			return id;
 		}
 
-		throw new EntityNotFoundException(String.format("Unable to find a appointment request with id '%s'.", id), AptRequest.class);
+		throw new EntityNotFoundException(
+				String.format("Unable to find a appointment request with id '%s'.", id),
+				AptRequest.class
+		);
 	}
 
 }

@@ -33,16 +33,21 @@ public class TimetableControllerImp implements TimetableController {
 	private final TimetableMapper timetableMapper;
 
 	@Autowired
-	public TimetableControllerImp(Logger logger, TimetableService timetableService, TimetableMapper timetableMapper) {
+	public TimetableControllerImp(
+			Logger logger,
+			TimetableService timetableService,
+			TimetableMapper timetableMapper
+	) {
 		this.logger = logger;
 		this.timetableService = timetableService;
 		this.timetableMapper = timetableMapper;
 	}
 
 	@Override
-	@PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<TimetableDto> createTimetable(
-			@RequestPart Long studentProfileId, @RequestPart MultipartFile file
+			@RequestParam Long studentProfileId,
+			@RequestPart MultipartFile file
 	) {
 		Timetable timetable = timetableService.createTimetable(studentProfileId, file);
 		TimetableDto timetableDto = timetableMapper.toDto(timetable);
