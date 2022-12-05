@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import backend.form.StudentProfileForm.CreateStudentProfileForm;
 import backend.repository.StudentProfileRepository;
 import backend.repository.UserRepository;
+import backend.repository.HabitRepository;
 import backend.service.StudentProfileService;
+import backend.service.HabitService;
 import org.springframework.web.multipart.MultipartFile;;
 
 @Service
@@ -72,4 +74,55 @@ public class StudentProfileServiceImp implements StudentProfileService {
 		throw new EntityNotFoundException(String.format("Unable to find student profile with id '%d'.", id), StudentProfile.class);
 	}
 
+	/*
+	First find those with at least exactly equal parameters
+	If null, find those with at least one |diff| = 1 parameters
+	If null, find those with at least one |diff| = 2 parameters
+	If null, randomly return 10 users.*/
+	@Override
+	public List<StudentProfile> matchStudentProfileByProperty(Long id, String property){
+
+		List<StudentProfile> result = new ArrayList<StudentProfile>;
+		Habit my_habit = habitRepository.findByStudentProfileId(id);
+		HabitVisibility my_habit_visibility = my_habit.getVisibility();
+
+
+		Hashtable<String, Integer> my_search = new Hashtable<String, Integer>();
+
+		if(property == 'MBTI' && my_habit_visibility.getMbti()){
+			my_search.put("MBTI", my_habit.getMbti());
+		}else if(property == 'talkative' && my_habit_visibility.getTalkative()){
+			my_search.put("talkative", my_habit.getTalkative());
+		}else if(property == 'collaborate' && my_habit_visibility.getCollaborate()){
+			my_search.put("collaborate", my_habit.getCollaborate());
+		}else{ throw new EntityNotFoundException("Invalid property name");}
+
+		int diff = 0;
+		List<Habit> result_habit = new ArrayList<Habit>;
+		List<Long>  result_habit_sp_id = new ArrayList<Long>;
+
+		while(!result.size() && diff <= 2) {
+			result_habit = HabitService.getFilteredHabits(my_search, diff);
+			result_habit_sp_id.clean();
+
+			if (!result_habit.size()){
+				for(Habit i: result_habit){
+					if(i.getStudentProfileId() != null){
+						result_habit_sp_id.add(i.getStudentProfileId());}
+				}
+				result.addAll(studentProfileRepository.findByIdIn(result_habit_sp_id));
+			}
+			diff += 1;
+		}
+
+		if(!result.size()){
+			result_habit = HabitRespository.findRandHabit();
+			for(Habit i: result_habit){
+				if(i.getStudentProfileId() != null){
+					result_habit_sp_id.add(i.getStudentProfileId());}
+			}
+			result.addAll(studentProfileRepository.findByIdIn(result_habit_sp_id));
+		}
+		return result;
+	}
 }

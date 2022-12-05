@@ -71,12 +71,30 @@ public class HabitServiceImp implements HabitService {
 			return habit.get();
 		}
 
-		throw new EntityNotFoundException(String.format("Unable to find course with id '%d'", id), Habit.class);
+		throw new EntityNotFoundException(String.format("Unable to find habit with id '%d'", id), Habit.class);
 	}
 
+
 	@Override
-	public List<Habit> getFilteredHabits(Integer mbti, Integer talktative, Integer collaborative) {
-		return new ArrayList<>();
+	public List<Habit> getFilteredHabits(Hashtable<String, Integer> search_list) {
+		List<Habit> result = new ArrayList<Habit>();
+		search_list.forEach((k, v) -> {
+			switch (k) {
+				case 'MBTI':
+					result.addAll(habitRepository.findByMBTI(v));
+					break;
+				case 'Talkative':
+					result.addAll(habitRepository.findByTalkative(v));
+					break;
+				case 'Collaborate':
+					result.addAll(habitRepository.findByCollaborate(v));
+					break;
+				default:
+					return result;
+			}
+		}
+		return result;
 	}
+
 
 }

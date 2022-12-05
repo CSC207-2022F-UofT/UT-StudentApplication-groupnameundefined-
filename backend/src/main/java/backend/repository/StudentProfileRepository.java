@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StudentProfileRepository extends JpaRepository<StudentProfile, Long> {
 
+    List<StudentProfile> findById(Long Id);
 }
