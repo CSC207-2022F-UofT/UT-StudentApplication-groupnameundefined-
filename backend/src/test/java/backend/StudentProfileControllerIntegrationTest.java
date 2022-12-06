@@ -5,13 +5,12 @@ import backend.form.StudentProfileForm.*;
 import backend.form.UserForm.*;
 import backend.model.StudentProfile;
 import backend.model.User;
+import backend.repository.UserRepository;
 import backend.service.HabitService;
 import backend.service.StudentProfileService;
 import backend.service.UserService;
 
-import static java.util.Map.entry;
 import static org.hamcrest.Matchers.*;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.*;
@@ -19,13 +18,13 @@ import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Collections;
+import java.util.stream.IntStream;
 
 @Order(2)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -45,6 +44,9 @@ public class StudentProfileControllerIntegrationTest extends ControllerIntegrati
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Test
 	@Order(1)
@@ -72,7 +74,6 @@ public class StudentProfileControllerIntegrationTest extends ControllerIntegrati
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", is(1)))
 				.andExpect(jsonPath("$.enrolmentYear", is(2020)))
-				.andExpect(jsonPath("$.timetable", nullValue()))
 				.andExpect(jsonPath("$.socialMediaProfile", nullValue()));
 	}
 
@@ -112,10 +113,11 @@ public class StudentProfileControllerIntegrationTest extends ControllerIntegrati
 				.andExpect(jsonPath("$.errors[*].field", containsInAnyOrder("program", "enrolmentYear")));
 	}
 
+	@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 	@Test
 	@Order(4)
 	public void matchStudentProfileByHabit_expectSuccess() throws Exception {
-		List<Map<String, Object>> testData = new ArrayList<>(5);
+		userRepository.deleteAll();
 		for (Integer i = 1; i < 6; i++) {
 			String stringI = i.toString();
 			RegisterForm registerForm = new RegisterForm(
@@ -142,15 +144,8 @@ public class StudentProfileControllerIntegrationTest extends ControllerIntegrati
 			habitService.createHabit(createHabitForm);
 		}
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/student-profile/match-courses/{id}", 2))
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/student-profile/match-courses/{id}", 4L))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$[*].id", anyOf(contains(1, 3, 4, 5), contains(3, 1, 4, 5))));
-
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/student-profile/match-courses/{id}", 4))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$[*].id", anyOf(contains(5, 3, 2, 1), contains(3, 5, 2, 1))));
-
-		// Set<StudentProfile> studentProfiles = studentProfileService.matchStudentProfileByHabit(4L);
-
+				.andExpect(jsonPath("$[*].id", containsInAnyOrder(1, 2, 3, 5)));
 	}
 }

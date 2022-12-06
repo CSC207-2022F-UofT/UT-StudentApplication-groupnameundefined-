@@ -34,7 +34,6 @@ public abstract class BlockMapperDecorator implements BlockMapper {
 		if (block instanceof AptBlock) {
 			blockDto = aptBlockMapper.toDto((AptBlock) block);
 		} else if (block instanceof SectionBlock) {
-			logger.info("Is Section Block");
 			blockDto = sectionBlockMapper.toDto((SectionBlock) block);
 		} else {
 			blockDto = this.delegate.toDto(block);

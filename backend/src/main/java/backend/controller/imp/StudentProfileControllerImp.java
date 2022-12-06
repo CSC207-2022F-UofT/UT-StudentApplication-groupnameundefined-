@@ -7,6 +7,8 @@ import javax.validation.Valid;
 
 import backend.dto.StudentProfileDto;
 import backend.mappers.StudentProfileMapper;
+import backend.model.Habit;
+import backend.repository.StudentProfileRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,9 @@ public class StudentProfileControllerImp implements StudentProfileController {
 	private final StudentProfileMapper studentProfileMapper;
 
 	@Autowired
+	private StudentProfileRepository studentProfileRepository;
+
+	@Autowired
 	public StudentProfileControllerImp(
 			Logger logger, StudentProfileService studentProfileService, StudentProfileMapper studentProfileMapper
 	) {
@@ -48,9 +53,9 @@ public class StudentProfileControllerImp implements StudentProfileController {
 
 	@Override
 	@GetMapping("/")
-	public ResponseEntity<Set<StudentProfileDto>> getAllStudentProfiles() {
+	public ResponseEntity<List<StudentProfileDto>> getAllStudentProfiles() {
 		List<StudentProfile> studentProfiles = studentProfileService.getAllStudentProfiles();
-		Set<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
+		List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
 
 		return new ResponseEntity<>(studentProfileDtos, HttpStatus.OK);
 	}
@@ -66,17 +71,18 @@ public class StudentProfileControllerImp implements StudentProfileController {
 
 	@Override
 	@GetMapping("/match-habit/{id}")
-	public ResponseEntity<LinkedHashSet<StudentProfile>> matchStudentProfileByHabit(@PathVariable Long id) {
-		LinkedHashSet<StudentProfile> studentProfiles = studentProfileService.matchStudentProfileByHabit(id);
+	public ResponseEntity<List<StudentProfileDto>> matchStudentProfileByHabit(@PathVariable Long id) {
+		List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfileByHabit(id);
+		List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
 
-		return new ResponseEntity<>(studentProfiles, HttpStatus.OK);
+		return new ResponseEntity<>(studentProfileDtos, HttpStatus.OK);
 	}
 
 	@Override
 	@GetMapping("/match-courses/{id}")
-	public ResponseEntity<Set<StudentProfileDto>> matchStudentProfileByCourses(@PathVariable Long id) {
+	public ResponseEntity<List<StudentProfileDto>> matchStudentProfileByCourses(@PathVariable Long id) {
 		List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfileByCourses(id);
-		Set<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
+		List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
 
 		return new ResponseEntity<>(studentProfileDtos, HttpStatus.OK);
 	}

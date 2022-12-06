@@ -80,30 +80,12 @@ public class StudentProfileServiceImp implements StudentProfileService {
 	}
 
 	@Override
-	public LinkedHashSet<StudentProfile> matchStudentProfileByHabit(Long id) {
+	public List<StudentProfile> matchStudentProfileByHabit(Long id) {
 		StudentProfile studentProfile = this.getStudentProfileById(id);
 		Habit habit = studentProfile.getHabit();
 
-		List<StudentProfile> studentProfiles = studentProfileRepository.findAll();
-
-		studentProfiles.remove(studentProfile);
-		studentProfiles.forEach(studentProfile1 -> logger.info(studentProfile1.getId().toString()));
-		studentProfiles.sort((o1, o2) -> {
-					Double d1 = getAbsoluteDistance(o1.getHabit(), habit);
-					Double d2 = getAbsoluteDistance(o2.getHabit(), habit);
-					if (d1 - d2 > 0) {
-						return 1;
-					} else if (d1.equals(d2)) {
-						return 0;
-					} else {
-						return -1;
-					}
-				}
-		);
-		logger.info("-----------------");
-		studentProfiles.forEach(studentProfile1 -> logger.info(studentProfile1.getId().toString()));
-
-		return new LinkedHashSet<>(studentProfiles);
+		return studentProfileRepository.sortByHabitMatch(id, habit.getTalkative(), habit.getCollaborative())
+				.subList(0, 20);
 	}
 
 	@Override

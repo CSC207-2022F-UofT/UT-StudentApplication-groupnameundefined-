@@ -22,6 +22,7 @@ public class FriendRequestControllerImp implements FriendRequestController {
     private final Logger logger;
 
     private final FriendRequestService friendRequestService;
+
     private final FriendRequestMapper friendRequestMapper;
 
     @Autowired

@@ -13,6 +13,6 @@ public interface StudentProfileMapper {
 
 	StudentProfileDto toDto(StudentProfile studentProfile);
 
-	Set<StudentProfileDto> toDtoList(List<StudentProfile> studentProfiles);
+	List<StudentProfileDto> toDtoList(List<StudentProfile> studentProfiles);
 
 }

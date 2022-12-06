@@ -14,19 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import backend.controller.HabitController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/habits")
+@RequestMapping("/api/habit")
 public class HabitControllerImp implements HabitController {
 
 	private final Logger logger;
@@ -42,8 +36,8 @@ public class HabitControllerImp implements HabitController {
 	}
 
 	@Override
-	@PostMapping("/")
-	public ResponseEntity<HabitDto> createHabit(CreateHabitForm input) {
+	@PostMapping("/create")
+	public ResponseEntity<HabitDto> createHabit(@RequestBody CreateHabitForm input) {
 		Habit habit = habitService.createHabit(input);
 		HabitDto habitDto = habitMapper.toDto(habit);
 

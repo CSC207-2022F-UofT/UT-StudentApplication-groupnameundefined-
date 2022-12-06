@@ -68,7 +68,7 @@ public class AptRequestControllerImp implements AptRequestController {
 		List<AptRequest> aptRequests = aptRequestService.getAptRequestByToId(toId);
 		List<AptRequestDto> aptRequestDtos = aptRequestMapper.toDtoList(aptRequests);
 
-		return new ResponseEntity<List<AptRequestDto>>(aptRequestDtos, HttpStatus.OK);
+		return new ResponseEntity<>(aptRequestDtos, HttpStatus.OK);
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class AptRequestControllerImp implements AptRequestController {
 	public ResponseEntity<Long> deleteAptRequest(@PathVariable Long id) {
 		Long deletedId = aptRequestService.deleteAptRequest(id);
 
-		return new ResponseEntity<Long>(deletedId, HttpStatus.OK);
+		return new ResponseEntity<>(deletedId, HttpStatus.OK);
 	}
 
 }
