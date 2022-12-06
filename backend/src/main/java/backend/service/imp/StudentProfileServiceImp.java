@@ -84,8 +84,12 @@ public class StudentProfileServiceImp implements StudentProfileService {
 		StudentProfile studentProfile = this.getStudentProfileById(id);
 		Habit habit = studentProfile.getHabit();
 
-		return studentProfileRepository.sortByHabitMatch(id, habit.getTalkative(), habit.getCollaborative())
-				.subList(0, 20);
+		List<StudentProfile> studentProfiles = studentProfileRepository.sortByHabitMatch(
+				id,
+				habit.getTalkative(),
+				habit.getCollaborative()
+		);
+		return studentProfiles.subList(0, Math.min(20, studentProfiles.size()));
 	}
 
 	@Override

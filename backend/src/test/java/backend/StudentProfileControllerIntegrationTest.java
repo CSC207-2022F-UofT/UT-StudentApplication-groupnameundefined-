@@ -10,7 +10,9 @@ import backend.service.HabitService;
 import backend.service.StudentProfileService;
 import backend.service.UserService;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.*;
@@ -23,7 +25,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Order(2)
@@ -144,8 +149,10 @@ public class StudentProfileControllerIntegrationTest extends ControllerIntegrati
 			habitService.createHabit(createHabitForm);
 		}
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/student-profile/match-courses/{id}", 4L))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$[*].id", containsInAnyOrder(1, 2, 3, 5)));
+		// MockMvc always return list in ascending order by id so we will directly call service method.
+		List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfileByHabit(4L);
+		List<Long> studentProfileIds = studentProfiles.stream().map(StudentProfile::getId).toList();
+
+		assertThat(studentProfileIds, anyOf(is(Arrays.asList(3L, 5L, 2L, 1L)), is(Arrays.asList(5L, 3L, 2L, 1L))));
 	}
 }
