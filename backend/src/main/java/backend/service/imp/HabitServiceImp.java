@@ -43,14 +43,11 @@ public class HabitServiceImp implements HabitService {
 	@Override
 	public Habit createHabit(CreateHabitForm input) {
 		StudentProfile _studentProfile = studentProfileService.getStudentProfileById(input.getStudentProfileId());
-		Habit habit = new Habit(input.getMbti(), input.getTalkative(), input.getCollaborative());
+		Habit habit = new Habit(input.getTalkative(), input.getCollaborative());
 
 		_studentProfile.setHabit(habit);
 		habit.setStudentProfile(_studentProfile);
 
-		HabitVisibility habitVisibility = new HabitVisibility(input.getMbtiVisibility(), input.getTalkativeVisibility(), input.getCollaborativeVisibility());
-
-		habit.setVisibility(habitVisibility);
 		habitVisibility.setHabit(habit);
 
 		StudentProfile studentProfile = studentProfileRepository.save(_studentProfile);
@@ -75,7 +72,7 @@ public class HabitServiceImp implements HabitService {
 	}
 
 	@Override
-	public List<Habit> getFilteredHabits(Integer mbti, Integer talktative, Integer collaborative) {
+	public List<Habit> getFilteredHabits(Integer talktative, Integer collaborative) {
 		return new ArrayList<>();
 	}
 

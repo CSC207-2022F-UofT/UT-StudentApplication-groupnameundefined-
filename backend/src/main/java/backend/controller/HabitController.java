@@ -15,6 +15,6 @@ public interface HabitController {
 
     ResponseEntity<HabitDto> getHabitById(Long id);
 
-    ResponseEntity<List<HabitDto>> getFilteredHabits(Integer mbti, Integer talktative, Integer collaborative);
+    ResponseEntity<List<HabitDto>> getFilteredHabits(Integer talktative, Integer collaborative);
 
 }

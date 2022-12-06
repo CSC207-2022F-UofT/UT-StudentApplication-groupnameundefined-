@@ -13,9 +13,6 @@ public class HabitDto {
 	@JsonProperty("id")
 	private Long id;
 
-	@JsonProperty("mbti")
-	private Integer mbti;
-
 	@JsonProperty("talkative")
 	private Integer talkative;
 

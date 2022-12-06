@@ -28,10 +28,6 @@ public class Habit {
 	@JoinColumn(name = "studentprofile_id", referencedColumnName = "id", nullable = false)
 	private StudentProfile studentProfile;
 
-	// MBTI of users: [0,16], 0 refers to Not specified.
-	// MBTI encoding: refer to documents.
-	@Column(name = "mbti", columnDefinition = "integer default 0")
-	private Integer mbti;
 
 	// The user's self reported talkativeness(extrovert of introvert), rating 1~5
 	@Column(name = "talkative", columnDefinition = "integer default 5")
@@ -48,8 +44,7 @@ public class Habit {
 	public Habit() {
 	}
 
-	public Habit(int mbti, int talkative, int collaborative) {
-		this.mbti = mbti;
+	public Habit(int talkative, int collaborative) {
 		this.talkative = talkative;
 		this.collaborative = collaborative;
 	}
@@ -65,9 +60,7 @@ public class Habit {
 		}
 
 		return (Objects.equals(this.collaborative, habit.collaborative)) && (Objects.equals(
-				this.talkative,
-				habit.talkative
-		)) && (Objects.equals(this.mbti, habit.mbti));
+				this.talkative, habit.talkative)));
 	}
 
 }
