@@ -1,12 +1,15 @@
 package backend.service.imp;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import backend.exception.exceptions.BadRequestException;
 import backend.exception.exceptions.EntityNotFoundException;
 import backend.model.*;
 import backend.repository.HabitRepository;
 import backend.repository.SectionBlockRepository;
 import backend.service.TimetableService;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,7 +57,7 @@ public class StudentProfileServiceImp implements StudentProfileService {
 
 		User user = _user.get();
 		StudentProfile studentProfile = new StudentProfile(input.getProgram(), input.getCollege(), input.getEnrolmentYear());
-
+		Habit habit = new Habit();
 		user.setStudentProfile(studentProfile);
 		studentProfile.setUser(user);
 
@@ -77,48 +80,67 @@ public class StudentProfileServiceImp implements StudentProfileService {
 	}
 
 	@Override
-	public List<StudentProfile> matchStudentProfileByProperty(Long id) {
-		List<StudentProfile> result = new ArrayList<StudentProfile>();
-		List<StudentProfile> studentProfiles = studentProfileRepository.findAll();
-
+	public List<StudentProfile> matchStudentProfileByHabit(Long id) {
 		StudentProfile studentProfile = this.getStudentProfileById(id);
 		Habit habit = studentProfile.getHabit();
 
-		studentProfiles.sort(new Comparator<StudentProfile>() {
-			@Override
-			public int compare(StudentProfile o1, StudentProfile o2) {
-				return getAbsoluteDistance(o1.getHabit(), habit) - getAbsoluteDistance(o2.getHabit(), habit);
-			}
-		});
+		List<StudentProfile> studentProfiles = studentProfileRepository.findAll();
+		studentProfiles.remove(studentProfile);
 
-		return studentProfiles.subList(0, 20);
+		logger.info(habit.getTalkative().toString());
+
+		studentProfiles.sort((o1, o2) -> {
+					Double d1 = getAbsoluteDistance(o1.getHabit(), habit);
+					Double d2 = getAbsoluteDistance(o2.getHabit(), habit);
+					if (d1 - d2 > 0) {
+						return 1;
+					} else if (d1.equals(d2)) {
+						return 0;
+					} else {
+						return -1;
+					}
+				}
+		);
+
+		return studentProfiles;
 	}
 
 	@Override
-	public List<StudentProfile> matchStudentProfileByCourse(Long id) {
+	public List<StudentProfile> matchStudentProfileByCourses(Long id) {
 		StudentProfile _studentProfile = this.getStudentProfileById(id);
 		List<StudentProfile> studentProfiles = this.getAllStudentProfiles();
 
-		Map<StudentProfile, Integer> courseCountMap = new HashMap<>();
-		for (StudentProfile studentProfile : studentProfiles) {
-			Integer courseMatchCount = 0;
-			List<Course> joinedCourses = new ArrayList<>();
-			joinedCourses.addAll(studentProfile.getCourses());
-			joinedCourses.addAll(_studentProfile.getCourses());
+		studentProfiles.remove(_studentProfile);
 
-			Set<Course> joinedCoursesSet = new HashSet<>(joinedCourses);
-			for (Course course : joinedCoursesSet) {
+		List<Pair<StudentProfile, Integer>> courseCountList = new LinkedList<>();
+		for (StudentProfile studentProfile : studentProfiles) {
+			int courseMatchCount = 0;
+			List<String> joinedCourses = new ArrayList<>();
+			joinedCourses.addAll(studentProfile.getCourseCodes());
+			joinedCourses.addAll(_studentProfile.getCourseCodes());
+
+			Set<String> joinedCoursesSet = new HashSet<>(joinedCourses);
+			for (String course : joinedCoursesSet) {
 				if (Collections.frequency(joinedCourses, course) > 1) {
 					courseMatchCount += 1;
 				}
 			}
 
-			courseCountMap.put(studentProfile, courseMatchCount);
+			courseCountList.add(Pair.of(studentProfile, courseMatchCount));
 		}
+
+		courseCountList.sort(new Comparator<Pair<StudentProfile, Integer>>() {
+			@Override
+			public int compare(Pair<StudentProfile, Integer> p1, Pair<StudentProfile, Integer> p2) {
+				return p1.getRight() - p2.getRight();
+			}
+		});
+
+		return courseCountList.stream().map(Pair::getLeft).collect(Collectors.toList());
 	}
 
-	public int getAbsoluteDistance(Habit habit1, Habit habit2) {
-		return (int) (Math.pow(habit1.getTalkative() - habit2.getTalkative(), 2) +
+	public double getAbsoluteDistance(Habit habit1, Habit habit2) {
+		return Math.sqrt(Math.pow(habit1.getTalkative() - habit2.getTalkative(), 2) +
 				Math.pow(habit1.getCollaborative() - habit2.getCollaborative(), 2));
 	}
 

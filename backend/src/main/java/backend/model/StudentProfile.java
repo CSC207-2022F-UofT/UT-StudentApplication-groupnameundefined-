@@ -5,11 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -36,14 +34,9 @@ public class StudentProfile {
 	@Column(name = "enrolment_year")
 	private Integer enrolmentYear;
 
-	@Setter(AccessLevel.NONE)
-	@ManyToMany(cascade = CascadeType.PERSIST)
-	@JoinTable(
-			name = "studentprofile_courses",
-			joinColumns = @JoinColumn(name = "studentprofile_id", referencedColumnName = "id"),
-			inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id")
-	)
-	private Set<Course> courses = new HashSet<>();
+	@ElementCollection
+	@Column(name = "course_codes")
+	private Set<String> courseCodes = new HashSet<>();
 
 	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile", orphanRemoval = true)
 	private Timetable timetable;
@@ -67,9 +60,8 @@ public class StudentProfile {
 		this.enrolmentYear = enrolmentYear;
 	}
 
-	public void addCourse(Course course) {
-		this.courses.add(course);
-		course.getStudentProfiles().add(this);
+	public void addCourse(String courseCode) {
+		this.courseCodes.add(courseCode);
 	}
 
 }

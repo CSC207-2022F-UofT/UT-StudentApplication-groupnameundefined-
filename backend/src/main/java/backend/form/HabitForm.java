@@ -16,8 +16,7 @@ public class HabitForm {
 
 		@NotNull
 		private final Long studentProfileId;
-
-
+		
 		@NotNull
 		@Max(5)
 		@Max(1)
@@ -27,8 +26,6 @@ public class HabitForm {
 		@Max(5)
 		@Min(1)
 		private final Integer collaborative;
-
-
 
 		public CreateHabitForm(
 				Long studentProfileId,

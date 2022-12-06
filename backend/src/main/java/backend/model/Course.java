@@ -38,10 +38,6 @@ public class Course {
 	@Column(name = "campus")
 	private String campus;
 
-	@Setter(AccessLevel.NONE)
-	@ManyToMany(mappedBy = "courses")
-	private Set<StudentProfile> studentProfiles = new HashSet<>();
-
 	public Course() {
 	}
 

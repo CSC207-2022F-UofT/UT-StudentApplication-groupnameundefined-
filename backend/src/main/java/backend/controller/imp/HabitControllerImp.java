@@ -29,60 +29,43 @@ import backend.controller.HabitController;
 @RequestMapping("/api/habits")
 public class HabitControllerImp implements HabitController {
 
-    private final Logger logger;
+	private final Logger logger;
 
-    private final HabitService habitService;
-    private final HabitMapper habitMapper;
+	private final HabitService habitService;
+	private final HabitMapper habitMapper;
 
-    @Autowired
-    public HabitControllerImp(Logger logger, HabitService habitService, HabitMapper habitMapper) {
-        this.logger = logger;
-        this.habitService = habitService;
-        this.habitMapper = habitMapper;
-    }
+	@Autowired
+	public HabitControllerImp(Logger logger, HabitService habitService, HabitMapper habitMapper) {
+		this.logger = logger;
+		this.habitService = habitService;
+		this.habitMapper = habitMapper;
+	}
 
-    @Override
-    @PostMapping("/")
-    public ResponseEntity<HabitDto> createHabit(CreateHabitForm input) {
-        Habit habit = habitService.createHabit(input);
-        HabitDto habitDto = habitMapper.toDto(habit);
+	@Override
+	@PostMapping("/")
+	public ResponseEntity<HabitDto> createHabit(CreateHabitForm input) {
+		Habit habit = habitService.createHabit(input);
+		HabitDto habitDto = habitMapper.toDto(habit);
 
-        return new ResponseEntity<>(habitDto, HttpStatus.CREATED);
-    }
+		return new ResponseEntity<>(habitDto, HttpStatus.CREATED);
+	}
 
-    @Override
-    @GetMapping("/")
-    public ResponseEntity<List<HabitDto>> getAllHabits() {
-        List<Habit> habits = habitService.getAllHabits();
-        List<HabitDto> habitDtos = habitMapper.toDtoList(habits);
+	@Override
+	@GetMapping("/")
+	public ResponseEntity<List<HabitDto>> getAllHabits() {
+		List<Habit> habits = habitService.getAllHabits();
+		List<HabitDto> habitDtos = habitMapper.toDtoList(habits);
 
-        return new ResponseEntity<>(habitDtos, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(habitDtos, HttpStatus.OK);
+	}
 
-    @Override
-    @GetMapping("/{id}")
-    public ResponseEntity<HabitDto> getHabitById(@PathVariable Long id) {
-        Habit habit = habitService.getHabitById(id);
-        HabitDto habitDto = habitMapper.toDto(habit);
+	@Override
+	@GetMapping("/{id}")
+	public ResponseEntity<HabitDto> getHabitById(@PathVariable Long id) {
+		Habit habit = habitService.getHabitById(id);
+		HabitDto habitDto = habitMapper.toDto(habit);
 
-        return new ResponseEntity<>(habitDto, HttpStatus.OK);
-    }
-
-    @Override
-    @GetMapping("/filter")
-    public ResponseEntity<List<HabitDto>> getFilteredHabits(
-            @RequestParam(required = false) Integer mbti,
-            @RequestParam(required = false) Integer talkative,
-            @RequestParam(required = false) Integer collaborative
-    ) {
-        try {
-            List<Habit> habits = habitService.getFilteredHabits(mbti, talkative, collaborative);
-            List<HabitDto> habitDtos = habitMapper.toDtoList(habits);
-
-            return new ResponseEntity<>(habitDtos, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+		return new ResponseEntity<>(habitDto, HttpStatus.OK);
+	}
 
 }

@@ -9,12 +9,10 @@ import backend.model.Habit;
 
 public interface HabitService {
 
-    Habit createHabit(CreateHabitForm input);
+	Habit createHabit(CreateHabitForm input);
 
-    List<Habit> getAllHabits();
+	List<Habit> getAllHabits();
 
-    Habit getHabitById(Long id);
-
-    List<Habit> getFilteredHabits(Integer mbti, Integer talktative, Integer collaborative);
+	Habit getHabitById(Long id);
 
 }

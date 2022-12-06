@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import backend.exception.exceptions.EntityNotFoundException;
 import backend.form.HabitForm.*;
-import backend.model.HabitVisibility;
 import backend.model.StudentProfile;
 import backend.repository.StudentProfileRepository;
 import backend.service.StudentProfileService;
@@ -48,8 +47,6 @@ public class HabitServiceImp implements HabitService {
 		_studentProfile.setHabit(habit);
 		habit.setStudentProfile(_studentProfile);
 
-		habitVisibility.setHabit(habit);
-
 		StudentProfile studentProfile = studentProfileRepository.save(_studentProfile);
 
 		return studentProfile.getHabit();
@@ -69,11 +66,6 @@ public class HabitServiceImp implements HabitService {
 		}
 
 		throw new EntityNotFoundException(String.format("Unable to find course with id '%d'", id), Habit.class);
-	}
-
-	@Override
-	public List<Habit> getFilteredHabits(Integer talktative, Integer collaborative) {
-		return new ArrayList<>();
 	}
 
 }

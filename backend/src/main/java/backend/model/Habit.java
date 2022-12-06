@@ -37,10 +37,6 @@ public class Habit {
 	@Column(name = "collaborative", columnDefinition = "integer default 5")
 	private Integer collaborative;
 
-	// Visibility of talkative, Collaborate, MBTI
-	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "habit")
-	private HabitVisibility visibility;
-
 	public Habit() {
 	}
 
@@ -60,7 +56,7 @@ public class Habit {
 		}
 
 		return (Objects.equals(this.collaborative, habit.collaborative)) && (Objects.equals(
-				this.talkative, habit.talkative)));
+				this.talkative, habit.talkative));
 	}
 
 }
