@@ -11,7 +11,7 @@ import org.mapstruct.Named;
 
 import java.util.List;
 
-@Mapper(uses = {AptBlockMapper.class, SectionBlockMapper.class})
+@Mapper(uses = {BlockMapper.class, SectionMapper.class, CourseMapper.class})
 public interface TimetableMapper {
 
 	TimetableDto toDto(Timetable timetable);

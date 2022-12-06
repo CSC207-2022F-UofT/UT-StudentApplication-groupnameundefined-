@@ -76,7 +76,6 @@ public class TimetableServiceImp implements TimetableService {
 		StudentProfile studentProfile = _studentProfile.get();
 
 		List<Map<String, String>> sectionData = this.parseIcs(iCalendar);
-		logger.info(sectionData.toString());
 
 		Set<Block> sectionBlocks = new HashSet<>();
 		for (Map<String, String> sec : sectionData) {

@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(uses = {AptBlockMapper.class, SectionBlockMapper.class})
+@Mapper(uses = {AptBlockMapper.class, SectionBlockMapper.class, SectionMapper.class})
 @DecoratedWith(BlockMapperDecorator.class)
 public interface BlockMapper {
 

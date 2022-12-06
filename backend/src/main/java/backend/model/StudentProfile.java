@@ -34,13 +34,13 @@ public class StudentProfile {
 	@Column(name = "enrolment_year")
 	private Integer enrolmentYear;
 
-	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
+	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile", orphanRemoval = true)
 	private Timetable timetable;
 
-	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
+	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile", orphanRemoval = true)
 	private SocialMediaProfile socialMediaProfile;
 
-	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile")
+	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile", orphanRemoval = true)
 	private Habit habit;
 
 	public StudentProfile() {
