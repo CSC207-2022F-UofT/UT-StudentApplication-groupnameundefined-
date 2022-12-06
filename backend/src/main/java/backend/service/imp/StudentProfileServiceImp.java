@@ -80,15 +80,14 @@ public class StudentProfileServiceImp implements StudentProfileService {
 	}
 
 	@Override
-	public List<StudentProfile> matchStudentProfileByHabit(Long id) {
+	public LinkedHashSet<StudentProfile> matchStudentProfileByHabit(Long id) {
 		StudentProfile studentProfile = this.getStudentProfileById(id);
 		Habit habit = studentProfile.getHabit();
 
 		List<StudentProfile> studentProfiles = studentProfileRepository.findAll();
+
 		studentProfiles.remove(studentProfile);
-
-		logger.info(habit.getTalkative().toString());
-
+		studentProfiles.forEach(studentProfile1 -> logger.info(studentProfile1.getId().toString()));
 		studentProfiles.sort((o1, o2) -> {
 					Double d1 = getAbsoluteDistance(o1.getHabit(), habit);
 					Double d2 = getAbsoluteDistance(o2.getHabit(), habit);
@@ -101,8 +100,10 @@ public class StudentProfileServiceImp implements StudentProfileService {
 					}
 				}
 		);
+		logger.info("-----------------");
+		studentProfiles.forEach(studentProfile1 -> logger.info(studentProfile1.getId().toString()));
 
-		return studentProfiles;
+		return new LinkedHashSet<>(studentProfiles);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package backend.service;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -15,7 +16,7 @@ public interface StudentProfileService {
 
 	StudentProfile getStudentProfileById(Long id);
 
-	List<StudentProfile> matchStudentProfileByHabit(Long id);
+	LinkedHashSet<StudentProfile> matchStudentProfileByHabit(Long id);
 
 	List<StudentProfile> matchStudentProfileByCourses(Long id);
 }

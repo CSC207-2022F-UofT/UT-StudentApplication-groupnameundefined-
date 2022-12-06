@@ -64,4 +64,17 @@ public class StudentProfile {
 		this.courseCodes.add(courseCode);
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (!(o instanceof StudentProfile)) {
+			return false;
+		}
+
+		return this.id.equals(((StudentProfile) o).getId());
+	}
+
 }

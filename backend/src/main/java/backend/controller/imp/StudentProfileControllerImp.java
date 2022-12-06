@@ -48,9 +48,9 @@ public class StudentProfileControllerImp implements StudentProfileController {
 
 	@Override
 	@GetMapping("/")
-	public ResponseEntity<List<StudentProfileDto>> getAllStudentProfiles() {
+	public ResponseEntity<Set<StudentProfileDto>> getAllStudentProfiles() {
 		List<StudentProfile> studentProfiles = studentProfileService.getAllStudentProfiles();
-		List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
+		Set<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
 
 		return new ResponseEntity<>(studentProfileDtos, HttpStatus.OK);
 	}
@@ -66,18 +66,17 @@ public class StudentProfileControllerImp implements StudentProfileController {
 
 	@Override
 	@GetMapping("/match-habit/{id}")
-	public ResponseEntity<List<StudentProfileDto>> matchStudentProfileByHabit(@PathVariable Long id) {
-		List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfileByHabit(id);
-		List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
+	public ResponseEntity<LinkedHashSet<StudentProfile>> matchStudentProfileByHabit(@PathVariable Long id) {
+		LinkedHashSet<StudentProfile> studentProfiles = studentProfileService.matchStudentProfileByHabit(id);
 
-		return new ResponseEntity<>(studentProfileDtos, HttpStatus.OK);
+		return new ResponseEntity<>(studentProfiles, HttpStatus.OK);
 	}
 
 	@Override
 	@GetMapping("/match-courses/{id}")
-	public ResponseEntity<List<StudentProfileDto>> matchStudentProfileByCourses(@PathVariable Long id) {
+	public ResponseEntity<Set<StudentProfileDto>> matchStudentProfileByCourses(@PathVariable Long id) {
 		List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfileByCourses(id);
-		List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
+		Set<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
 
 		return new ResponseEntity<>(studentProfileDtos, HttpStatus.OK);
 	}

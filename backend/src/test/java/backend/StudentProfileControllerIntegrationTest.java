@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Order(2)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -148,5 +149,8 @@ public class StudentProfileControllerIntegrationTest extends ControllerIntegrati
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/student-profile/match-courses/{id}", 4))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$[*].id", anyOf(contains(5, 3, 2, 1), contains(3, 5, 2, 1))));
+
+		// Set<StudentProfile> studentProfiles = studentProfileService.matchStudentProfileByHabit(4L);
+
 	}
 }
