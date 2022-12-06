@@ -9,12 +9,10 @@ import org.springframework.http.ResponseEntity;
 
 public interface HabitController {
 
-    ResponseEntity<HabitDto> createHabit(CreateHabitForm input);
+	ResponseEntity<HabitDto> createHabit(CreateHabitForm input);
 
-    ResponseEntity<List<HabitDto>> getAllHabits();
+	ResponseEntity<List<HabitDto>> getAllHabits();
 
-    ResponseEntity<HabitDto> getHabitById(Long id);
-
-    ResponseEntity<List<HabitDto>> getFilteredHabits(Integer talktative, Integer collaborative);
+	ResponseEntity<HabitDto> getHabitById(Long id);
 
 }

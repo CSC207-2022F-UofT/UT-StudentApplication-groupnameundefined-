@@ -82,7 +82,7 @@ public class TimetableServiceImp implements TimetableService {
 			List<SectionBlock> _sectionBlocks = sectionBlockRepository.findByCode(sec.get("course"), sec.get("section"));
 			sectionBlocks.addAll(_sectionBlocks);
 			for (SectionBlock sectionBlock : _sectionBlocks) {
-				studentProfile.addCourse(sectionBlock.getSection().getCourse());
+				studentProfile.addCourse(sectionBlock.getSection().getCourse().getCode());
 			}
 		}
 

@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 public class StudentProfileDto {
@@ -25,5 +28,8 @@ public class StudentProfileDto {
 
 	@JsonProperty("habit")
 	private HabitDto habit;
+
+	@JsonProperty("courseCodes")
+	private Set<String> courseCodes;
 
 }
