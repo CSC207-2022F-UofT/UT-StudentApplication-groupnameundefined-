@@ -8,14 +8,7 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -44,6 +37,10 @@ public class Course {
 	@Expose(serialize = true, deserialize = true)
 	@Column(name = "campus")
 	private String campus;
+
+	@Setter(AccessLevel.NONE)
+	@ManyToMany(mappedBy = "courses")
+	private Set<StudentProfile> studentProfiles = new HashSet<>();
 
 	public Course() {
 	}

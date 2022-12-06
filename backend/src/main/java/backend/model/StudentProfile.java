@@ -9,6 +9,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,6 +36,15 @@ public class StudentProfile {
 	@Column(name = "enrolment_year")
 	private Integer enrolmentYear;
 
+	@Setter(AccessLevel.NONE)
+	@ManyToMany(cascade = CascadeType.PERSIST)
+	@JoinTable(
+			name = "studentprofile_courses",
+			joinColumns = @JoinColumn(name = "studentprofile_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id")
+	)
+	private Set<Course> courses = new HashSet<>();
+
 	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile", orphanRemoval = true)
 	private Timetable timetable;
 
@@ -54,6 +65,11 @@ public class StudentProfile {
 		this.program = program;
 		this.college = college;
 		this.enrolmentYear = enrolmentYear;
+	}
+
+	public void addCourse(Course course) {
+		this.courses.add(course);
+		course.getStudentProfiles().add(this);
 	}
 
 }

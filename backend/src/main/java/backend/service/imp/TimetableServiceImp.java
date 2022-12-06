@@ -81,6 +81,9 @@ public class TimetableServiceImp implements TimetableService {
 		for (Map<String, String> sec : sectionData) {
 			List<SectionBlock> _sectionBlocks = sectionBlockRepository.findByCode(sec.get("course"), sec.get("section"));
 			sectionBlocks.addAll(_sectionBlocks);
+			for (SectionBlock sectionBlock : _sectionBlocks) {
+				studentProfile.addCourse(sectionBlock.getSection().getCourse());
+			}
 		}
 
 		return this.createTimetable(studentProfile, sectionBlocks);

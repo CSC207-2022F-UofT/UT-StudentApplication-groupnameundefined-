@@ -1,10 +1,10 @@
 package backend.service.imp;
 
-import java.io.File;
 import java.util.*;
 
 import backend.exception.exceptions.EntityNotFoundException;
 import backend.model.*;
+import backend.repository.HabitRepository;
 import backend.repository.SectionBlockRepository;
 import backend.service.TimetableService;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import backend.form.StudentProfileForm.CreateStudentProfileForm;
 import backend.repository.StudentProfileRepository;
 import backend.repository.UserRepository;
 import backend.service.StudentProfileService;
-import org.springframework.web.multipart.MultipartFile;;
+;
 
 @Service
 public class StudentProfileServiceImp implements StudentProfileService {
@@ -26,19 +26,23 @@ public class StudentProfileServiceImp implements StudentProfileService {
 	private final SectionBlockRepository sectionBlockRepository;
 	private final TimetableService timetableService;
 
+	private final HabitRepository habitRepository;
+
 	@Autowired
 	public StudentProfileServiceImp(
 			Logger logger,
 			StudentProfileRepository studentProfileRepository,
 			UserRepository userRepository,
 			SectionBlockRepository sectionBlockRepository,
-			TimetableService timetableService
+			TimetableService timetableService,
+			HabitRepository habitRepository
 	) {
 		this.logger = logger;
 		this.studentProfileRepository = studentProfileRepository;
 		this.userRepository = userRepository;
 		this.sectionBlockRepository = sectionBlockRepository;
 		this.timetableService = timetableService;
+		this.habitRepository = habitRepository;
 	}
 
 	@Override
@@ -70,6 +74,52 @@ public class StudentProfileServiceImp implements StudentProfileService {
 		}
 
 		throw new EntityNotFoundException(String.format("Unable to find student profile with id '%d'.", id), StudentProfile.class);
+	}
+
+	@Override
+	public List<StudentProfile> matchStudentProfileByProperty(Long id) {
+		List<StudentProfile> result = new ArrayList<StudentProfile>();
+		List<StudentProfile> studentProfiles = studentProfileRepository.findAll();
+
+		StudentProfile studentProfile = this.getStudentProfileById(id);
+		Habit habit = studentProfile.getHabit();
+
+		studentProfiles.sort(new Comparator<StudentProfile>() {
+			@Override
+			public int compare(StudentProfile o1, StudentProfile o2) {
+				return getAbsoluteDistance(o1.getHabit(), habit) - getAbsoluteDistance(o2.getHabit(), habit);
+			}
+		});
+
+		return studentProfiles.subList(0, 20);
+	}
+
+	@Override
+	public List<StudentProfile> matchStudentProfileByCourse(Long id) {
+		StudentProfile _studentProfile = this.getStudentProfileById(id);
+		List<StudentProfile> studentProfiles = this.getAllStudentProfiles();
+
+		Map<StudentProfile, Integer> courseCountMap = new HashMap<>();
+		for (StudentProfile studentProfile : studentProfiles) {
+			Integer courseMatchCount = 0;
+			List<Course> joinedCourses = new ArrayList<>();
+			joinedCourses.addAll(studentProfile.getCourses());
+			joinedCourses.addAll(_studentProfile.getCourses());
+
+			Set<Course> joinedCoursesSet = new HashSet<>(joinedCourses);
+			for (Course course : joinedCoursesSet) {
+				if (Collections.frequency(joinedCourses, course) > 1) {
+					courseMatchCount += 1;
+				}
+			}
+
+			courseCountMap.put(studentProfile, courseMatchCount);
+		}
+	}
+
+	public int getAbsoluteDistance(Habit habit1, Habit habit2) {
+		return (int) (Math.pow(habit1.getTalkative() - habit2.getTalkative(), 2) +
+				Math.pow(habit1.getCollaborative() - habit2.getCollaborative(), 2));
 	}
 
 }

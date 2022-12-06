@@ -15,4 +15,7 @@ public interface StudentProfileService {
 
 	StudentProfile getStudentProfileById(Long id);
 
+	List<StudentProfile> matchStudentProfileByProperty(Long id);
+
+	List<StudentProfile> matchStudentProfileByCourse(Long id);
 }
