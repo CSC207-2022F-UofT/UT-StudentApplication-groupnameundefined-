@@ -1,10 +1,9 @@
 package backend.form;
 
 import java.io.File;
+import java.util.List;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 import backend.model.StudentProfile;
 import lombok.Getter;
@@ -37,7 +36,18 @@ public class StudentProfileForm {
 
 	}
 
-	//    public class updateStudentProfileForm {
-	//        private StudentProfile studentProfile;
-	//    }
+	@Getter
+	public static class MatchStudentProfileForm {
+
+		@NotNull
+		private final Long studentProfileId;
+
+		@Size(min = 1, max = 2)
+		private final List<@NotEmpty @Pattern(regexp = "HABIT|COURSE") String> matchBy;
+
+		public MatchStudentProfileForm(Long studentProfileId, List<String> matchBy) {
+			this.studentProfileId = studentProfileId;
+			this.matchBy = matchBy;
+		}
+	}
 }

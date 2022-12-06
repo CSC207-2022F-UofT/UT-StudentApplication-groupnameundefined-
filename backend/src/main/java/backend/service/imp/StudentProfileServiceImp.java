@@ -3,22 +3,21 @@ package backend.service.imp;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import backend.exception.exceptions.BadRequestException;
-import backend.exception.exceptions.EntityNotFoundException;
-import backend.model.*;
-import backend.repository.HabitRepository;
-import backend.repository.SectionBlockRepository;
-import backend.service.TimetableService;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import backend.form.StudentProfileForm.CreateStudentProfileForm;
+import backend.exception.exceptions.EntityNotFoundException;
+import backend.form.StudentProfileForm.*;
+
 import backend.repository.StudentProfileRepository;
 import backend.repository.UserRepository;
 import backend.service.StudentProfileService;
-;
+import backend.model.*;
+import backend.repository.HabitRepository;
+import backend.repository.SectionBlockRepository;
+import backend.service.TimetableService;
 
 @Service
 public class StudentProfileServiceImp implements StudentProfileService {
@@ -80,12 +79,29 @@ public class StudentProfileServiceImp implements StudentProfileService {
 	}
 
 	@Override
-	public List<StudentProfile> matchStudentProfileByHabit(Long id) {
-		StudentProfile studentProfile = this.getStudentProfileById(id);
+	public List<StudentProfile> matchStudentProfiles(MatchStudentProfileForm input) {
+		StudentProfile studentProfile = getStudentProfileById(input.getStudentProfileId());
+
+		List<String> matchAttrs = input.getMatchBy();
+		if (matchAttrs.size() == 1) {
+			if (matchAttrs.get(0).equals("HABIT")) {
+				return matchStudentProfileByHabit(studentProfile);
+			} else {
+				return matchStudentProfileByCourses(studentProfile);
+			}
+		} else {
+			List<StudentProfile> matchByHabitResults = matchStudentProfileByHabit(studentProfile);
+			return sortStudentProfileByCourses(matchByHabitResults, studentProfile);
+		}
+	}
+
+
+	@Override
+	public List<StudentProfile> matchStudentProfileByHabit(StudentProfile studentProfile) {
 		Habit habit = studentProfile.getHabit();
 
 		List<StudentProfile> studentProfiles = studentProfileRepository.sortByHabitMatch(
-				id,
+				studentProfile.getId(),
 				habit.getTalkative(),
 				habit.getCollaborative()
 		);
@@ -93,18 +109,25 @@ public class StudentProfileServiceImp implements StudentProfileService {
 	}
 
 	@Override
-	public List<StudentProfile> matchStudentProfileByCourses(Long id) {
-		StudentProfile _studentProfile = this.getStudentProfileById(id);
+	public List<StudentProfile> matchStudentProfileByCourses(StudentProfile studentProfile) {
 		List<StudentProfile> studentProfiles = this.getAllStudentProfiles();
 
-		studentProfiles.remove(_studentProfile);
+		return sortStudentProfileByCourses(studentProfiles, studentProfile);
+	}
+
+	@Override
+	public List<StudentProfile> sortStudentProfileByCourses(
+			List<StudentProfile> studentProfiles,
+			StudentProfile studentProfile
+	) {
+		studentProfiles.remove(studentProfile);
 
 		List<Pair<StudentProfile, Integer>> courseCountList = new LinkedList<>();
-		for (StudentProfile studentProfile : studentProfiles) {
+		for (StudentProfile targetStudentProfile : studentProfiles) {
 			int courseMatchCount = 0;
 			List<String> joinedCourses = new ArrayList<>();
+			joinedCourses.addAll(targetStudentProfile.getCourseCodes());
 			joinedCourses.addAll(studentProfile.getCourseCodes());
-			joinedCourses.addAll(_studentProfile.getCourseCodes());
 
 			Set<String> joinedCoursesSet = new HashSet<>(joinedCourses);
 			for (String course : joinedCoursesSet) {

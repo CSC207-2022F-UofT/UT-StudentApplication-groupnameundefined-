@@ -19,8 +19,6 @@ public interface StudentProfileController {
 
 	ResponseEntity<StudentProfileDto> getStudentProfileById(Long id);
 
-	ResponseEntity<List<StudentProfileDto>> matchStudentProfileByHabit(Long id);
-
-	ResponseEntity<List<StudentProfileDto>> matchStudentProfileByCourses(Long id);
+	ResponseEntity<List<StudentProfileDto>> matchStudentProfiles(MatchStudentProfileForm input);
 
 }

@@ -70,20 +70,12 @@ public class StudentProfileControllerImp implements StudentProfileController {
 	}
 
 	@Override
-	@GetMapping("/match-habit/{id}")
-	public ResponseEntity<List<StudentProfileDto>> matchStudentProfileByHabit(@PathVariable Long id) {
-		List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfileByHabit(id);
+	@PostMapping("/match")
+	public ResponseEntity<List<StudentProfileDto>> matchStudentProfiles(@RequestBody MatchStudentProfileForm input) {
+		List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfiles(input);
 		List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
 
 		return new ResponseEntity<>(studentProfileDtos, HttpStatus.OK);
 	}
 
-	@Override
-	@GetMapping("/match-courses/{id}")
-	public ResponseEntity<List<StudentProfileDto>> matchStudentProfileByCourses(@PathVariable Long id) {
-		List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfileByCourses(id);
-		List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
-
-		return new ResponseEntity<>(studentProfileDtos, HttpStatus.OK);
-	}
 }

@@ -2,7 +2,7 @@ package backend.service;
 
 import java.util.*;
 
-import backend.form.StudentProfileForm.CreateStudentProfileForm;
+import backend.form.StudentProfileForm.*;
 import backend.model.StudentProfile;
 
 public interface StudentProfileService {
@@ -13,7 +13,15 @@ public interface StudentProfileService {
 
 	StudentProfile getStudentProfileById(Long id);
 
-	List<StudentProfile> matchStudentProfileByHabit(Long id);
+	List<StudentProfile> matchStudentProfiles(MatchStudentProfileForm input);
 
-	List<StudentProfile> matchStudentProfileByCourses(Long id);
+
+	List<StudentProfile> matchStudentProfileByHabit(StudentProfile studentProfile);
+
+	List<StudentProfile> matchStudentProfileByCourses(StudentProfile studentProfile);
+
+	List<StudentProfile> sortStudentProfileByCourses(
+			List<StudentProfile> studentProfiles,
+			StudentProfile studentProfile
+	);
 }
