@@ -93,10 +93,16 @@ public class LoginPanel extends JPanel implements ActionListener {
 		this.setVisible(true);
 	}
 
+	/**
+	 * Sets this panel to be invisible and return nothing.
+	 */
 	public void close() {
 		this.setVisible(false);
 	}
 
+	/**
+	 * Cleans all error messages shown in the JLabels and all information typed into the fields.
+	 */
 	public void cleanAll() {
 		emailField.setText("");
 		emailError.setText("");
@@ -105,12 +111,18 @@ public class LoginPanel extends JPanel implements ActionListener {
 		successLabel.setText("");
 	}
 
+	/**
+	 * Only cleans the error messages shown in the JLabels.
+	 */
 	public void cleanErrors() {
 		emailError.setText("");
 		passwordError.setText("");
 		successLabel.setText("");
 	}
 
+	/**
+	 * Ban the register button in the login panel.
+	 */
 	public void disableRegisterButton() {
 		registerButton.setEnabled(false);
 	}
