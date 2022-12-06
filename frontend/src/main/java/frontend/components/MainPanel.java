@@ -35,10 +35,13 @@ public class MainPanel extends JPanel {
 	}
 
 	public void initialize() {
+
 		setLayout(new CardLayout());
 		setBackground(new Color(128, 128, 255));
 		TopNavigation topbar = new TopNavigation();
-		this.add(topbar);
+
+		this.setLayout(new BorderLayout());
+		this.add(topbar, BorderLayout.NORTH);
 
 		add(loginPanel, "LoginPanel");
 		add(registerPanel, "RegisterPanel");
