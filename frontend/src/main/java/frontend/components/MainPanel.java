@@ -20,11 +20,13 @@ public class MainPanel extends JPanel {
 
 	private final LoginPanel loginPanel;
 	private final RegisterPanel registerPanel;
+	private final FriendsPanel friendsPanel;
 
 	@Autowired
-	public MainPanel(LoginPanel loginPanel, RegisterPanel registerPanel) {
+	public MainPanel(LoginPanel loginPanel, RegisterPanel registerPanel, FriendsPanel friendsPanel) {
 		this.loginPanel = loginPanel;
 		this.registerPanel = registerPanel;
+		this.friendsPanel = friendsPanel;
 	}
 
 	public void setPanel(String panelName) {
@@ -35,9 +37,12 @@ public class MainPanel extends JPanel {
 	public void initialize() {
 		setLayout(new CardLayout());
 		setBackground(new Color(128, 128, 255));
+		TopNavigation topbar = new TopNavigation();
+		this.add(topbar);
 
 		add(loginPanel, "LoginPanel");
 		add(registerPanel, "RegisterPanel");
+		add(friendsPanel, "FriendsPanel");
 
 		loginPanel.initialize(this);
 		setPanel("LoginPanel");
