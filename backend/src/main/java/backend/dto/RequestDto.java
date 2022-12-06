@@ -13,6 +13,12 @@ public class RequestDto {
 	@JsonProperty("id")
 	private Long id;
 
+	@JsonProperty("from")
+	private UserDto from;
+
+	@JsonProperty("to")
+	private UserDto to;
+
 	@JsonProperty("status")
 	private String status;
 
@@ -21,5 +27,5 @@ public class RequestDto {
 
 	@JsonProperty("timestamp")
 	private Timestamp timestamp;
-	
+
 }

@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(uses = {AptBlockMapper.class})
+@Mapper(uses = {AptBlockMapper.class, UserMapper.class})
 public interface AptRequestMapper {
 
 	AptRequestDto toDto(AptRequest aptRequest);
