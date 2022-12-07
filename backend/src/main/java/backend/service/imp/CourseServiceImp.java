@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.util.*;
 
 import backend.exception.exceptions.EntityNotFoundException;
+import backend.form.CourseForm.*;
 import com.google.gson.GsonBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -69,7 +70,7 @@ public class CourseServiceImp implements CourseService {
 	}
 
 	@Override
-	public void loadCourses() {
+	public void loadCourses(LoadCoursesForm input) {
 		try {
 			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
@@ -86,8 +87,10 @@ public class CourseServiceImp implements CourseService {
 
 				Course course = gson.fromJson(_course.toJSONString(), Course.class);
 
-				if (!course.getCode().contains("CSC207")) {
-					continue;
+				if (!input.getLoadAll()) {
+					if (!input.getCourses().contains(course.getCode())) {
+						continue;
+					}
 				}
 
 				courseRepository.save(course);

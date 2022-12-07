@@ -1,20 +1,17 @@
 package backend.service;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
-import org.json.simple.parser.ParseException;
+import backend.form.CourseForm.*;
 
 import backend.model.Course;
 
 public interface CourseService {
 
-    void loadCourses();
+	void loadCourses(LoadCoursesForm input);
 
-    List<Course> getAllCourses();
+	List<Course> getAllCourses();
 
-    Course getCourseById(Long id);
+	Course getCourseById(Long id);
 
 }

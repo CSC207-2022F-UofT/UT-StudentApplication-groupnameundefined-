@@ -1,20 +1,18 @@
 package backend.controller;
 
 import java.util.List;
-import java.util.Set;
 
+import backend.form.CourseForm.*;
 import org.springframework.http.ResponseEntity;
 
 import backend.dto.CourseDto;
-import backend.model.Block;
-import backend.model.Course;
 
 public interface CourseController {
 
-    ResponseEntity<?> loadCourses();
+	ResponseEntity<?> loadCourses(LoadCoursesForm input);
 
-    ResponseEntity<List<CourseDto>> getAllCourses();
+	ResponseEntity<List<CourseDto>> getAllCourses();
 
-    ResponseEntity<CourseDto> getCourseById(Long id);
+	ResponseEntity<CourseDto> getCourseById(Long id);
 
 }
