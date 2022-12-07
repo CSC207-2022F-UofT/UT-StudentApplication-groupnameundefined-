@@ -11,9 +11,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 @SpringBootApplication
 public class App implements CommandLineRunner {
 
+    private final MainFrame mainFrame;
     @Autowired
-    private MainFrame mainFrame;
-
+    public App(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
+    }
     public static void main(String[] args) {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
         ctx.register(AppConfig.class);

@@ -17,6 +17,7 @@ dependencies {
 	implementation 'org.springframework.session:spring-session-core'
 	implementation 'org.projectlombok:lombok:1.18.22'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 }
 
 tasks.named('test') {
