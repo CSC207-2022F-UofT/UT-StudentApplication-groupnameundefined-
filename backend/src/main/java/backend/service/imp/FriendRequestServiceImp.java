@@ -10,6 +10,7 @@ import backend.model.User;
 import backend.repository.FriendRequestRepository;
 import backend.repository.UserRepository;
 import backend.service.FriendRequestService;
+import backend.service.UserService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,16 +24,19 @@ public class FriendRequestServiceImp implements FriendRequestService {
 	private final Logger logger;
 
 	private final UserRepository userRepository;
+	private final UserService userService;
 	private final FriendRequestRepository friendRequestRepository;
 
 	@Autowired
 	public FriendRequestServiceImp(
 			Logger logger,
 			FriendRequestRepository friendRequestRepository,
+			UserService userService,
 			UserRepository userRepository
 	) {
 		this.logger = logger;
 		this.userRepository = userRepository;
+		this.userService = userService;
 		this.friendRequestRepository = friendRequestRepository;
 	}
 
@@ -108,11 +112,20 @@ public class FriendRequestServiceImp implements FriendRequestService {
 
 	@Override
 	public FriendRequest approveFriendRequest(Long id) {
-		FriendRequest friendRequest = this.getFriendRequestById(id);
+		FriendRequest _friendRequest = this.getFriendRequestById(id);
 
-		if(friendRequest.getStatus().equals("PENDING")){
-			friendRequest.setStatus("APPROVED");
-			return friendRequestRepository.save(friendRequest);
+		if (_friendRequest.getStatus().equals("PENDING")) {
+			_friendRequest.setStatus("APPROVED");
+			FriendRequest friendRequest = friendRequestRepository.save(_friendRequest);
+			User fromUser = userService.getUserById(friendRequest.getFrom().getId());
+			User toUser = userService.getUserById(friendRequest.getTo().getId());
+
+			fromUser.addFriend(toUser);
+			toUser.addFriend(fromUser);
+			userRepository.save(fromUser);
+			userRepository.save(toUser);
+
+			return friendRequest;
 		}
 		throw new BadRequestException("The designated friend request has already been processed.");
 	}
@@ -121,7 +134,7 @@ public class FriendRequestServiceImp implements FriendRequestService {
 	public FriendRequest denyFriendRequest(Long id) {
 		FriendRequest friendRequest = this.getFriendRequestById(id);
 
-		if(friendRequest.getStatus().equals("PENDING")){
+		if (friendRequest.getStatus().equals("PENDING")) {
 			friendRequest.setStatus("DENIED");
 			return friendRequestRepository.save(friendRequest);
 		}

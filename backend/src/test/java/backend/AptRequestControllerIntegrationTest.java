@@ -1,4 +1,4 @@
 package backend;
 
-public class AptRequestControllerIntegrationTest {
+public class AptRequestControllerIntegrationTest extends ControllerIntegrationTest {
 }

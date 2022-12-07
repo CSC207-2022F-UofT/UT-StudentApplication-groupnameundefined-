@@ -2,13 +2,11 @@ package backend.service.imp;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import backend.exception.exceptions.EntityExistException;
 import backend.exception.exceptions.EntityNotFoundException;
 import backend.exception.exceptions.InvalidCredentialsException;
 import backend.form.AptRequestForm.*;
-import backend.form.FriendRequestForm;
 import backend.form.UserForm.*;
 
 import backend.model.*;
@@ -30,28 +28,13 @@ public class UserServiceImp implements UserService {
 
 	private final UserRepository userRepository;
 
-	private final AptRequestService aptRequestService;
-
-	private final TimetableRepository timetableRepository;
-
-	private final FriendRequestService friendRequestService;
-	private final FriendRequestRepository friendRequestRepository;
-
 	@Autowired
 	public UserServiceImp(
 			Logger logger,
-			UserRepository userRepository,
-			AptRequestService aptRequestService,
-			TimetableRepository timetableRepository,
-			FriendRequestService friendRequestService,
-			FriendRequestRepository friendRequestRepository
+			UserRepository userRepository
 	) {
 		this.logger = logger;
 		this.userRepository = userRepository;
-		this.aptRequestService = aptRequestService;
-		this.timetableRepository = timetableRepository;
-		this.friendRequestService = friendRequestService;
-		this.friendRequestRepository = friendRequestRepository;
 
 	}
 
@@ -128,44 +111,6 @@ public class UserServiceImp implements UserService {
 		}
 
 		throw new EntityNotFoundException(String.format("Unable to find user with email '%s'.", email), User.class);
-	}
-
-	@Override
-	public AptRequest sendAptRequest(CreateAptRequestForm input) {
-		AptRequest aptRequest = aptRequestService.createAptRequest(input);
-
-		User user = aptRequest.getFrom();
-		Timetable timetable = user.getStudentProfile().getTimetable();
-
-		timetable.addBlock(aptRequest.getAptBlock());
-		timetableRepository.save(timetable);
-
-		return aptRequest;
-	}
-
-	@Override
-	public AptRequest updateAptRequest(UpdateAptRequestForm input) {
-		return aptRequestService.updateAptRequest(input);
-
-	}
-
-	@Override
-	public FriendRequest approveFriendRequest(FriendRequestForm.CreateFriendRequestForm input) {
-		Long friendRequestId = input.getFromId();
-		Long fromId = input.getFromId();
-		Long toId = input.getToId();
-		FriendRequest friendRequest = friendRequestService.approveFriendRequest(friendRequestId);
-		friendRequestRepository.save(friendRequest);
-
-		User fromUser = getUserById(fromId);
-		User toUser = getUserById(toId);
-
-		fromUser.addFriend(toUser);
-		toUser.addFriend(fromUser);
-		userRepository.save(fromUser);
-		userRepository.save(toUser);
-
-		return friendRequest;
 	}
 
 }

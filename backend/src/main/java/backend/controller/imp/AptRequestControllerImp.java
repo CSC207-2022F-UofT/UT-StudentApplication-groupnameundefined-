@@ -64,6 +64,7 @@ public class AptRequestControllerImp implements AptRequestController {
 	}
 
 	@Override
+	@GetMapping("/to/{toId}")
 	public ResponseEntity<List<AptRequestDto>> getAptRequestByToId(Long toId) {
 		List<AptRequest> aptRequests = aptRequestService.getAptRequestByToId(toId);
 		List<AptRequestDto> aptRequestDtos = aptRequestMapper.toDtoList(aptRequests);

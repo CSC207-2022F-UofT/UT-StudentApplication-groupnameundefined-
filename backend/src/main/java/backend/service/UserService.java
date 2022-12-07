@@ -27,10 +27,4 @@ public interface UserService {
 
 	User getUserByEmail(String email);
 
-	AptRequest sendAptRequest(CreateAptRequestForm input);
-
-	AptRequest updateAptRequest(UpdateAptRequestForm input);
-
-	FriendRequest approveFriendRequest(CreateFriendRequestForm input);
-
 }

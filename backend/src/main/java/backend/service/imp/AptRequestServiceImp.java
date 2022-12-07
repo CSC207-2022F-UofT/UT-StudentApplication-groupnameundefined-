@@ -7,10 +7,13 @@ import backend.exception.exceptions.BadRequestException;
 import backend.form.AptRequestForm.*;
 import backend.model.AptBlock;
 import backend.model.AptRequest;
+import backend.model.Timetable;
 import backend.model.User;
 import backend.repository.AptRequestRepository;
+import backend.repository.TimetableRepository;
 import backend.repository.UserRepository;
 import backend.service.AptRequestService;
+import backend.service.UserService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,16 +28,22 @@ public class AptRequestServiceImp implements AptRequestService {
 	private final AptRequestRepository aptRequestRepository;
 
 	private final UserRepository userRepository;
+	private final UserService userService;
+	private final TimetableRepository timetableRepository;
 
 	@Autowired
 	public AptRequestServiceImp(
 			Logger logger,
 			AptRequestRepository aptRequestRepository,
-			UserRepository userRepository
+			UserRepository userRepository,
+			UserService userService,
+			TimetableRepository timetableRepository
 	) {
 		this.logger = logger;
 		this.aptRequestRepository = aptRequestRepository;
 		this.userRepository = userRepository;
+		this.userService = userService;
+		this.timetableRepository = timetableRepository;
 	}
 
 	@Override
@@ -65,28 +74,14 @@ public class AptRequestServiceImp implements AptRequestService {
 		return aptRequestRepository.findByToId(toId);
 	}
 
+	@Override
 	public AptRequest createAptRequest(CreateAptRequestForm input) {
-
-		Optional<User> fromUser = userRepository.findById(input.getFromId());
-		Optional<User> toUser = userRepository.findById(input.getToId());
-
-		if (fromUser.isEmpty()) {
-			throw new backend.exception.exceptions.EntityNotFoundException(
-					String.format("Unable to find user with id '%s'.", input.getFromId()),
-					User.class
-			);
-		}
-
-		if (toUser.isEmpty()) {
-			throw new backend.exception.exceptions.EntityNotFoundException(
-					String.format("Unable to find user with id '%s'.", input.getToId()),
-					User.class
-			);
-		}
+		User fromUser = userService.getUserById(input.getFromId());
+		User toUser = userService.getUserById(input.getToId());
 
 		AptRequest aptRequest = new AptRequest(
-				fromUser.get(),
-				toUser.get(),
+				fromUser,
+				toUser,
 				input.getMessage()
 		);
 
@@ -101,6 +96,10 @@ public class AptRequestServiceImp implements AptRequestService {
 
 		aptRequest.setAptBlock(aptBlock);
 		aptBlock.setAptRequest(aptRequest);
+
+		Timetable timetable = fromUser.getStudentProfile().getTimetable();
+		timetable.addBlock(aptBlock);
+		timetableRepository.save(timetable);
 
 		return aptRequestRepository.save(aptRequest);
 	}
@@ -137,12 +136,20 @@ public class AptRequestServiceImp implements AptRequestService {
 	public AptRequest approveAptRequest(Long id) {
 		AptRequest aptRequest = this.getAptRequestById(id);
 
-		if (aptRequest.getStatus().equals("PENDING")) {
-			aptRequest.setStatus("APPROVED");
-			return aptRequestRepository.save(aptRequest);
+		if (!aptRequest.getStatus().equals("PENDING")) {
+			throw new BadRequestException("The designated appointment request has already been processed.");
 		}
 
-		throw new BadRequestException("The designated appointment request has already been processed.");
+		aptRequest.setStatus("APPROVED");
+
+		Timetable timetable = aptRequest.getTo().getStudentProfile().getTimetable();
+
+		timetable.addBlock(aptRequest.getAptBlock());
+		timetableRepository.save(timetable);
+
+		return aptRequestRepository.save(aptRequest);
+
+
 	}
 
 	@Override
@@ -152,7 +159,7 @@ public class AptRequestServiceImp implements AptRequestService {
 		if (aptRequest.getStatus().equals("PENDING")) {
 			aptRequest.setStatus("DENIED");
 			aptRequest.setAptBlock(null);
-			
+
 			return aptRequestRepository.save(aptRequest);
 		}
 
