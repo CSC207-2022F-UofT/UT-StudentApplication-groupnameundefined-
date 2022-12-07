@@ -91,7 +91,8 @@ public class StudentProfileServiceImp implements StudentProfileService {
 			}
 		} else {
 			List<StudentProfile> matchByHabitResults = matchStudentProfileByHabit(studentProfile);
-			return sortStudentProfileByCourses(matchByHabitResults, studentProfile);
+			return sortStudentProfileByCourses(matchByHabitResults, studentProfile)
+					.subList(0, Math.min(20, matchByHabitResults.size()));
 		}
 	}
 
@@ -100,12 +101,11 @@ public class StudentProfileServiceImp implements StudentProfileService {
 	public List<StudentProfile> matchStudentProfileByHabit(StudentProfile studentProfile) {
 		Habit habit = studentProfile.getHabit();
 
-		List<StudentProfile> studentProfiles = studentProfileRepository.sortByHabitMatch(
+		return studentProfileRepository.sortByHabitMatch(
 				studentProfile.getId(),
 				habit.getTalkative(),
 				habit.getCollaborative()
 		);
-		return studentProfiles.subList(0, Math.min(20, studentProfiles.size()));
 	}
 
 	@Override
@@ -124,26 +124,19 @@ public class StudentProfileServiceImp implements StudentProfileService {
 
 		List<Pair<StudentProfile, Integer>> courseCountList = new LinkedList<>();
 		for (StudentProfile targetStudentProfile : studentProfiles) {
-			int courseMatchCount = 0;
 			List<String> joinedCourses = new ArrayList<>();
 			joinedCourses.addAll(targetStudentProfile.getCourseCodes());
 			joinedCourses.addAll(studentProfile.getCourseCodes());
 
 			Set<String> joinedCoursesSet = new HashSet<>(joinedCourses);
-			for (String course : joinedCoursesSet) {
-				if (Collections.frequency(joinedCourses, course) > 1) {
-					courseMatchCount += 1;
-				}
-			}
-
-			courseCountList.add(Pair.of(studentProfile, courseMatchCount));
+			courseCountList.add(Pair.of(studentProfile, joinedCourses.size() - joinedCoursesSet.size()));
 		}
 
-		courseCountList.sort(new Comparator<Pair<StudentProfile, Integer>>() {
-			@Override
-			public int compare(Pair<StudentProfile, Integer> p1, Pair<StudentProfile, Integer> p2) {
+		courseCountList.sort((p1, p2) -> {
+			if (getAbsoluteDistance(p1.getLeft().getHabit(), p2.getLeft().getHabit()) == 0) {
 				return p1.getRight() - p2.getRight();
 			}
+			return 0;
 		});
 
 		return courseCountList.stream().map(Pair::getLeft).collect(Collectors.toList());
