@@ -1,5 +1,6 @@
 package backend.service.imp;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -111,6 +112,13 @@ public class UserServiceImp implements UserService {
 		}
 
 		throw new EntityNotFoundException(String.format("Unable to find user with email '%s'.", email), User.class);
+	}
+
+	@Override
+	public List<User> getFriendsByUserId(Long id) {
+		User user = getUserById(id);
+
+		return new ArrayList<>(user.getFriends());
 	}
 
 }

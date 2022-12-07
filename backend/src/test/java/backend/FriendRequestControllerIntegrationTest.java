@@ -1,5 +1,6 @@
 package backend;
 
+import backend.dto.FriendRequestDto;
 import backend.form.FriendRequestForm.*;
 import backend.form.StudentProfileForm;
 import backend.form.UserForm;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static backend.ControllerIntegrationTest.toJsonString;
@@ -121,9 +123,23 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 	@Order(5)
 	public void approveFriendRequest_expectSuccess() throws Exception {
 
+		// Check if the request is approved
+		MvcResult result =
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/friend-request/approve/{id}", 1))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.status", is("APPROVED")));
+				.andExpect(jsonPath("$.status", is("APPROVED"))).andReturn();
+
+		FriendRequestDto resultDto = jsonStringToObject
+				(result.getResponse().getContentAsString(), FriendRequestDto.class);
+		// Check if the toUser is added to fromUser's Friends List
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/user/{id}/friends", 1))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[-1].id", is(resultDto.getTo().getId().intValue())));
+
+		// Check if the fromUser is added to toUser's Friends List
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/user/{id}/friends", 2))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[-1].id", is(resultDto.getFrom().getId().intValue())));
 	}
 
 	@Test

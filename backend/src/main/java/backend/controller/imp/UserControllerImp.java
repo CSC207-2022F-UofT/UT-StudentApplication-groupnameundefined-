@@ -83,4 +83,15 @@ public class UserControllerImp implements UserController {
 
 	}
 
+	@Override
+	@GetMapping("/{id}/friends")
+	public ResponseEntity<List<UserDto>> getFriendsByUserId(@PathVariable("id") Long id) {
+
+		List<User> friends = userService.getFriendsByUserId(id);
+		List<UserDto> userDtos = userMapper.toDtoList(friends);
+
+		return new ResponseEntity<>(userDtos, HttpStatus.OK);
+	}
+
+
 }
