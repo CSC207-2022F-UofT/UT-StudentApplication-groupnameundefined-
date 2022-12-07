@@ -24,15 +24,30 @@ public class AppointmentRequestModal {
 
         JButton button = new JButton("Create Appointment");
         final JDialog modelDialog = createDialog(frame);
+
+        JButton button2 = new JButton("Delete Appointment");
+        final JDialog modelDialog2 = createDialog(frame);
+
+        JButton button3 = new JButton("Reschedule Appointment");
+        final JDialog modelDialog3 = createDialog(frame);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 modelDialog.setVisible(true);
+                modelDialog2.setVisible(true);
+                modelDialog3.setVisible(true);
             }
         });
 
         panel.add(button);
+        panel.add(button2);
+        panel.add(button3);
+
+
+
         frame.getContentPane().add(panel, BorderLayout.CENTER);
+
+
     }
 
     private static JDialog createDialog(final JFrame frame){
@@ -41,11 +56,27 @@ public class AppointmentRequestModal {
         modelDialog.setBounds(132, 132, 300, 200);
         Container dialogContainer = modelDialog.getContentPane();
         dialogContainer.setLayout(new BorderLayout());
-        dialogContainer.add(new JLabel("                         Welcome to Swing!")
-                , BorderLayout.CENTER);
         JPanel panel1 = new JPanel();
         panel1.setLayout(new FlowLayout());
         JButton okButton = new JButton("Ok");
+
+        JLabel lblLocation = new JLabel("Location");
+        lblLocation.setBounds(10, 50, 80, 25);
+        dialogContainer.add(lblLocation);
+
+        JTextField textField_location = new JTextField();
+        textField_location.setBounds(100, 50, 165, 25);
+        dialogContainer.add(textField_location);
+
+        JLabel lblTime = new JLabel("Time");
+        lblTime.setBounds(10, 20, 80, 25);
+        dialogContainer.add(lblTime);
+
+        JTextField textField_time = new JTextField();
+        textField_time.setBounds(100, 20, 165, 25);
+        dialogContainer.add(textField_time);
+
+
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
