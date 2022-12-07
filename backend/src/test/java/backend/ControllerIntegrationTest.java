@@ -1,5 +1,7 @@
 package backend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
@@ -23,6 +25,14 @@ public class ControllerIntegrationTest {
 	public static String toJsonString(final Object obj) {
 		try {
 			return new ObjectMapper().writeValueAsString(obj);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static Object jsonStringToObject(final String jsonString, Object obj) {
+		try {
+			return new ObjectMapper().readValue(jsonString, obj.getClass());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
