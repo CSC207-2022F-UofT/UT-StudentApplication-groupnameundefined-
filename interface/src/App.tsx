@@ -19,11 +19,14 @@ function App() {
 				palette: {
 					mode: 'light',
 					primary: {
-						main: '#113665',
+						main: '#000000',
+					},
+					secondary: {
+						main: '#4285F4',
 					},
 				},
 			}),
-		[],
+		[]
 	);
 
 	return (

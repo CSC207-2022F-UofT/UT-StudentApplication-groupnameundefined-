@@ -1,5 +1,10 @@
 import React from 'react';
+import Button from '../../../component/Button';
 
 export default function Login() {
-	return <div>Login Screen</div>;
+	const handleButtonClick = () => {
+		console.log('Hello');
+	};
+
+	return <Button />;
 }
