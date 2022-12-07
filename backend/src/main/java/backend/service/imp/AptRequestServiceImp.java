@@ -120,7 +120,6 @@ public class AptRequestServiceImp implements AptRequestService {
 		aptRequest.setMessage(input.getMessage());
 
 		AptBlock aptBlock = aptRequest.getAptBlock();
-
 		aptBlock.update(
 				input.getStartDay(),
 				input.getStartMil(),

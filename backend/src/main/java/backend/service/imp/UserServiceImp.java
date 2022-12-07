@@ -2,16 +2,17 @@ package backend.service.imp;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import backend.exception.exceptions.EntityExistException;
 import backend.exception.exceptions.EntityNotFoundException;
 import backend.exception.exceptions.InvalidCredentialsException;
 import backend.form.AptRequestForm.*;
+import backend.form.FriendRequestForm;
 import backend.form.UserForm.*;
 
-import backend.model.AptBlock;
-import backend.model.AptRequest;
-import backend.model.Timetable;
+import backend.model.*;
+import backend.repository.FriendRequestRepository;
 import backend.repository.TimetableRepository;
 import backend.service.AptRequestService;
 import backend.service.FriendRequestService;
@@ -20,7 +21,6 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import backend.model.User;
 import backend.repository.UserRepository;
 
 @Service
@@ -35,6 +35,7 @@ public class UserServiceImp implements UserService {
 	private final TimetableRepository timetableRepository;
 
 	private final FriendRequestService friendRequestService;
+	private final FriendRequestRepository friendRequestRepository;
 
 	@Autowired
 	public UserServiceImp(
@@ -42,13 +43,15 @@ public class UserServiceImp implements UserService {
 			UserRepository userRepository,
 			AptRequestService aptRequestService,
 			TimetableRepository timetableRepository,
-			FriendRequestService friendRequestService
+			FriendRequestService friendRequestService,
+			FriendRequestRepository friendRequestRepository
 	) {
 		this.logger = logger;
 		this.userRepository = userRepository;
 		this.aptRequestService = aptRequestService;
 		this.timetableRepository = timetableRepository;
 		this.friendRequestService = friendRequestService;
+		this.friendRequestRepository = friendRequestRepository;
 
 	}
 
@@ -143,6 +146,26 @@ public class UserServiceImp implements UserService {
 	@Override
 	public AptRequest updateAptRequest(UpdateAptRequestForm input) {
 		return aptRequestService.updateAptRequest(input);
+
+	}
+
+	@Override
+	public FriendRequest approveFriendRequest(FriendRequestForm.CreateFriendRequestForm input) {
+		Long friendRequestId = input.getFromId();
+		Long fromId = input.getFromId();
+		Long toId = input.getToId();
+		FriendRequest friendRequest = friendRequestService.approveFriendRequest(friendRequestId);
+		friendRequestRepository.save(friendRequest);
+
+		User fromUser = getUserById(fromId);
+		User toUser = getUserById(toId);
+
+		fromUser.addFriend(toUser);
+		toUser.addFriend(fromUser);
+		userRepository.save(fromUser);
+		userRepository.save(toUser);
+
+		return friendRequest;
 	}
 
 }

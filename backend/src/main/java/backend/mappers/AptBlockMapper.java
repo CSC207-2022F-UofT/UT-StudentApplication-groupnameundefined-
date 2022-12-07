@@ -1,9 +1,7 @@
 package backend.mappers;
 
 import backend.dto.AptBlockDto;
-import backend.dto.SectionBlockDto;
 import backend.model.AptBlock;
-import backend.model.SectionBlock;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

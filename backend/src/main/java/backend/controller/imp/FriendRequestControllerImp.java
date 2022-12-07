@@ -82,8 +82,8 @@ public class FriendRequestControllerImp implements FriendRequestController {
     }
 
     @Override
-    @PostMapping("/approve")
-    public ResponseEntity<FriendRequestDto> approveFriendRequest(@RequestBody Long id) {
+    @GetMapping("/approve/{id}")
+    public ResponseEntity<FriendRequestDto> approveFriendRequest(@PathVariable Long id) {
         FriendRequest friendRequest = friendRequestService.approveFriendRequest(id);
         FriendRequestDto friendRequestDto = friendRequestMapper.toDto(friendRequest);
 
@@ -91,8 +91,8 @@ public class FriendRequestControllerImp implements FriendRequestController {
     }
 
     @Override
-    @PostMapping("/deny")
-    public ResponseEntity<FriendRequestDto> denyFriendRequest(@RequestBody Long id) {
+    @GetMapping("/deny/{id}")
+    public ResponseEntity<FriendRequestDto> denyFriendRequest(@PathVariable Long id) {
         FriendRequest friendRequest = friendRequestService.denyFriendRequest(id);
         FriendRequestDto friendRequestDto = friendRequestMapper.toDto(friendRequest);
 
@@ -100,8 +100,8 @@ public class FriendRequestControllerImp implements FriendRequestController {
     }
 
     @Override
-    @PostMapping("/delete")
-    public ResponseEntity<Long> deleteFriendRequest(@RequestBody Long id) {
+    @GetMapping("/delete/{id}")
+    public ResponseEntity<Long> deleteFriendRequest(@PathVariable Long id) {
         Long deletedId = friendRequestService.deleteFriendRequest(id);
 
         return new ResponseEntity<Long>(deletedId, HttpStatus.OK);

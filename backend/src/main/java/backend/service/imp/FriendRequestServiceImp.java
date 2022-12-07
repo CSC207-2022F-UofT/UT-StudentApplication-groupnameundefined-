@@ -1,7 +1,9 @@
 package backend.service.imp;
 
+import backend.exception.exceptions.BadRequestException;
 import backend.exception.exceptions.EntityNotFoundException;
 import backend.form.FriendRequestForm.*;
+import backend.model.AptRequest;
 import backend.model.FriendRequest;
 import backend.model.Section;
 import backend.model.User;
@@ -50,11 +52,19 @@ public class FriendRequestServiceImp implements FriendRequestService {
 		throw new EntityNotFoundException(String.format("Unable to find friend request with id '%d'", id), FriendRequest.class);
 	}
 
+	/**
+	 * @param fromId
+	 * @return Friend Request the User sent.
+	 */
 	@Override
 	public List<FriendRequest> getFriendRequestByFromId(Long fromId) {
 		return friendRequestRepository.findByFromId(fromId);
 	}
 
+	/**
+	 * @param toId
+	 * @return Friend Request the User received.
+	 */
 	@Override
 	public List<FriendRequest> getFriendRequestByToId(Long toId) {
 		return friendRequestRepository.findByToId(toId);
@@ -98,28 +108,24 @@ public class FriendRequestServiceImp implements FriendRequestService {
 
 	@Override
 	public FriendRequest approveFriendRequest(Long id) {
-		Optional<FriendRequest> _friendRequest = friendRequestRepository.findById(id);
-		if (_friendRequest.isPresent()) {
-			FriendRequest friendRequest = _friendRequest.get();
-			friendRequest.setStatus("APPROVED");
+		FriendRequest friendRequest = this.getFriendRequestById(id);
 
+		if(friendRequest.getStatus().equals("PENDING")){
+			friendRequest.setStatus("APPROVED");
 			return friendRequestRepository.save(friendRequest);
 		}
-
-		throw new EntityNotFoundException(String.format("Unable to find friend request with id %d", id), FriendRequest.class);
+		throw new BadRequestException("The designated friend request has already been processed.");
 	}
 
 	@Override
 	public FriendRequest denyFriendRequest(Long id) {
-		Optional<FriendRequest> _friendRequest = friendRequestRepository.findById(id);
-		if (_friendRequest.isPresent()) {
-			FriendRequest friendRequest = _friendRequest.get();
-			friendRequest.setStatus("DENIED");
+		FriendRequest friendRequest = this.getFriendRequestById(id);
 
+		if(friendRequest.getStatus().equals("PENDING")){
+			friendRequest.setStatus("DENIED");
 			return friendRequestRepository.save(friendRequest);
 		}
-
-		throw new EntityNotFoundException(String.format("Unable to find friend request with id %d", id), FriendRequest.class);
+		throw new BadRequestException("The designated friend request has already been processed.");
 	}
 
 	@Override

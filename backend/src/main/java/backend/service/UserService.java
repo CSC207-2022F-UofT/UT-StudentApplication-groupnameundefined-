@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import backend.form.AptRequestForm.*;
+import backend.form.FriendRequestForm;
+import backend.form.FriendRequestForm.*;
 import backend.form.UserForm.*;
 import backend.model.AptRequest;
+import backend.model.FriendRequest;
 import backend.model.User;
 
 public interface UserService {
@@ -27,4 +30,7 @@ public interface UserService {
 	AptRequest sendAptRequest(CreateAptRequestForm input);
 
 	AptRequest updateAptRequest(UpdateAptRequestForm input);
+
+	FriendRequest approveFriendRequest(CreateFriendRequestForm input);
+
 }

@@ -24,6 +24,7 @@ public class AptRequestForm {
 		private String message;
 
 		@NotNull
+		@Size(min = 0, max = 64, message = "Request location must not exceed 128 characters.")
 		private String location;
 
 		@NotNull
@@ -56,7 +57,7 @@ public class AptRequestForm {
 		private String message;
 
 		@NotNull
-		@Size(min = 0, max = 64, message = "Request message must not exceed 128 characters.")
+		@Size(min = 0, max = 64, message = "Request location must not exceed 128 characters.")
 		private String location;
 
 		@NotNull
