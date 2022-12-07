@@ -30,9 +30,9 @@ public class ControllerIntegrationTest {
 		}
 	}
 
-	public static Object jsonStringToObject(final String jsonString, Object obj) {
+	public static <T> T jsonStringToObject(final String jsonString, Class<T> clazz) {
 		try {
-			return new ObjectMapper().readValue(jsonString, obj.getClass());
+			return new ObjectMapper().readValue(jsonString, clazz);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
