@@ -6,13 +6,20 @@ import backend.form.CourseForm.*;
 import org.springframework.http.ResponseEntity;
 
 import backend.dto.CourseDto;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
+@RestController
+@RequestMapping("/api/course")
 public interface CourseController {
 
-	ResponseEntity<List<CourseDto>> loadCourses(LoadCoursesForm input);
+    @PostMapping("/load-courses")
+    ResponseEntity<List<CourseDto>> loadCourses(@RequestBody LoadCoursesForm input);
 
-	ResponseEntity<List<CourseDto>> getAllCourses();
+    @GetMapping("/")
+    ResponseEntity<List<CourseDto>> getAllCourses();
 
-	ResponseEntity<CourseDto> getCourseById(Long id);
+    @GetMapping("/{id}")
+    ResponseEntity<CourseDto> getCourseById(@PathVariable Long id);
 
 }

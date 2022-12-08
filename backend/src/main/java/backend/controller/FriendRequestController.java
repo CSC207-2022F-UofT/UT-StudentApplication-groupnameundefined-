@@ -12,6 +12,18 @@ import java.util.List;
 @RequestMapping("/api/friend-request")
 public interface FriendRequestController {
 
+    @GetMapping("/")
+    ResponseEntity<List<FriendRequestDto>> getAllFriendRequests();
+
+    @GetMapping("/{id}")
+    ResponseEntity<FriendRequestDto> getFriendRequestById(@PathVariable Long id);
+
+    @GetMapping("/from/{fromId}")
+    ResponseEntity<List<FriendRequestDto>> getFriendRequestByFromId(@PathVariable Long fromId);
+
+    @GetMapping("/to/{toId}")
+    ResponseEntity<List<FriendRequestDto>> getFriendRequestByToId(@PathVariable Long toId);
+
     @PostMapping("/create")
     ResponseEntity<FriendRequestDto> createFriendRequest(@RequestBody CreateFriendRequestForm input);
 
@@ -27,16 +39,5 @@ public interface FriendRequestController {
     @GetMapping("/delete/{id}")
     ResponseEntity<Long> deleteFriendRequest(@PathVariable Long id);
 
-    @GetMapping("/")
-    ResponseEntity<List<FriendRequestDto>> getAllFriendRequests();
-
-    @GetMapping("/{id}")
-    ResponseEntity<FriendRequestDto> getFriendRequestById(@PathVariable Long id);
-
-    @GetMapping("/from/{fromId}")
-    ResponseEntity<List<FriendRequestDto>> getFriendRequestByFromId(@PathVariable Long fromId);
-
-    @GetMapping("/to/{toId}")
-    ResponseEntity<List<FriendRequestDto>> getFriendRequestByToId(@PathVariable Long toId);
-
+    
 }

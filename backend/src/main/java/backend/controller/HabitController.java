@@ -5,14 +5,20 @@ import java.util.List;
 import backend.dto.HabitDto;
 import backend.form.HabitForm.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-
+@CrossOrigin
+@RestController
+@RequestMapping("/api/habit")
 public interface HabitController {
 
-	ResponseEntity<HabitDto> createHabit(CreateHabitForm input);
+    @PostMapping("/create")
+    ResponseEntity<HabitDto> createHabit(@RequestBody CreateHabitForm input);
 
-	ResponseEntity<List<HabitDto>> getAllHabits();
+    @GetMapping("/")
+    ResponseEntity<List<HabitDto>> getAllHabits();
 
-	ResponseEntity<HabitDto> getHabitById(Long id);
+    @GetMapping("/{id}")
+    ResponseEntity<HabitDto> getHabitById(@PathVariable Long id);
 
 }

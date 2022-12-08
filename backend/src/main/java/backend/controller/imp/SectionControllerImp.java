@@ -15,38 +15,34 @@ import backend.model.Section;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin
-@RestController
-@RequestMapping("/api/section")
+
 public class SectionControllerImp implements SectionController {
 
-	private final Logger logger;
+    private final Logger logger;
 
-	private final SectionService sectionService;
-	private final SectionMapper sectionMapper;
+    private final SectionService sectionService;
+    private final SectionMapper sectionMapper;
 
-	@Autowired
-	public SectionControllerImp(Logger logger, SectionService sectionService, SectionMapper sectionMapper) {
-		this.logger = logger;
-		this.sectionService = sectionService;
-		this.sectionMapper = sectionMapper;
-	}
+    @Autowired
+    public SectionControllerImp(Logger logger, SectionService sectionService, SectionMapper sectionMapper) {
+        this.logger = logger;
+        this.sectionService = sectionService;
+        this.sectionMapper = sectionMapper;
+    }
 
-	@Override
-	@GetMapping("/")
-	public ResponseEntity<List<SectionDto>> getAllSections() {
-		List<Section> sections = sectionService.getAllSections();
-		List<SectionDto> sectionDtos = sectionMapper.toDtoList(sections);
+    @Override
+    public ResponseEntity<List<SectionDto>> getAllSections() {
+        List<Section> sections = sectionService.getAllSections();
+        List<SectionDto> sectionDtos = sectionMapper.toDtoList(sections);
 
-		return new ResponseEntity<>(sectionDtos, HttpStatus.OK);
-	}
+        return new ResponseEntity<>(sectionDtos, HttpStatus.OK);
+    }
 
-	@Override
-	@GetMapping("/{id}")
-	public ResponseEntity<SectionDto> getSectionById(@PathVariable Long id) {
-		Section section = sectionService.getSectionById(id);
-		SectionDto sectionDto = sectionMapper.toDto(section);
+    @Override
+    public ResponseEntity<SectionDto> getSectionById(Long id) {
+        Section section = sectionService.getSectionById(id);
+        SectionDto sectionDto = sectionMapper.toDto(section);
 
-		return new ResponseEntity<>(sectionDto, HttpStatus.OK);
-	}
+        return new ResponseEntity<>(sectionDto, HttpStatus.OK);
+    }
 }

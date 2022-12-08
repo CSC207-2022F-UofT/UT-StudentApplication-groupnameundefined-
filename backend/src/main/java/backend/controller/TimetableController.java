@@ -1,22 +1,20 @@
 package backend.controller;
 
-import java.io.File;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import backend.dto.TimetableDto;
-import backend.model.Timetable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
 
-import backend.form.TimetableForm.*;
-import backend.model.Block;
-
+@CrossOrigin
+@RestController
+@RequestMapping("/api/timetable")
 public interface TimetableController {
 
-	ResponseEntity<List<TimetableDto>> getAllTimetables();
+    @GetMapping("/")
+    ResponseEntity<List<TimetableDto>> getAllTimetables();
 
-	ResponseEntity<TimetableDto> getTimetableById(Long id);
+    @GetMapping("/{id}")
+    ResponseEntity<TimetableDto> getTimetableById(@PathVariable Long id);
 
 }

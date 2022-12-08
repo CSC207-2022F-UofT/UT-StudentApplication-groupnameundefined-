@@ -19,133 +19,133 @@ import java.util.Optional;
 @Service
 public class FriendRequestServiceImp implements FriendRequestService {
 
-	private final Logger logger;
+    private final Logger logger;
 
-	private final UserRepository userRepository;
-	private final UserService userService;
-	private final FriendRequestRepository friendRequestRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final FriendRequestRepository friendRequestRepository;
 
-	@Autowired
-	public FriendRequestServiceImp(
-			Logger logger,
-			FriendRequestRepository friendRequestRepository,
-			UserService userService,
-			UserRepository userRepository
-	) {
-		this.logger = logger;
-		this.userRepository = userRepository;
-		this.userService = userService;
-		this.friendRequestRepository = friendRequestRepository;
-	}
+    @Autowired
+    public FriendRequestServiceImp(
+            Logger logger,
+            FriendRequestRepository friendRequestRepository,
+            UserService userService,
+            UserRepository userRepository
+    ) {
+        this.logger = logger;
+        this.userRepository = userRepository;
+        this.userService = userService;
+        this.friendRequestRepository = friendRequestRepository;
+    }
 
 
-	@Override
-	public List<FriendRequest> getAllFriendRequests() {
-		return friendRequestRepository.findAll();
-	}
+    @Override
+    public List<FriendRequest> getAllFriendRequests() {
+        return friendRequestRepository.findAll();
+    }
 
-	@Override
-	public FriendRequest getFriendRequestById(Long id) {
-		Optional<FriendRequest> friendRequest = friendRequestRepository.findById(id);
-		if (friendRequest.isPresent()) {
-			return friendRequest.get();
-		}
+    @Override
+    public FriendRequest getFriendRequestById(Long id) {
+        Optional<FriendRequest> friendRequest = friendRequestRepository.findById(id);
+        if (friendRequest.isPresent()) {
+            return friendRequest.get();
+        }
 
-		throw new EntityNotFoundException(
-				String.format("Unable to find friend request with id '%d'", id),
-				FriendRequest.class
-		);
-	}
-	
-	@Override
-	public List<FriendRequest> getFriendRequestByFromId(Long fromId) {
-		return friendRequestRepository.findByFromId(fromId);
-	}
+        throw new EntityNotFoundException(
+                String.format("Unable to find friend request with id '%d'", id),
+                FriendRequest.class
+        );
+    }
 
-	@Override
-	public List<FriendRequest> getFriendRequestByToId(Long toId) {
-		return friendRequestRepository.findByToId(toId);
-	}
+    @Override
+    public List<FriendRequest> getFriendRequestByFromId(Long fromId) {
+        return friendRequestRepository.findByFromId(fromId);
+    }
 
-	@Override
-	public FriendRequest createFriendRequest(CreateFriendRequestForm input) {
-		Optional<User> _fromUser = userRepository.findById(input.getFromId());
-		Optional<User> _toUser = userRepository.findById(input.getToId());
+    @Override
+    public List<FriendRequest> getFriendRequestByToId(Long toId) {
+        return friendRequestRepository.findByToId(toId);
+    }
 
-		if (_fromUser.isEmpty()) {
-			throw new EntityNotFoundException(
-					String.format("Unable to find user with id %d", input.getFromId()),
-					User.class
-			);
-		}
+    @Override
+    public FriendRequest createFriendRequest(CreateFriendRequestForm input) {
+        Optional<User> _fromUser = userRepository.findById(input.getFromId());
+        Optional<User> _toUser = userRepository.findById(input.getToId());
 
-		if (_toUser.isEmpty()) {
-			throw new EntityNotFoundException(
-					String.format("Unable to find user with id %d", input.getToId()),
-					User.class
-			);
-		}
+        if (_fromUser.isEmpty()) {
+            throw new EntityNotFoundException(
+                    String.format("Unable to find user with id %d", input.getFromId()),
+                    User.class
+            );
+        }
 
-		User fromUser = _fromUser.get();
-		User toUser = _toUser.get();
+        if (_toUser.isEmpty()) {
+            throw new EntityNotFoundException(
+                    String.format("Unable to find user with id %d", input.getToId()),
+                    User.class
+            );
+        }
 
-		String message = input.getMessage();
+        User fromUser = _fromUser.get();
+        User toUser = _toUser.get();
 
-		FriendRequest friendRequest = new FriendRequest(fromUser, toUser, message);
+        String message = input.getMessage();
 
-		return friendRequestRepository.save(friendRequest);
-	}
+        FriendRequest friendRequest = new FriendRequest(fromUser, toUser, message);
 
-	@Override
-	public FriendRequest updateFriendRequest(UpdateFriendRequestForm input) {
-		Optional<FriendRequest> _friendRequest = friendRequestRepository.findById(input.getId());
-		if (_friendRequest.isPresent()) {
-			FriendRequest friendRequest = _friendRequest.get();
-			friendRequest.setMessage(input.getMessage());
+        return friendRequestRepository.save(friendRequest);
+    }
 
-			return friendRequestRepository.save(friendRequest);
-		}
+    @Override
+    public FriendRequest updateFriendRequest(UpdateFriendRequestForm input) {
+        Optional<FriendRequest> _friendRequest = friendRequestRepository.findById(input.getId());
+        if (_friendRequest.isPresent()) {
+            FriendRequest friendRequest = _friendRequest.get();
+            friendRequest.setMessage(input.getMessage());
 
-		throw new EntityNotFoundException(
-				String.format("Unable to find friend request with id %d", input.getId()),
-				FriendRequest.class
-		);
-	}
+            return friendRequestRepository.save(friendRequest);
+        }
 
-	@Override
-	public FriendRequest approveFriendRequest(Long id) {
-		FriendRequest _friendRequest = this.getFriendRequestById(id);
+        throw new EntityNotFoundException(
+                String.format("Unable to find friend request with id %d", input.getId()),
+                FriendRequest.class
+        );
+    }
 
-		if (_friendRequest.getStatus().equals("PENDING")) {
-			_friendRequest.setStatus("APPROVED");
-			FriendRequest friendRequest = friendRequestRepository.save(_friendRequest);
-			User fromUser = userService.getUserById(friendRequest.getFrom().getId());
-			User toUser = userService.getUserById(friendRequest.getTo().getId());
+    @Override
+    public FriendRequest approveFriendRequest(Long id) {
+        FriendRequest _friendRequest = this.getFriendRequestById(id);
 
-			fromUser.addFriend(toUser);
-			toUser.addFriend(fromUser);
-			userRepository.save(fromUser);
-			userRepository.save(toUser);
+        if (_friendRequest.getStatus().equals("PENDING")) {
+            _friendRequest.setStatus("APPROVED");
+            FriendRequest friendRequest = friendRequestRepository.save(_friendRequest);
+            User fromUser = userService.getUserById(friendRequest.getFrom().getId());
+            User toUser = userService.getUserById(friendRequest.getTo().getId());
 
-			return friendRequest;
-		}
-		throw new BadRequestException("The designated friend request has already been processed.");
-	}
+            fromUser.addFriend(toUser);
+            toUser.addFriend(fromUser);
+            userRepository.save(fromUser);
+            userRepository.save(toUser);
 
-	@Override
-	public FriendRequest denyFriendRequest(Long id) {
-		FriendRequest friendRequest = this.getFriendRequestById(id);
+            return friendRequest;
+        }
+        throw new BadRequestException("The designated friend request has already been processed.");
+    }
 
-		if (friendRequest.getStatus().equals("PENDING")) {
-			friendRequest.setStatus("DENIED");
-			return friendRequestRepository.save(friendRequest);
-		}
-		throw new BadRequestException("The designated friend request has already been processed.");
-	}
+    @Override
+    public FriendRequest denyFriendRequest(Long id) {
+        FriendRequest friendRequest = this.getFriendRequestById(id);
 
-	@Override
-	public Long deleteFriendRequest(Long id) {
-		friendRequestRepository.deleteById(id);
-		return id;
-	}
+        if (friendRequest.getStatus().equals("PENDING")) {
+            friendRequest.setStatus("DENIED");
+            return friendRequestRepository.save(friendRequest);
+        }
+        throw new BadRequestException("The designated friend request has already been processed.");
+    }
+
+    @Override
+    public Long deleteFriendRequest(Long id) {
+        friendRequestRepository.deleteById(id);
+        return id;
+    }
 }

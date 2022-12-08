@@ -1,40 +1,28 @@
 package backend.controller.imp;
 
-import java.io.File;
 import java.util.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
-
 import backend.dto.StudentProfileDto;
-import backend.dto.TimetableDto;
 import backend.mappers.StudentProfileMapper;
-import backend.model.Habit;
-import backend.repository.StudentProfileRepository;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import backend.controller.StudentProfileController;
 import backend.form.StudentProfileForm.*;
 import backend.model.StudentProfile;
 import backend.service.StudentProfileService;
-import org.springframework.web.multipart.MultipartFile;
 
-@CrossOrigin
-@RestController
-@RequestMapping("/api/student-profile")
+
 public class StudentProfileControllerImp implements StudentProfileController {
 
 	private final Logger logger;
 
 	private final StudentProfileService studentProfileService;
 	private final StudentProfileMapper studentProfileMapper;
-
-	@Autowired
-	private StudentProfileRepository studentProfileRepository;
 
 	@Autowired
 	public StudentProfileControllerImp(
@@ -46,8 +34,7 @@ public class StudentProfileControllerImp implements StudentProfileController {
 	}
 
 	@Override
-	@PostMapping("/create")
-	public ResponseEntity<StudentProfileDto> createStudentProfile(@RequestBody @Valid CreateStudentProfileForm input) {
+	public ResponseEntity<StudentProfileDto> createStudentProfile(CreateStudentProfileForm input) {
 		StudentProfile studentProfile = studentProfileService.createStudentProfile(input);
 		StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile);
 
@@ -55,10 +42,9 @@ public class StudentProfileControllerImp implements StudentProfileController {
 	}
 
 	@Override
-	@PostMapping("/load-course-ics")
 	public ResponseEntity<StudentProfileDto> loadCourseIcs(
-			@RequestParam Long studentProfileId,
-			@RequestPart MultipartFile file
+			Long studentProfileId,
+			MultipartFile file
 	) {
 		StudentProfile studentProfile = studentProfileService.loadCourseIcs(studentProfileId, file);
 		StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile);
@@ -67,7 +53,6 @@ public class StudentProfileControllerImp implements StudentProfileController {
 	}
 
 	@Override
-	@GetMapping("/")
 	public ResponseEntity<List<StudentProfileDto>> getAllStudentProfiles() {
 		List<StudentProfile> studentProfiles = studentProfileService.getAllStudentProfiles();
 		List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
@@ -76,8 +61,7 @@ public class StudentProfileControllerImp implements StudentProfileController {
 	}
 
 	@Override
-	@GetMapping("/{id}")
-	public ResponseEntity<StudentProfileDto> getStudentProfileById(@PathVariable Long id) {
+	public ResponseEntity<StudentProfileDto> getStudentProfileById(Long id) {
 		StudentProfile studentProfile = studentProfileService.getStudentProfileById(id);
 		StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile);
 
@@ -85,11 +69,7 @@ public class StudentProfileControllerImp implements StudentProfileController {
 	}
 
 	@Override
-	@PostMapping("/match/{id}")
-	public ResponseEntity<List<StudentProfileDto>> matchStudentProfiles(
-			@PathVariable Long id,
-			@RequestParam @Pattern(regexp = "HABIT|COURSE|BOTH") String criteria
-	) {
+	public ResponseEntity<List<StudentProfileDto>> matchStudentProfiles(Long id, String criteria) {
 		List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfiles(id, criteria);
 		List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
 
