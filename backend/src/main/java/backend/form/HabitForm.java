@@ -14,7 +14,7 @@ public class HabitForm {
 
 		@NotNull
 		@Max(5)
-		@Max(1)
+		@Min(1)
 		private final Integer talkative;
 
 		@NotNull
@@ -31,14 +31,7 @@ public class HabitForm {
 			this.talkative = talkative;
 			this.collaborative = collaborative;
 		}
-
-//		public CreateHabitForm(
-//				Integer talkative,
-//				Integer collaborative
-//		) {
-//			this.talkative = talkative;
-//			this.collaborative = collaborative;
-//		}
+		
 	}
 
 	@Getter

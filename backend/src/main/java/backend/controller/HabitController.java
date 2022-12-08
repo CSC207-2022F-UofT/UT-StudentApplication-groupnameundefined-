@@ -16,7 +16,7 @@ public interface HabitController {
 
 
 	@PostMapping("/create")
-	ResponseEntity<HabitDto> createHabit(CreateHabitForm input);
+	ResponseEntity<HabitDto> createHabit(@RequestBody @Valid CreateHabitForm input);
 
 	@GetMapping("/view/all")
 	ResponseEntity<List<HabitDto>> getAllHabits();
