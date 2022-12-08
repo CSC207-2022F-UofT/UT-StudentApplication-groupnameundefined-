@@ -15,8 +15,6 @@ import backend.model.Block;
 
 public interface TimetableController {
 
-	ResponseEntity<TimetableDto> createTimetable(Long studentProfileId, MultipartFile file);
-
 	ResponseEntity<List<TimetableDto>> getAllTimetables();
 
 	ResponseEntity<TimetableDto> getTimetableById(Long id);

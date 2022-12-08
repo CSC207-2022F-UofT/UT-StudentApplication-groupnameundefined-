@@ -15,37 +15,38 @@ import backend.form.StudentProfileForm.*;
 import backend.service.StudentProfileService;
 import backend.model.*;
 import backend.service.TimetableService;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class StudentProfileServiceImp implements StudentProfileService {
 
 	private final Logger logger;
-	private final StudentProfileRepository studentProfileRepository;
-	private final UserRepository userRepository;
-	private final SectionBlockRepository sectionBlockRepository;
-	private final TimetableService timetableService;
 
-	private final HabitRepository habitRepository;
+	private final StudentProfileRepository studentProfileRepository;
+
+	private final UserRepository userRepository;
 
 	private final TimetableRepository timetableRepository;
+
+	private final TimetableService timetableService;
+
+	private final SectionBlockRepository sectionBlockRepository;
 
 	@Autowired
 	public StudentProfileServiceImp(
 			Logger logger,
 			StudentProfileRepository studentProfileRepository,
 			UserRepository userRepository,
-			SectionBlockRepository sectionBlockRepository,
+			TimetableRepository timetableRepository,
 			TimetableService timetableService,
-			HabitRepository habitRepository,
-			TimetableRepository timetableRepository
+			SectionBlockRepository sectionBlockRepository
 	) {
 		this.logger = logger;
 		this.studentProfileRepository = studentProfileRepository;
 		this.userRepository = userRepository;
-		this.sectionBlockRepository = sectionBlockRepository;
-		this.timetableService = timetableService;
-		this.habitRepository = habitRepository;
 		this.timetableRepository = timetableRepository;
+		this.timetableService = timetableService;
+		this.sectionBlockRepository = sectionBlockRepository;
 	}
 
 	@Override
@@ -74,6 +75,23 @@ public class StudentProfileServiceImp implements StudentProfileService {
 		studentProfile.setTimetable(timetable);
 
 		return userRepository.save(user).getStudentProfile();
+	}
+
+	@Override
+	public StudentProfile loadCourseIcs(Long studentProfileId, MultipartFile iCalendar) {
+		StudentProfile studentProfile = getStudentProfileById(studentProfileId);
+
+		List<Map<String, String>> sectionData = timetableService.parseIcs(iCalendar);
+
+		for (Map<String, String> sec : sectionData) {
+			List<SectionBlock> sectionBlocks = sectionBlockRepository.findByCode(sec.get("course"), sec.get("section"));
+			for (SectionBlock sectionBlock : sectionBlocks) {
+				sectionBlock.addTimetable(studentProfile.getTimetable());
+				studentProfile.addCourse(sectionBlock.getSection().getCourse().getCode());
+			}
+		}
+
+		return studentProfileRepository.save(studentProfile);
 	}
 
 	@Override

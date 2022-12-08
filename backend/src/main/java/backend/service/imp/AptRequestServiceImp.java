@@ -94,12 +94,11 @@ public class AptRequestServiceImp implements AptRequestService {
 				input.getRepetitionTime()
 		);
 
-		aptRequest.setAptBlock(aptBlock);
 		aptBlock.setAptRequest(aptRequest);
+		aptRequest.setAptBlock(aptBlock);
 
 		Timetable timetable = fromUser.getStudentProfile().getTimetable();
-		timetable.addBlock(aptBlock);
-		timetableRepository.save(timetable);
+		aptBlock.addTimetable(timetable);
 
 		return aptRequestRepository.save(aptRequest);
 	}

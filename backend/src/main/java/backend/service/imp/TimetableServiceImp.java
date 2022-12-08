@@ -12,6 +12,7 @@ import backend.repository.SectionBlockRepository;
 import backend.repository.StudentProfileRepository;
 import backend.repository.TimetableRepository;
 import backend.exception.exceptions.*;
+import backend.service.StudentProfileService;
 import net.fortuna.ical4j.data.ParserException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,58 +36,26 @@ public class TimetableServiceImp implements TimetableService {
 	private final Logger logger;
 
 	private final TimetableRepository timetableRepository;
+
 	private final SectionBlockRepository sectionBlockRepository;
+
 	private final StudentProfileRepository studentProfileRepository;
+
+	private final StudentProfileService studentProfileService;
 
 	@Autowired
 	public TimetableServiceImp(
 			Logger logger,
 			TimetableRepository timetableRepository,
 			SectionBlockRepository sectionBlockRepository,
-			StudentProfileRepository studentProfileRepository
+			StudentProfileRepository studentProfileRepository,
+			StudentProfileService studentProfileService
 	) {
 		this.logger = logger;
 		this.timetableRepository = timetableRepository;
 		this.sectionBlockRepository = sectionBlockRepository;
 		this.studentProfileRepository = studentProfileRepository;
-	}
-	
-	@Override
-	public Timetable createTimetable(StudentProfile studentProfile, Set<Block> sectionBlocks) {
-		Timetable timetable = new Timetable();
-
-		timetable.setStudentProfile(studentProfile);
-		studentProfile.setTimetable(timetable);
-
-		timetable.bulkAddBlocks(sectionBlocks);
-
-		return timetableRepository.save(timetable);
-	}
-
-	@Override
-	public Timetable createTimetable(Long studentProfileId, MultipartFile iCalendar) {
-		Optional<StudentProfile> _studentProfile = studentProfileRepository.findById(studentProfileId);
-
-		if (_studentProfile.isEmpty()) {
-			throw new EntityNotFoundException(
-					String.format("Unable to find student profile with id '%d'", studentProfileId),
-					StudentProfile.class
-			);
-		}
-		StudentProfile studentProfile = _studentProfile.get();
-
-		List<Map<String, String>> sectionData = this.parseIcs(iCalendar);
-
-		Set<Block> sectionBlocks = new HashSet<>();
-		for (Map<String, String> sec : sectionData) {
-			List<SectionBlock> _sectionBlocks = sectionBlockRepository.findByCode(sec.get("course"), sec.get("section"));
-			sectionBlocks.addAll(_sectionBlocks);
-			for (SectionBlock sectionBlock : _sectionBlocks) {
-				studentProfile.addCourse(sectionBlock.getSection().getCourse().getCode());
-			}
-		}
-
-		return this.createTimetable(studentProfile, sectionBlocks);
+		this.studentProfileService = studentProfileService;
 	}
 
 	@Override

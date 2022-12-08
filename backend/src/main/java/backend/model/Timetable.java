@@ -3,6 +3,8 @@ package backend.model;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.File;
 import java.util.Collections;
@@ -24,10 +26,11 @@ public class Timetable {
 
 	@OneToOne
 	@JoinColumn(name = "studentprofile_id", referencedColumnName = "id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private StudentProfile studentProfile;
 
 	@Setter(AccessLevel.NONE)
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinTable(name = "timetable_x_block", joinColumns = @JoinColumn(name = "timetable_id", referencedColumnName =
 			"id"), inverseJoinColumns = @JoinColumn(name = "block_id", referencedColumnName = "id"))
 	private Set<Block> blocks = new HashSet<>();

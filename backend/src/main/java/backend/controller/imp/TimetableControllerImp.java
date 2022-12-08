@@ -44,18 +44,6 @@ public class TimetableControllerImp implements TimetableController {
 	}
 
 	@Override
-	@PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<TimetableDto> createTimetable(
-			@RequestParam Long studentProfileId,
-			@RequestPart MultipartFile file
-	) {
-		Timetable timetable = timetableService.createTimetable(studentProfileId, file);
-		TimetableDto timetableDto = timetableMapper.toDto(timetable);
-
-		return new ResponseEntity<>(timetableDto, HttpStatus.OK);
-	}
-
-	@Override
 	@GetMapping("/")
 	public ResponseEntity<List<TimetableDto>> getAllTimetables() {
 		List<Timetable> timetables = timetableService.getAllTimetables();

@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.*;
 
@@ -24,6 +26,7 @@ public class Section {
 	@Expose(serialize = true, deserialize = true)
 	@ManyToOne
 	@JoinColumn(name = "course_id", referencedColumnName = "id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Course course;
 
 	@Expose(serialize = true, deserialize = true)

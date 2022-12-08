@@ -3,6 +3,8 @@ package backend.model;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.*;
@@ -26,6 +28,7 @@ public class Habit {
 
 	@OneToOne
 	@JoinColumn(name = "studentprofile_id", referencedColumnName = "id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private StudentProfile studentProfile;
 
 

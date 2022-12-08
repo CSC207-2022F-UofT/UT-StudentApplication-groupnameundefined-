@@ -13,6 +13,8 @@ import backend.model.StudentProfile;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -33,6 +35,7 @@ public class SocialMediaProfile {
 
 	@OneToOne
 	@JoinColumn(name = "studentprofile_id", referencedColumnName = "id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private StudentProfile studentProfile;
 
 	public SocialMediaProfile() {

@@ -6,6 +6,7 @@ import java.util.*;
 import javax.validation.Valid;
 
 import backend.dto.StudentProfileDto;
+import backend.dto.TimetableDto;
 import backend.mappers.StudentProfileMapper;
 import backend.model.Habit;
 import backend.repository.StudentProfileRepository;
@@ -19,6 +20,7 @@ import backend.controller.StudentProfileController;
 import backend.form.StudentProfileForm.*;
 import backend.model.StudentProfile;
 import backend.service.StudentProfileService;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin
 @RestController
@@ -46,6 +48,18 @@ public class StudentProfileControllerImp implements StudentProfileController {
 	@PostMapping("/create")
 	public ResponseEntity<StudentProfileDto> createStudentProfile(@RequestBody @Valid CreateStudentProfileForm input) {
 		StudentProfile studentProfile = studentProfileService.createStudentProfile(input);
+		StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile);
+
+		return new ResponseEntity<>(studentProfileDto, HttpStatus.OK);
+	}
+
+	@Override
+	@PostMapping("/load-course-ics")
+	public ResponseEntity<StudentProfileDto> loadCourseIcs(
+			@RequestParam Long studentProfileId,
+			@RequestPart MultipartFile file
+	) {
+		StudentProfile studentProfile = studentProfileService.loadCourseIcs(studentProfileId, file);
 		StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile);
 
 		return new ResponseEntity<>(studentProfileDto, HttpStatus.OK);

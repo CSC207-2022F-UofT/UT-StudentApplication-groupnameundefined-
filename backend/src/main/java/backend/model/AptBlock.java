@@ -2,6 +2,8 @@ package backend.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -16,6 +18,7 @@ public class AptBlock extends Block {
 
 	@OneToOne
 	@JoinColumn(name = "aptrequest_id", referencedColumnName = "id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private AptRequest aptRequest;
 
 	public AptBlock() {
