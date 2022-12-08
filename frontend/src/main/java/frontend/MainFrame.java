@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import frontend.components.TopNavigation;
 
 import reactor.core.publisher.Mono;
 
@@ -24,6 +25,7 @@ public class MainFrame extends JFrame {
 
 	@Autowired
 	private MainPanel mainPanel;
+
 
 	public void initialize() {
 		setTitle("UT Student Application");
