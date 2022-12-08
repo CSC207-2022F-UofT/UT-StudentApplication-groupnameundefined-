@@ -15,7 +15,7 @@ public interface UserService {
 
 	User registerUser(RegisterForm input);
 
-	Optional<User> authenticateUser(String email, String password);
+	Optional<User> userAuthenticate(String email, String password);
 
 	User loginUser(LoginForm input);
 
