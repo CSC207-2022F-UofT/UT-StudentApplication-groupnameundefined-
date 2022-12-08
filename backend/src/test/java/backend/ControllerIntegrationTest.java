@@ -11,6 +11,7 @@ import org.springframework.test.context.TestPropertySource;
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 public class ControllerIntegrationTest {
+
     @BeforeEach
     void init(TestInfo testInfo) {
         System.out.println("Performing Test: " + testInfo.getDisplayName());

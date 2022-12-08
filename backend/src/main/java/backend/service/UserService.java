@@ -13,20 +13,56 @@ import backend.model.User;
 
 public interface UserService {
 
-	User registerUser(RegisterForm input);
+    /**
+     * @param input An input defined by RegisterForm
+     * @return A User created with the given input
+     */
+    User registerUser(RegisterForm input);
 
-	Optional<User> userAuthenticate(String email, String password);
+    /**
+     * @param email    Email of the User account.
+     * @param password Password of the User account.
+     * @return The User this email corresponds to.
+     */
+    Optional<User> userAuthenticate(String email, String password);
 
-	User loginUser(LoginForm input);
+    /**
+     * @param input An input defined by LoginForm
+     * @return A User logged in with the given input
+     * @throws backend.exception.exceptions.InvalidCredentialsException If the password is false
+     */
+    User loginUser(LoginForm input);
 
-	Long logoutUser(Long id);
+    /**
+     * @param id ID of the User trying to log out.
+     * @return id of the User has logged out
+     */
+    Long logoutUser(Long id);
 
-	List<User> getAllUsers();
+    /**
+     * @return All Users in the AptRequest Table
+     */
+    List<User> getAllUsers();
 
-	User getUserById(Long id);
+    /**
+     * @param id ID of the User to find
+     * @return The designated User with the given id
+     * @throws backend.exception.exceptions.EntityNotFoundException If the User could not be found
+     */
+    User getUserById(Long id);
 
-	User getUserByEmail(String email);
+    /**
+     * @param email email of the User to find
+     * @return The designated User with the given email
+     * @throws backend.exception.exceptions.EntityNotFoundException If the User could not be found
+     */
+    User getUserByEmail(String email);
 
-	List<User> getFriendsByUserId(Long id);
+    /**
+     * @param id ID of the User
+     * @return The designated User's friends with the given ID
+     * @throws backend.exception.exceptions.EntityNotFoundException If the User could not be found
+     */
+    List<User> getFriendsByUserId(Long id);
 
 }
