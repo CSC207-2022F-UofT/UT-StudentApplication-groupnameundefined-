@@ -37,25 +37,13 @@ public class TimetableServiceImp implements TimetableService {
 
 	private final TimetableRepository timetableRepository;
 
-	private final SectionBlockRepository sectionBlockRepository;
-
-	private final StudentProfileRepository studentProfileRepository;
-
-	private final StudentProfileService studentProfileService;
-
 	@Autowired
 	public TimetableServiceImp(
 			Logger logger,
-			TimetableRepository timetableRepository,
-			SectionBlockRepository sectionBlockRepository,
-			StudentProfileRepository studentProfileRepository,
-			StudentProfileService studentProfileService
+			TimetableRepository timetableRepository
 	) {
 		this.logger = logger;
 		this.timetableRepository = timetableRepository;
-		this.sectionBlockRepository = sectionBlockRepository;
-		this.studentProfileRepository = studentProfileRepository;
-		this.studentProfileService = studentProfileService;
 	}
 
 	@Override

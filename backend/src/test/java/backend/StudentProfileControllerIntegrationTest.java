@@ -146,6 +146,7 @@ public class StudentProfileControllerIntegrationTest extends ControllerIntegrati
 				);
 				StudentProfile studentProfile = studentProfileService.createStudentProfile(cspForm);
 			}
+
 		}
 
 		@Test
@@ -169,7 +170,6 @@ public class StudentProfileControllerIntegrationTest extends ControllerIntegrati
 			List<String> descCourses2 = List.of("a", "b");
 
 			List<String> descCourses35 = List.of("a", "b", "c", "d");
-			List<StudentProfile> studentProfiles1 = studentProfileService.matchStudentProfileByHabit(4L);
 		}
 
 		@Test
@@ -181,7 +181,6 @@ public class StudentProfileControllerIntegrationTest extends ControllerIntegrati
 			List<String> descCourses2 = List.of("a", "b");
 
 			List<String> descCourses35 = List.of("a", "b", "c", "d");
-			List<StudentProfile> studentProfiles1 = studentProfileService.matchStudentProfileByHabit(4L);
 		}
 
 		@Test
