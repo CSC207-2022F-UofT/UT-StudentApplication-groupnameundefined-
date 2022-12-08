@@ -5,6 +5,7 @@ import backend.form.FriendRequestForm.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin
@@ -12,32 +13,32 @@ import java.util.List;
 @RequestMapping("/api/friend-request")
 public interface FriendRequestController {
 
-    @GetMapping("/")
-    ResponseEntity<List<FriendRequestDto>> getAllFriendRequests();
+	@GetMapping("/")
+	ResponseEntity<List<FriendRequestDto>> getAllFriendRequests();
 
-    @GetMapping("/{id}")
-    ResponseEntity<FriendRequestDto> getFriendRequestById(@PathVariable Long id);
+	@GetMapping("/{id}")
+	ResponseEntity<FriendRequestDto> getFriendRequestById(@PathVariable Long id);
 
-    @GetMapping("/from/{fromId}")
-    ResponseEntity<List<FriendRequestDto>> getFriendRequestByFromId(@PathVariable Long fromId);
+	@GetMapping("/from/{fromId}")
+	ResponseEntity<List<FriendRequestDto>> getFriendRequestByFromId(@PathVariable Long fromId);
 
-    @GetMapping("/to/{toId}")
-    ResponseEntity<List<FriendRequestDto>> getFriendRequestByToId(@PathVariable Long toId);
+	@GetMapping("/to/{toId}")
+	ResponseEntity<List<FriendRequestDto>> getFriendRequestByToId(@PathVariable Long toId);
 
-    @PostMapping("/create")
-    ResponseEntity<FriendRequestDto> createFriendRequest(@RequestBody CreateFriendRequestForm input);
+	@PostMapping("/create")
+	ResponseEntity<FriendRequestDto> createFriendRequest(@RequestBody @Valid CreateFriendRequestForm input);
 
-    @PostMapping("/update")
-    ResponseEntity<FriendRequestDto> updateFriendRequest(@RequestBody UpdateFriendRequestForm input);
+	@PostMapping("/update")
+	ResponseEntity<FriendRequestDto> updateFriendRequest(@RequestBody @Valid UpdateFriendRequestForm input);
 
-    @GetMapping("/approve/{id}")
-    ResponseEntity<FriendRequestDto> approveFriendRequest(@PathVariable Long id);
+	@GetMapping("/approve/{id}")
+	ResponseEntity<FriendRequestDto> approveFriendRequest(@PathVariable Long id);
 
-    @GetMapping("/deny/{id}")
-    ResponseEntity<FriendRequestDto> denyFriendRequest(@PathVariable Long id);
+	@GetMapping("/deny/{id}")
+	ResponseEntity<FriendRequestDto> denyFriendRequest(@PathVariable Long id);
 
-    @GetMapping("/delete/{id}")
-    ResponseEntity<Long> deleteFriendRequest(@PathVariable Long id);
+	@GetMapping("/delete/{id}")
+	ResponseEntity<Long> deleteFriendRequest(@PathVariable Long id);
 
-    
+
 }
