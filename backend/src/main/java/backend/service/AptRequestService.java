@@ -7,23 +7,58 @@ import java.util.List;
 
 public interface AptRequestService {
 
-	List<AptRequest> getAllAptRequests();
+    /**
+     * @return all AptRequests in the AptRequest Table
+     */
+    List<AptRequest> getAllAptRequests();
 
-	AptRequest getAptRequestById(Long id);
+    /**
+     * @param id of a AptRequest
+     * @return the AptRequests this id refers to
+     */
+    AptRequest getAptRequestById(Long id);
 
-	List<AptRequest> getAptRequestByFromId(Long fromId);
+    /**
+     * @param fromId id of the User sending AptRequest
+     * @return all AptRequests sent by user with the given id
+     */
+    List<AptRequest> getAptRequestByFromId(Long fromId);
 
-	List<AptRequest> getAptRequestByToId(Long toId);
+    /**
+     * @param toId id of the User receiving AptRequest
+     * @return all AptRequests received by user with the given id
+     */
+    List<AptRequest> getAptRequestByToId(Long toId);
 
-	AptRequest createAptRequest(CreateAptRequestForm input);
+    /**
+     * @param input an input of the form defined in CreateAptRequestForm
+     * @return a AptRequest created with given input
+     */
+    AptRequest createAptRequest(CreateAptRequestForm input);
 
-	AptRequest updateAptRequest(UpdateAptRequestForm input);
+    /**
+     * @param input an input of the form defined in UpdateAptRequestForm
+     * @return the updated AptRequest with given input
+     */
+    AptRequest updateAptRequest(UpdateAptRequestForm input);
 
-	AptRequest approveAptRequest(Long id);
+    /**
+     * @param id id of the AptRequest needs to be approved
+     * @return the approved AptRequest
+     */
+    AptRequest approveAptRequest(Long id);
 
-	AptRequest denyAptRequest(Long id);
+    /**
+     * @param id id of the AptRequest needs to be denied
+     * @return the denied AptRequest
+     */
+    AptRequest denyAptRequest(Long id);
 
-	Long deleteAptRequest(Long id);
+    /**
+     * @param id id of the AptRequest needs to be deleted
+     * @return id of the deleted AptRequest
+     */
+    Long deleteAptRequest(Long id);
 
 
 }

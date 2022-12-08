@@ -3,28 +3,40 @@ package backend.controller;
 import backend.dto.AptRequestDto;
 import backend.form.AptRequestForm.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@CrossOrigin
+@RestController
+@RequestMapping("/api/apt-request")
 public interface AptRequestController {
 
-	ResponseEntity<List<AptRequestDto>> getAllAptRequests();
+    @GetMapping("/")
+    ResponseEntity<List<AptRequestDto>> getAllAptRequests();
 
-	ResponseEntity<AptRequestDto> getAptRequestById(Long id);
+    @GetMapping("/{id}")
+    ResponseEntity<AptRequestDto> getAptRequestById(@PathVariable Long id);
 
-	ResponseEntity<List<AptRequestDto>> getAptRequestByFromId(Long fromId);
+    @GetMapping("/from/{fromId}")
+    ResponseEntity<List<AptRequestDto>> getAptRequestByFromId(@PathVariable Long fromId);
 
-	ResponseEntity<List<AptRequestDto>> getAptRequestByToId(Long toId);
+    @GetMapping("/to/{toId}")
+    ResponseEntity<List<AptRequestDto>> getAptRequestByToId(@PathVariable Long toId);
 
-	ResponseEntity<AptRequestDto> createAptRequest(CreateAptRequestForm input);
+    @PostMapping("/create")
+    ResponseEntity<AptRequestDto> createAptRequest(@RequestBody CreateAptRequestForm input);
 
-	ResponseEntity<AptRequestDto> updateAptRequest(UpdateAptRequestForm input);
+    @PostMapping("/update")
+    ResponseEntity<AptRequestDto> updateAptRequest(@RequestBody UpdateAptRequestForm input);
 
-	ResponseEntity<AptRequestDto> approveAptRequest(Long id);
+    @GetMapping("/approve/{id}")
+    ResponseEntity<AptRequestDto> approveAptRequest(@PathVariable Long id);
 
-	ResponseEntity<AptRequestDto> denyAptRequest(Long id);
+    @GetMapping("/deny/{id}")
+    ResponseEntity<AptRequestDto> denyAptRequest(@PathVariable Long id);
 
-	ResponseEntity<Long> deleteAptRequest(Long id);
+    @GetMapping("/delete/{id}")
+    ResponseEntity<Long> deleteAptRequest(@PathVariable Long id);
 
 }

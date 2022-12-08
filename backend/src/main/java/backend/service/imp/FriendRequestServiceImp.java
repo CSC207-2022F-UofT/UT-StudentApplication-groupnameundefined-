@@ -3,9 +3,7 @@ package backend.service.imp;
 import backend.exception.exceptions.BadRequestException;
 import backend.exception.exceptions.EntityNotFoundException;
 import backend.form.FriendRequestForm.*;
-import backend.model.AptRequest;
 import backend.model.FriendRequest;
-import backend.model.Section;
 import backend.model.User;
 import backend.repository.FriendRequestRepository;
 import backend.repository.UserRepository;
@@ -53,22 +51,17 @@ public class FriendRequestServiceImp implements FriendRequestService {
 			return friendRequest.get();
 		}
 
-		throw new EntityNotFoundException(String.format("Unable to find friend request with id '%d'", id), FriendRequest.class);
+		throw new EntityNotFoundException(
+				String.format("Unable to find friend request with id '%d'", id),
+				FriendRequest.class
+		);
 	}
-
-	/**
-	 * @param fromId
-	 * @return Friend Request the User sent.
-	 */
+	
 	@Override
 	public List<FriendRequest> getFriendRequestByFromId(Long fromId) {
 		return friendRequestRepository.findByFromId(fromId);
 	}
 
-	/**
-	 * @param toId
-	 * @return Friend Request the User received.
-	 */
 	@Override
 	public List<FriendRequest> getFriendRequestByToId(Long toId) {
 		return friendRequestRepository.findByToId(toId);
@@ -80,11 +73,17 @@ public class FriendRequestServiceImp implements FriendRequestService {
 		Optional<User> _toUser = userRepository.findById(input.getToId());
 
 		if (_fromUser.isEmpty()) {
-			throw new EntityNotFoundException(String.format("Unable to find user with id %d", input.getFromId()), User.class);
+			throw new EntityNotFoundException(
+					String.format("Unable to find user with id %d", input.getFromId()),
+					User.class
+			);
 		}
 
 		if (_toUser.isEmpty()) {
-			throw new EntityNotFoundException(String.format("Unable to find user with id %d", input.getToId()), User.class);
+			throw new EntityNotFoundException(
+					String.format("Unable to find user with id %d", input.getToId()),
+					User.class
+			);
 		}
 
 		User fromUser = _fromUser.get();
@@ -107,7 +106,10 @@ public class FriendRequestServiceImp implements FriendRequestService {
 			return friendRequestRepository.save(friendRequest);
 		}
 
-		throw new EntityNotFoundException(String.format("Unable to find friend request with id %d", input.getId()), FriendRequest.class);
+		throw new EntityNotFoundException(
+				String.format("Unable to find friend request with id %d", input.getId()),
+				FriendRequest.class
+		);
 	}
 
 	@Override

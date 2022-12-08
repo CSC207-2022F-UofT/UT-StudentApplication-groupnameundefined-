@@ -19,6 +19,9 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * This class contains all the test cases for controllers of FriendRequest.
+ */
 @Order(3)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FriendRequestControllerIntegrationTest extends ControllerIntegrationTest {
@@ -28,9 +31,15 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 	@Autowired
 	private UserService userService;
 
+
+	/**
+	 * Test if createFriendRequest successfully create a FriendRequest with correct information.
+	 * Expect success.
+	 */
 	@Test
 	@Order(1)
 	public void createFriendRequest_expectSuccess() throws Exception {
+
 		UserForm.RegisterForm registerForm1 = new UserForm.RegisterForm(
 				"Test Name1",
 				"test.name1@email.com",
@@ -50,6 +59,7 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 				"0123456787"
 		);
 
+		// Create 3 Users
 		User user1 = userService.registerUser(registerForm1);
 		Long userId1 = user1.getId();
 		User user2 = userService.registerUser(registerForm2);
@@ -64,6 +74,8 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 				userId1, userId3, ""
 		);
 
+		// Create FriendRequests and test.
+		// Test if the first FriendRequest (with input1) is created successfully with correct values
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/friend-request/create")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(toJsonString(input1)))
@@ -73,6 +85,7 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 				.andExpect(jsonPath("$.message", is(emptyString())))
 				.andExpect(jsonPath("$.status", is("PENDING")));
 
+		// Test if the second FriendRequest (with input2) is created successfully
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/friend-request/create")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(toJsonString(input2)))
@@ -80,6 +93,10 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 
 	}
 
+	/**
+	 * Test if createFriendRequest will fail if the fromUser and toUser does not exist.
+	 * Expect EntityDoesNotExist.
+	 */
 	@Test
 	@Order(2)
 	public void createFriendRequest_expectEntityDoesNotExist_User() throws Exception {
@@ -94,6 +111,10 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 				.andExpect(jsonPath("$.code", is("NOTFOUND-USER")));
 	}
 
+	/**
+	 * Test if getFriendRequestByFromId can successfully return all FriendRequests with given fromId.
+	 * Expect successes.
+	 */
 	@Test
 	@Order(3)
 	public void getFriendRequestByFromId_expectSuccess() throws Exception {
@@ -104,6 +125,10 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 				.andExpect(jsonPath("$[0].id", is(1)));
 	}
 
+	/**
+	 * Test if getFriendRequestByToId can successfully return all FriendRequests with given toId.
+	 * Expect successes.
+	 */
 	@Test
 	@Order(4)
 	public void getFriendRequestByToId_expectSuccess() throws Exception {
@@ -113,6 +138,10 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 				.andExpect(jsonPath("$", hasSize(0)));
 	}
 
+	/**
+	 * Test if approveFriendRequest can successfully approve the FriendRequest with given id.
+	 * Expect successes.
+	 */
 	@Test
 	@Order(5)
 	public void approveFriendRequest_expectSuccess() throws Exception {
@@ -136,6 +165,10 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 				.andExpect(jsonPath("$[-1].id", is(resultDto.getFrom().getId().intValue())));
 	}
 
+	/**
+	 * Test if denyFriendRequest can successfully deny the FriendRequest with given id.
+	 * Expect successes.
+	 */
 	@Test
 	@Order(6)
 	public void denyFriendRequest_expectSuccess() throws Exception {
@@ -145,6 +178,10 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 				.andExpect(jsonPath("$.status", is("DENIED")));
 	}
 
+	/**
+	 * Test if denyFriendRequest will fail if the FriendRequest of given id has been processed already.
+	 * Expect BadRequest.
+	 */
 	@Test
 	@Order(7)
 	public void denyFriendRequest_expectBadRequest() throws Exception {
@@ -153,7 +190,10 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 				.andExpect(status().isBadRequest());
 	}
 
-
+	/**
+	 * Test if deleteFriendRequest can successfully delete the FriendRequest with given id.
+	 * Expect successes.
+	 */
 	@Test
 	@Order(8)
 	public void deleteFriendRequest_expectSuccess() throws Exception {

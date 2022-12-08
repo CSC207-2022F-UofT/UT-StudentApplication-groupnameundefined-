@@ -2,30 +2,41 @@ package backend.controller;
 
 import backend.dto.FriendRequestDto;
 import backend.form.FriendRequestForm.*;
-import backend.model.FriendRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@CrossOrigin
+@RestController
+@RequestMapping("/api/friend-request")
 public interface FriendRequestController {
 
-	ResponseEntity<FriendRequestDto> createFriendRequest(CreateFriendRequestForm input);
+    @PostMapping("/create")
+    ResponseEntity<FriendRequestDto> createFriendRequest(@RequestBody CreateFriendRequestForm input);
 
-	ResponseEntity<FriendRequestDto> updateFriendRequest(UpdateFriendRequestForm input);
+    @PostMapping("/update")
+    ResponseEntity<FriendRequestDto> updateFriendRequest(@RequestBody UpdateFriendRequestForm input);
 
-	ResponseEntity<FriendRequestDto> approveFriendRequest(Long id);
+    @GetMapping("/approve/{id}")
+    ResponseEntity<FriendRequestDto> approveFriendRequest(@PathVariable Long id);
 
-	ResponseEntity<FriendRequestDto> denyFriendRequest(Long id);
+    @GetMapping("/deny/{id}")
+    ResponseEntity<FriendRequestDto> denyFriendRequest(@PathVariable Long id);
 
-	ResponseEntity<Long> deleteFriendRequest(Long id);
+    @GetMapping("/delete/{id}")
+    ResponseEntity<Long> deleteFriendRequest(@PathVariable Long id);
 
-	ResponseEntity<List<FriendRequestDto>> getAllFriendRequests();
+    @GetMapping("/")
+    ResponseEntity<List<FriendRequestDto>> getAllFriendRequests();
 
-	ResponseEntity<FriendRequestDto> getFriendRequestById(Long id);
+    @GetMapping("/{id}")
+    ResponseEntity<FriendRequestDto> getFriendRequestById(@PathVariable Long id);
 
-	ResponseEntity<List<FriendRequestDto>> getFriendRequestByFromId(Long fromId);
+    @GetMapping("/from/{fromId}")
+    ResponseEntity<List<FriendRequestDto>> getFriendRequestByFromId(@PathVariable Long fromId);
 
-	ResponseEntity<List<FriendRequestDto>> getFriendRequestByToId(Long toId);
+    @GetMapping("/to/{toId}")
+    ResponseEntity<List<FriendRequestDto>> getFriendRequestByToId(@PathVariable Long toId);
 
 }
