@@ -20,11 +20,13 @@ public class MainPanel extends JPanel {
 
 	private final LoginPanel loginPanel;
 	private final RegisterPanel registerPanel;
+	private final HabitSettingPanel habitSetupPanel;
 
 	@Autowired
-	public MainPanel(LoginPanel loginPanel, RegisterPanel registerPanel) {
+	public MainPanel(LoginPanel loginPanel, RegisterPanel registerPanel, HabitSettingPanel habitSetupPanel) {
 		this.loginPanel = loginPanel;
 		this.registerPanel = registerPanel;
+		this.habitSetupPanel = habitSetupPanel;
 	}
 
 	public void setPanel(String panelName) {
@@ -38,9 +40,12 @@ public class MainPanel extends JPanel {
 
 		add(loginPanel, "LoginPanel");
 		add(registerPanel, "RegisterPanel");
+		add(habitSetupPanel,"HabitSettingPanel");
 
-		loginPanel.initialize(this);
-		setPanel("LoginPanel");
+//		loginPanel.initialize(this);
+		habitSetupPanel.initialize(this);
+//		setPanel("LoginPanel");
+		setPanel("HabitSettingPanel");
 	}
 
 }
