@@ -12,40 +12,41 @@ import org.springframework.http.ResponseEntity;
 
 import backend.controller.TimetableController;
 import backend.service.TimetableService;
+import org.springframework.stereotype.Controller;
 
-
+@Controller
 public class TimetableControllerImp implements TimetableController {
 
-    private final Logger logger;
+	private final Logger logger;
 
-    private final TimetableService timetableService;
-    private final TimetableMapper timetableMapper;
+	private final TimetableService timetableService;
+	private final TimetableMapper timetableMapper;
 
-    @Autowired
-    public TimetableControllerImp(
-            Logger logger,
-            TimetableService timetableService,
-            TimetableMapper timetableMapper
-    ) {
-        this.logger = logger;
-        this.timetableService = timetableService;
-        this.timetableMapper = timetableMapper;
-    }
+	@Autowired
+	public TimetableControllerImp(
+			Logger logger,
+			TimetableService timetableService,
+			TimetableMapper timetableMapper
+	) {
+		this.logger = logger;
+		this.timetableService = timetableService;
+		this.timetableMapper = timetableMapper;
+	}
 
-    @Override
-    public ResponseEntity<List<TimetableDto>> getAllTimetables() {
-        List<Timetable> timetables = timetableService.getAllTimetables();
-        List<TimetableDto> timetableDtos = timetableMapper.toDtoList(timetables);
+	@Override
+	public ResponseEntity<List<TimetableDto>> getAllTimetables() {
+		List<Timetable> timetables = timetableService.getAllTimetables();
+		List<TimetableDto> timetableDtos = timetableMapper.toDtoList(timetables);
 
-        return new ResponseEntity<>(timetableDtos, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(timetableDtos, HttpStatus.OK);
+	}
 
-    @Override
-    public ResponseEntity<TimetableDto> getTimetableById(Long id) {
-        Timetable timetable = timetableService.getTimetableById(id);
-        TimetableDto timetableDto = timetableMapper.toDto(timetable);
+	@Override
+	public ResponseEntity<TimetableDto> getTimetableById(Long id) {
+		Timetable timetable = timetableService.getTimetableById(id);
+		TimetableDto timetableDto = timetableMapper.toDto(timetable);
 
-        return new ResponseEntity<>(timetableDto, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(timetableDto, HttpStatus.OK);
+	}
 
 }

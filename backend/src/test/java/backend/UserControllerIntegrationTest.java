@@ -8,6 +8,7 @@ import org.junit.jupiter.api.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -15,8 +16,8 @@ import backend.form.UserForm.*;
 import backend.model.User;
 import backend.service.UserService;
 
-@Order(1)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class UserControllerIntegrationTest extends ControllerIntegrationTest {
 
 	@Autowired
@@ -40,8 +41,7 @@ public class UserControllerIntegrationTest extends ControllerIntegrationTest {
 						.content(toJsonString(input)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.email", is("test.name@email.com")))
-				.andExpect(jsonPath("$.studentProfile", nullValue()))
-				.andExpect(jsonPath("$.sentFriendRequests", hasSize(0)));
+				.andExpect(jsonPath("$.studentProfile", nullValue()));
 	}
 
 	@Test
