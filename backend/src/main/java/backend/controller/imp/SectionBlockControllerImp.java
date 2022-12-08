@@ -16,9 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin
-@RestController
-@RequestMapping("/api/section-block")
+
 public class SectionBlockControllerImp implements SectionBlockController {
 
     private final Logger logger;
@@ -36,7 +34,6 @@ public class SectionBlockControllerImp implements SectionBlockController {
     }
 
     @Override
-    @GetMapping("/")
     public ResponseEntity<List<SectionBlockDto>> getAllSectionBlocks() {
         List<SectionBlock> sectionBlocks = sectionBlockService.getAllSectionBlocks();
         List<SectionBlockDto> sectionBlockDtos = sectionBlockMapper.toDtoList(sectionBlocks);
@@ -45,8 +42,7 @@ public class SectionBlockControllerImp implements SectionBlockController {
     }
 
     @Override
-    @GetMapping("/{id}")
-    public ResponseEntity<SectionBlockDto> getSectionBlockById(@PathVariable Long id) {
+    public ResponseEntity<SectionBlockDto> getSectionBlockById(Long id) {
         SectionBlock sectionBlock = sectionBlockService.getSectionBlockById(id);
         SectionBlockDto sectionBlockDto = sectionBlockMapper.toDto(sectionBlock);
 

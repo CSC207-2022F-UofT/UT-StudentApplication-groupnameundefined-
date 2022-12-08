@@ -1,28 +1,36 @@
 package backend.controller;
 
 import backend.dto.StudentProfileDto;
-import backend.dto.TimetableDto;
 import org.springframework.http.ResponseEntity;
 
 import backend.form.StudentProfileForm.*;
-import backend.model.StudentProfile;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
+@CrossOrigin
+@RestController
+@RequestMapping("/api/student-profile")
 public interface StudentProfileController {
 
-	ResponseEntity<StudentProfileDto> createStudentProfile(CreateStudentProfileForm input);
+    @PostMapping("/create")
+    ResponseEntity<StudentProfileDto> createStudentProfile(@RequestBody @Valid CreateStudentProfileForm input);
 
-	ResponseEntity<StudentProfileDto> loadCourseIcs(Long studentProfileId, MultipartFile file);
+    @PostMapping("/load-course-ics")
+    ResponseEntity<StudentProfileDto> loadCourseIcs(
+            @RequestParam Long studentProfileId,
+            @RequestPart MultipartFile file
+    );
 
-	ResponseEntity<List<StudentProfileDto>> getAllStudentProfiles();
+    @GetMapping("/")
+    ResponseEntity<List<StudentProfileDto>> getAllStudentProfiles();
 
-	ResponseEntity<StudentProfileDto> getStudentProfileById(Long id);
+    @GetMapping("/{id}")
+    ResponseEntity<StudentProfileDto> getStudentProfileById(@PathVariable Long id);
 
-	ResponseEntity<List<StudentProfileDto>> matchStudentProfiles(MatchStudentProfileForm input);
+    @PostMapping("/match")
+    ResponseEntity<List<StudentProfileDto>> matchStudentProfiles(@RequestBody MatchStudentProfileForm input);
 
 }

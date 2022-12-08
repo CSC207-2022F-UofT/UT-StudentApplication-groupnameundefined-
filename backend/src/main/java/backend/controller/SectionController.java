@@ -1,15 +1,20 @@
 package backend.controller;
 
 import backend.dto.SectionDto;
-import backend.model.Section;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
+@RestController
+@RequestMapping("/api/section")
 public interface SectionController {
 
+    @GetMapping("/")
     ResponseEntity<List<SectionDto>> getAllSections();
 
-    ResponseEntity<SectionDto> getSectionById(Long id);
+    @GetMapping("/{id}")
+    ResponseEntity<SectionDto> getSectionById(@PathVariable Long id);
 
 }
