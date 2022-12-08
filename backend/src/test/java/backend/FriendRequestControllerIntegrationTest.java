@@ -1,7 +1,6 @@
 package backend;
 
 import backend.form.FriendRequestForm.*;
-import backend.form.StudentProfileForm;
 import backend.form.UserForm;
 import backend.model.User;
 import backend.service.FriendRequestService;
@@ -15,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static backend.ControllerIntegrationTest.toJsonString;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

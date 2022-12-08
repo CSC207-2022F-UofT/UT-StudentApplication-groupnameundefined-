@@ -50,7 +50,7 @@ public class TimetableServiceImp implements TimetableService {
 		this.sectionBlockRepository = sectionBlockRepository;
 		this.studentProfileRepository = studentProfileRepository;
 	}
-
+	
 	@Override
 	public Timetable createTimetable(StudentProfile studentProfile, Set<Block> sectionBlocks) {
 		Timetable timetable = new Timetable();
@@ -60,7 +60,7 @@ public class TimetableServiceImp implements TimetableService {
 
 		timetable.bulkAddBlocks(sectionBlocks);
 
-		return studentProfileRepository.save(studentProfile).getTimetable();
+		return timetableRepository.save(timetable);
 	}
 
 	@Override

@@ -60,6 +60,10 @@ public class StudentProfileServiceImp implements StudentProfileService {
 		user.setStudentProfile(studentProfile);
 		studentProfile.setUser(user);
 
+		Timetable timetable = new Timetable();
+		timetable.setStudentProfile(studentProfile);
+		studentProfile.setTimetable(timetable);
+
 		return userRepository.save(user).getStudentProfile();
 	}
 

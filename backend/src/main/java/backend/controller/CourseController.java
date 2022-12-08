@@ -9,7 +9,7 @@ import backend.dto.CourseDto;
 
 public interface CourseController {
 
-	ResponseEntity<?> loadCourses(LoadCoursesForm input);
+	ResponseEntity<List<CourseDto>> loadCourses(LoadCoursesForm input);
 
 	ResponseEntity<List<CourseDto>> getAllCourses();
 

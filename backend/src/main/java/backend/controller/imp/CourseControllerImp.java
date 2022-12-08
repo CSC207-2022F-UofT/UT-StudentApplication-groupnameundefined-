@@ -34,9 +34,11 @@ public class CourseControllerImp implements CourseController {
 
 	@Override
 	@PostMapping("/load-courses")
-	public ResponseEntity<?> loadCourses(@RequestBody LoadCoursesForm input) {
-		courseService.loadCourses(input);
-		return new ResponseEntity<>(HttpStatus.OK);
+	public ResponseEntity<List<CourseDto>> loadCourses(@RequestBody LoadCoursesForm input) {
+		List<Course> courses = courseService.loadCourses(input);
+		List<CourseDto> courseDtos = courseMapper.toDtoList(courses);
+		
+		return new ResponseEntity<>(courseDtos, HttpStatus.OK);
 	}
 
 	@Override

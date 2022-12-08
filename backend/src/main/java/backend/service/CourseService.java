@@ -8,7 +8,7 @@ import backend.model.Course;
 
 public interface CourseService {
 
-	void loadCourses(LoadCoursesForm input);
+	List<Course> loadCourses(LoadCoursesForm input);
 
 	List<Course> getAllCourses();
 

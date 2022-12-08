@@ -70,7 +70,7 @@ public class CourseServiceImp implements CourseService {
 	}
 
 	@Override
-	public void loadCourses(LoadCoursesForm input) {
+	public List<Course> loadCourses(LoadCoursesForm input) {
 		try {
 			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
@@ -87,10 +87,8 @@ public class CourseServiceImp implements CourseService {
 
 				Course course = gson.fromJson(_course.toJSONString(), Course.class);
 
-				if (!input.getLoadAll()) {
-					if (!input.getCourses().contains(course.getCode())) {
-						continue;
-					}
+				if (!input.getLoadAll() && !input.getCourses().contains(course.getCode())) {
+					continue;
 				}
 
 				courseRepository.save(course);
@@ -114,6 +112,7 @@ public class CourseServiceImp implements CourseService {
 					}
 				}
 			}
+			return getAllCourses();
 		} catch (IOException | ParseException e) {
 			// Chained exception captured by APIExceptionHandler
 			throw new RuntimeException(e);
