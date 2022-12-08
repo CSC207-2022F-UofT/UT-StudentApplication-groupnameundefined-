@@ -41,15 +41,22 @@ public class HabitServiceImp implements HabitService {
 
 	@Override
 	public Habit createHabit(CreateHabitForm input) {
-		StudentProfile _studentProfile = studentProfileService.getStudentProfileById(input.getStudentProfileId());
+		StudentProfile studentProfile = studentProfileService.getStudentProfileById(input.getStudentProfileId());
 		Habit habit = new Habit(input.getTalkative(), input.getCollaborative());
 
-		_studentProfile.setHabit(habit);
-		habit.setStudentProfile(_studentProfile);
+		habit.setStudentProfile(studentProfile);
 
-		StudentProfile studentProfile = studentProfileRepository.save(_studentProfile);
+		return habitRepository.save(habit);
+	}
 
-		return studentProfile.getHabit();
+	@Override
+	public Habit updateHabit(UpdateHabitForm input) {
+		Habit habit = getHabitById(input.getHabitId());
+
+		habit.setTalkative(input.getTalkative());
+		habit.setCollaborative(input.getCollaborative());
+
+		return habitRepository.save(habit);
 	}
 
 

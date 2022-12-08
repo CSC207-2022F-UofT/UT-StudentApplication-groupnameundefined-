@@ -3,8 +3,10 @@ package backend;
 import backend.form.HabitForm.*;
 import backend.form.StudentProfileForm.*;
 import backend.form.UserForm.*;
+import backend.model.Habit;
 import backend.model.StudentProfile;
 import backend.model.User;
+import backend.repository.StudentProfileRepository;
 import backend.repository.UserRepository;
 import backend.service.HabitService;
 import backend.service.StudentProfileService;
@@ -27,6 +29,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 
 @Order(2)
@@ -52,7 +55,7 @@ public class StudentProfileControllerIntegrationTest extends ControllerIntegrati
 	private UserService userService;
 
 	@Autowired
-	private UserRepository userRepository;
+	private StudentProfileRepository studentProfileRepository;
 
 	@Test
 	@Order(1)
@@ -121,14 +124,14 @@ public class StudentProfileControllerIntegrationTest extends ControllerIntegrati
 
 	@Nested
 	@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+	@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 	public class MatchingTests {
 
 		/**
 		 * Sets up users and student profiles before testing matches
 		 */
 		@BeforeEach
-		public void matchingTests_setup() {
-			userRepository.deleteAll();
+		void matchingTests_setup() {
 			for (int i = 1; i < 6; i++) {
 				RegisterForm registerForm = new RegisterForm(
 						"Test Name " + i,
@@ -145,48 +148,119 @@ public class StudentProfileControllerIntegrationTest extends ControllerIntegrati
 						2020
 				);
 				StudentProfile studentProfile = studentProfileService.createStudentProfile(cspForm);
+
+				CreateHabitForm createHabitForm = new CreateHabitForm(
+						studentProfile.getId(),
+						i,
+						i
+				);
+				habitService.createHabit(createHabitForm);
 			}
-
-		}
-
-		@Test
-		@Order(1)
-		public void matchByHabits_desc_expectSuccess() throws Exception {
-
 		}
 
 		@Test
 		@Order(1)
 		public void matchByHabits_asc_expectSuccess() throws Exception {
+			List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfiles(2L, "HABIT");
+			List<Long> studentProfileIds = studentProfiles.stream().map(StudentProfile::getId).toList();
 
+			assertThat(studentProfileIds, containsInRelativeOrder(1L, 3L, 4L, 5L));
 		}
 
 		@Test
 		@Order(2)
-		public void matchByCourses_desc_expectSuccess() throws Exception {
-			List<String> targetCourses4 = List.of("a", "b", "c", "d");
+		public void matchByHabits_desc_expectSuccess() throws Exception {
+			List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfiles(4L, "HABIT");
+			List<Long> studentProfileIds = studentProfiles.stream().map(StudentProfile::getId).toList();
 
-			List<String> descCourses1 = List.of("a", "b", "c");
-			List<String> descCourses2 = List.of("a", "b");
-
-			List<String> descCourses35 = List.of("a", "b", "c", "d");
-		}
-
-		@Test
-		@Order(2)
-		public void matchByCourses_asc_expectSuccess() throws Exception {
-			List<String> targetCourses4 = List.of("a", "b", "c", "d");
-
-			List<String> descCourses1 = List.of("a", "b", "c");
-			List<String> descCourses2 = List.of("a", "b");
-
-			List<String> descCourses35 = List.of("a", "b", "c", "d");
+			assertThat(studentProfileIds, containsInRelativeOrder(3L, 5L, 2L, 1L));
 		}
 
 		@Test
 		@Order(3)
-		public void matchByHabitsAndCourses_expectSuccess() throws Exception {
+		public void matchByCourses_asc_expectSuccess() throws Exception {
+			// Assign courses to match target (which student profile to get matches for)
+			Set<String> targetCourses2 = Set.of("a", "b", "c", "d");
+			// Student Profiles #1 has courses exactly the same as target, #2 has one less, and so on.
+			Set<String> courses1 = Set.of("a", "b", "c", "d");
+			Set<String> courses3 = Set.of("a", "b", "c", "e");
+			Set<String> courses4 = Set.of("a", "b", "e", "f");
+			Set<String> courses5 = Set.of("a", "e", "f", "g");
 
+			List<Set<String>> courseData = List.of(courses1, targetCourses2, courses3, courses4, courses5);
+
+			for (long i = 1L; i <= 5L; i++) {
+				StudentProfile studentProfile = studentProfileService.getStudentProfileById(i);
+				studentProfile.setCourseCodes(courseData.get((int) i - 1));
+				studentProfileRepository.save(studentProfile);
+			}
+
+			List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfiles(2L, "COURSE");
+			List<Long> studentProfileIds = studentProfiles.stream().map(StudentProfile::getId).toList();
+
+			logger.info(studentProfileIds.toString());
+			assertThat(studentProfileIds, containsInRelativeOrder(1L, 3L, 4L, 5L));
+		}
+
+		@Test
+		@Order(4)
+		public void matchStudentProfilesByCourses_desc_expectSuccess() throws Exception {
+			// Assign courses to match target (which student profile to get matches for)
+			Set<String> targetCourses2 = Set.of("a", "b", "c", "d");
+			// Student Profiles #5 has courses exactly the same as target, #4 has one less, and so on.
+			Set<String> courses1 = Set.of("a", "e", "f", "g");
+			Set<String> courses3 = Set.of("a", "b", "e", "f");
+			Set<String> courses4 = Set.of("a", "b", "c", "e");
+			Set<String> courses5 = Set.of("a", "b", "c", "d");
+
+			List<Set<String>> courseData = List.of(courses1, targetCourses2, courses3, courses4, courses5);
+			for (long i = 1L; i <= 5L; i++) {
+				StudentProfile studentProfile = studentProfileService.getStudentProfileById(i);
+				studentProfile.setCourseCodes(courseData.get((int) i - 1));
+				studentProfileRepository.save(studentProfile);
+			}
+
+			List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfiles(2L, "COURSE");
+			List<Long> studentProfileIds = studentProfiles.stream().map(StudentProfile::getId).toList();
+
+			assertThat(studentProfileIds, containsInRelativeOrder(5L, 4L, 3L, 1L));
+		}
+
+		@Test
+		@Order(5)
+		public void matchStudentProfiles_expectSuccess() throws Exception {
+			// Make Habit #5 has same attrs as Habit #4
+			UpdateHabitForm input = new UpdateHabitForm(
+					5L,
+					4,
+					4
+			);
+
+			habitService.updateHabit(input);
+
+			// Assign courses to match target (which student profile to get matches for)
+			Set<String> targetCourses2 = Set.of("a", "b", "c", "d");
+
+			// Reverse StudentProfiles #4 and #5 given that they have the same habit attrs
+			// (StudentProfile #5 has a closer match so should come before #4)
+			Set<String> courses4 = Set.of("a", "b", "c", "e");
+			Set<String> courses5 = Set.of("a", "b", "c", "d");
+
+			// Rest are irrelevant
+			Set<String> courses1 = Set.of("a", "b", "c", "d");
+			Set<String> courses3 = Set.of("a", "b", "c", "d");
+
+			List<Set<String>> courseData = List.of(courses1, targetCourses2, courses3, courses4, courses5);
+			for (long i = 1L; i <= 5L; i++) {
+				StudentProfile studentProfile = studentProfileService.getStudentProfileById(i);
+				studentProfile.setCourseCodes(courseData.get((int) i - 1));
+				studentProfileRepository.save(studentProfile);
+			}
+
+			List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfiles(2L, "BOTH");
+			List<Long> studentProfileIds = studentProfiles.stream().map(StudentProfile::getId).toList();
+
+			assertThat(studentProfileIds, containsInRelativeOrder(1L, 3L, 5L, 4L));
 		}
 
 	}

@@ -35,19 +35,5 @@ public class StudentProfileForm {
 		}
 
 	}
-
-	@Getter
-	public static class MatchStudentProfileForm {
-
-		@NotNull
-		private final Long studentProfileId;
-
-		@Size(min = 1, max = 2)
-		private final List<@NotEmpty @Pattern(regexp = "HABIT|COURSE") String> matchBy;
-
-		public MatchStudentProfileForm(Long studentProfileId, List<String> matchBy) {
-			this.studentProfileId = studentProfileId;
-			this.matchBy = matchBy;
-		}
-	}
+	
 }

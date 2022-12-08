@@ -11,6 +11,8 @@ public interface HabitService {
 
 	Habit createHabit(CreateHabitForm input);
 
+	Habit updateHabit(UpdateHabitForm input);
+
 	List<Habit> getAllHabits();
 
 	Habit getHabitById(Long id);

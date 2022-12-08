@@ -16,14 +16,15 @@ public interface StudentProfileService {
 
 	StudentProfile getStudentProfileById(Long id);
 
-	List<StudentProfile> matchStudentProfiles(MatchStudentProfileForm input);
+	List<StudentProfile> matchStudentProfiles(Long id, String criteria);
 
-	List<StudentProfile> matchStudentProfileByHabit(StudentProfile studentProfile);
+	List<StudentProfile> matchStudentProfilesByHabit(StudentProfile studentProfile);
 
-	List<StudentProfile> matchStudentProfileByCourses(StudentProfile studentProfile);
+	List<StudentProfile> matchStudentProfilesByCourses(StudentProfile studentProfile);
 
-	List<StudentProfile> sortStudentProfileByCourses(
+	List<StudentProfile> sortStudentProfilesByCourses(
 			List<StudentProfile> studentProfiles,
-			StudentProfile studentProfile
+			StudentProfile studentProfile,
+			Boolean isSecondarySort
 	);
 }

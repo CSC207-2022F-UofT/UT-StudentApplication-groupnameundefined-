@@ -65,13 +65,16 @@ public class StudentProfileServiceImp implements StudentProfileService {
 				input.getCollege(),
 				input.getEnrolmentYear()
 		);
-		Habit habit = new Habit();
+
 		user.setStudentProfile(studentProfile);
 		studentProfile.setUser(user);
 
 		Timetable timetable = new Timetable();
 		timetableRepository.save(timetable);
 		timetable.setStudentProfile(studentProfile);
+
+		Habit habit = new Habit();
+
 		studentProfile.setTimetable(timetable);
 
 		return userRepository.save(user).getStudentProfile();
@@ -113,26 +116,25 @@ public class StudentProfileServiceImp implements StudentProfileService {
 	}
 
 	@Override
-	public List<StudentProfile> matchStudentProfiles(MatchStudentProfileForm input) {
-		StudentProfile studentProfile = getStudentProfileById(input.getStudentProfileId());
+	public List<StudentProfile> matchStudentProfiles(Long id, String criteria) {
+		StudentProfile studentProfile = getStudentProfileById(id);
+		List<StudentProfile> results = new ArrayList<>();
 
-		List<String> matchAttrs = input.getMatchBy();
-		if (matchAttrs.size() == 1) {
-			if (matchAttrs.get(0).equals("HABIT")) {
-				return matchStudentProfileByHabit(studentProfile);
-			} else {
-				return matchStudentProfileByCourses(studentProfile);
-			}
+		if (criteria.equals("HABIT")) {
+			results.addAll(matchStudentProfilesByHabit(studentProfile));
+		} else if (criteria.equals("COURSE")) {
+			results.addAll(matchStudentProfilesByCourses(studentProfile));
 		} else {
-			List<StudentProfile> matchByHabitResults = matchStudentProfileByHabit(studentProfile);
-			return sortStudentProfileByCourses(matchByHabitResults, studentProfile)
-					.subList(0, Math.min(20, matchByHabitResults.size()));
+			List<StudentProfile> matchByHabitResults = matchStudentProfilesByHabit(studentProfile);
+			results.addAll(sortStudentProfilesByCourses(matchByHabitResults, studentProfile, true));
 		}
+
+		return results.subList(0, Math.min(20, results.size()));
 	}
 
 
 	@Override
-	public List<StudentProfile> matchStudentProfileByHabit(StudentProfile studentProfile) {
+	public List<StudentProfile> matchStudentProfilesByHabit(StudentProfile studentProfile) {
 		Habit habit = studentProfile.getHabit();
 
 		return studentProfileRepository.sortByHabitMatch(
@@ -143,37 +145,44 @@ public class StudentProfileServiceImp implements StudentProfileService {
 	}
 
 	@Override
-	public List<StudentProfile> matchStudentProfileByCourses(StudentProfile studentProfile) {
+	public List<StudentProfile> matchStudentProfilesByCourses(StudentProfile studentProfile) {
 		List<StudentProfile> studentProfiles = this.getAllStudentProfiles();
 
-		return sortStudentProfileByCourses(studentProfiles, studentProfile);
+		return sortStudentProfilesByCourses(studentProfiles, studentProfile, false);
 	}
 
 	@Override
-	public List<StudentProfile> sortStudentProfileByCourses(
+	public List<StudentProfile> sortStudentProfilesByCourses(
 			List<StudentProfile> studentProfiles,
-			StudentProfile studentProfile
+			StudentProfile targetStudentProfile,
+			Boolean isSecondarySort
 	) {
-		studentProfiles.remove(studentProfile);
 
 		List<Pair<StudentProfile, Integer>> courseCountList = new LinkedList<>();
-		for (StudentProfile targetStudentProfile : studentProfiles) {
+		for (StudentProfile studentProfile : studentProfiles) {
+			if (studentProfile.getId().equals(targetStudentProfile.getId())) {
+				continue;
+			}
 			List<String> joinedCourses = new ArrayList<>();
-			joinedCourses.addAll(targetStudentProfile.getCourseCodes());
 			joinedCourses.addAll(studentProfile.getCourseCodes());
+			joinedCourses.addAll(targetStudentProfile.getCourseCodes());
 
 			Set<String> joinedCoursesSet = new HashSet<>(joinedCourses);
 			courseCountList.add(Pair.of(studentProfile, joinedCourses.size() - joinedCoursesSet.size()));
 		}
 
 		courseCountList.sort((p1, p2) -> {
-			if (getAbsoluteDistance(p1.getLeft().getHabit(), p2.getLeft().getHabit()) == 0) {
-				return p1.getRight() - p2.getRight();
+			if (isSecondarySort) {
+				if (getAbsoluteDistance(p1.getLeft().getHabit(), p2.getLeft().getHabit()) == 0) {
+					return p2.getRight() - p1.getRight();
+				} else {
+					return 0;
+				}
 			}
-			return 0;
+			return p2.getRight() - p1.getRight();
 		});
 
-		return courseCountList.stream().map(Pair::getLeft).collect(Collectors.toList());
+		return courseCountList.stream().map(Pair::getLeft).toList();
 	}
 
 	public double getAbsoluteDistance(Habit habit1, Habit habit2) {

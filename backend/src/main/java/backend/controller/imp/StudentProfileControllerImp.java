@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
 import backend.dto.StudentProfileDto;
 import backend.dto.TimetableDto;
@@ -84,9 +85,12 @@ public class StudentProfileControllerImp implements StudentProfileController {
 	}
 
 	@Override
-	@PostMapping("/match")
-	public ResponseEntity<List<StudentProfileDto>> matchStudentProfiles(@RequestBody MatchStudentProfileForm input) {
-		List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfiles(input);
+	@PostMapping("/match/{id}")
+	public ResponseEntity<List<StudentProfileDto>> matchStudentProfiles(
+			@PathVariable Long id,
+			@RequestParam @Pattern(regexp = "HABIT|COURSE|BOTH") String criteria
+	) {
+		List<StudentProfile> studentProfiles = studentProfileService.matchStudentProfiles(id, criteria);
 		List<StudentProfileDto> studentProfileDtos = studentProfileMapper.toDtoList(studentProfiles);
 
 		return new ResponseEntity<>(studentProfileDtos, HttpStatus.OK);

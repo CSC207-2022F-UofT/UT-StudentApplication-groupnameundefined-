@@ -23,6 +23,6 @@ public interface StudentProfileController {
 
 	ResponseEntity<StudentProfileDto> getStudentProfileById(Long id);
 
-	ResponseEntity<List<StudentProfileDto>> matchStudentProfiles(MatchStudentProfileForm input);
+	ResponseEntity<List<StudentProfileDto>> matchStudentProfiles(Long id, String criteria);
 
 }

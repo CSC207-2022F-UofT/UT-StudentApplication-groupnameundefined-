@@ -37,7 +37,7 @@ public class StudentProfile {
 	@Column(name = "enrolment_year")
 	private Integer enrolmentYear;
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@Column(name = "course_codes")
 	private Set<String> courseCodes = new HashSet<>();
 

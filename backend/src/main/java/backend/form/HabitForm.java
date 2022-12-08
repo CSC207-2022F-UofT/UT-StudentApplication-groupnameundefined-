@@ -16,7 +16,7 @@ public class HabitForm {
 
 		@NotNull
 		private final Long studentProfileId;
-		
+
 		@NotNull
 		@Max(5)
 		@Max(1)
@@ -39,4 +39,31 @@ public class HabitForm {
 
 	}
 
+	@Getter
+	public static class UpdateHabitForm {
+
+		@NotNull
+		private final Long habitId;
+
+		@NotNull
+		@Max(5)
+		@Max(1)
+		private final Integer talkative;
+
+		@NotNull
+		@Max(5)
+		@Min(1)
+		private final Integer collaborative;
+
+		public UpdateHabitForm(
+				Long habitId,
+				Integer talkative,
+				Integer collaborative
+		) {
+			this.habitId = habitId;
+			this.talkative = talkative;
+			this.collaborative = collaborative;
+		}
+
+	}
 }
