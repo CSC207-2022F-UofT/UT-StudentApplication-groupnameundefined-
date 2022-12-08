@@ -3,12 +3,11 @@ package backend;
 import backend.dto.AptRequestDto;
 import backend.form.AptRequestForm.*;
 import backend.form.AptRequestForm;
+import backend.form.StudentProfileForm.*;
 import backend.form.UserForm;
-import backend.model.AptBlock;
-import backend.model.Block;
-import backend.model.Timetable;
-import backend.model.User;
+import backend.model.*;
 import backend.service.AptRequestService;
+import backend.service.StudentProfileService;
 import backend.service.UserService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.MethodOrderer;
@@ -39,41 +38,39 @@ public class AptRequestControllerIntegrationTest extends ControllerIntegrationTe
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private StudentProfileService studentProfileService;
+
     @Test
     @Order(1)
     public void createAptRequest_expectSuccess() throws Exception {
-        UserForm.RegisterForm registerForm1 = new UserForm.RegisterForm(
-                "Test Name1",
-                "test.name1@email.com",
-                "1234567Abc",
-                "0123456789"
-        );
-        UserForm.RegisterForm registerForm2 = new UserForm.RegisterForm(
-                "Test Name2",
-                "test.name2@email.com",
-                "1234567Abc",
-                "0123456788"
-        );
-        UserForm.RegisterForm registerForm3 = new UserForm.RegisterForm(
-                "Test Name3",
-                "test.name3@email.com",
-                "1234567Abc",
-                "0123456787"
-        );
 
-        User user1 = userService.registerUser(registerForm1);
-        Long userId1 = user1.getId();
-        User user2 = userService.registerUser(registerForm2);
-        Long userId2 = user2.getId();
-        User user3 = userService.registerUser(registerForm3);
-        Long userId3 = user3.getId();
+        for (int i = 1; i < 4; i++) {
+            UserForm.RegisterForm registerForm = new UserForm.RegisterForm(
+                    "Test Name" + i,
+                    "test.name" + i + "@email.com",
+                    "1234567Abc",
+                    "012345678" + i
+            );
+            User user = userService.registerUser(registerForm);
 
+            CreateStudentProfileForm cspForm = new CreateStudentProfileForm(
+                    user.getId(),
+                    "CS",
+                    "Woodsworth",
+                    2020
+            );
+            StudentProfile studentProfile = studentProfileService.createStudentProfile(cspForm);
+        }
+
+
+        // Create AptRequests
         CreateAptRequestForm input1 = new CreateAptRequestForm(
-                userId1, userId2, "APT: user1 to user2", "BA",
+                1L, 2L, "APT: user1 to user2", "BA",
                 1, 46800000, 1, 50400000, "WEEKLY", "ONCE_A_WEEK"
         );
         CreateAptRequestForm input2 = new CreateAptRequestForm(
-                userId1, userId3, "APT: user2 to user3", "RB",
+                1L, 3L, "APT: user2 to user3", "RB",
                 1, 61200000, 1, 64800000, "WEEKLY", "ONCE_A_WEEK"
         );
 
@@ -81,8 +78,8 @@ public class AptRequestControllerIntegrationTest extends ControllerIntegrationTe
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJsonString(input1)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.from.id", is(userId1.intValue())))
-                .andExpect(jsonPath("$.to.id", is(userId2.intValue())))
+                .andExpect(jsonPath("$.from.id", is(1)))
+                .andExpect(jsonPath("$.to.id", is(2)))
                 .andExpect(jsonPath("$.message", is("APT: user1 to user2")))
                 .andExpect(jsonPath("$.status", is("PENDING")))
                 .andExpect(jsonPath("$.statDay", is(1)))

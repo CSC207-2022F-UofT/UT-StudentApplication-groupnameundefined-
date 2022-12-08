@@ -3,6 +3,7 @@ package backend.service.imp;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import backend.repository.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +12,8 @@ import org.springframework.stereotype.Service;
 import backend.exception.exceptions.EntityNotFoundException;
 import backend.form.StudentProfileForm.*;
 
-import backend.repository.StudentProfileRepository;
-import backend.repository.UserRepository;
 import backend.service.StudentProfileService;
 import backend.model.*;
-import backend.repository.HabitRepository;
-import backend.repository.SectionBlockRepository;
 import backend.service.TimetableService;
 
 @Service
@@ -30,6 +27,8 @@ public class StudentProfileServiceImp implements StudentProfileService {
 
 	private final HabitRepository habitRepository;
 
+	private final TimetableRepository timetableRepository;
+
 	@Autowired
 	public StudentProfileServiceImp(
 			Logger logger,
@@ -37,7 +36,8 @@ public class StudentProfileServiceImp implements StudentProfileService {
 			UserRepository userRepository,
 			SectionBlockRepository sectionBlockRepository,
 			TimetableService timetableService,
-			HabitRepository habitRepository
+			HabitRepository habitRepository,
+			TimetableRepository timetableRepository
 	) {
 		this.logger = logger;
 		this.studentProfileRepository = studentProfileRepository;
@@ -45,22 +45,31 @@ public class StudentProfileServiceImp implements StudentProfileService {
 		this.sectionBlockRepository = sectionBlockRepository;
 		this.timetableService = timetableService;
 		this.habitRepository = habitRepository;
+		this.timetableRepository = timetableRepository;
 	}
 
 	@Override
 	public StudentProfile createStudentProfile(CreateStudentProfileForm input) {
 		Optional<User> _user = userRepository.findById(input.getUserId());
 		if (_user.isEmpty()) {
-			throw new EntityNotFoundException(String.format("Unable to find user with id %d", input.getUserId()), User.class);
+			throw new EntityNotFoundException(
+					String.format("Unable to find user with id %d", input.getUserId()),
+					User.class
+			);
 		}
 
 		User user = _user.get();
-		StudentProfile studentProfile = new StudentProfile(input.getProgram(), input.getCollege(), input.getEnrolmentYear());
+		StudentProfile studentProfile = new StudentProfile(
+				input.getProgram(),
+				input.getCollege(),
+				input.getEnrolmentYear()
+		);
 		Habit habit = new Habit();
 		user.setStudentProfile(studentProfile);
 		studentProfile.setUser(user);
 
 		Timetable timetable = new Timetable();
+		timetableRepository.save(timetable);
 		timetable.setStudentProfile(studentProfile);
 		studentProfile.setTimetable(timetable);
 
@@ -79,7 +88,10 @@ public class StudentProfileServiceImp implements StudentProfileService {
 			return studentProfile.get();
 		}
 
-		throw new EntityNotFoundException(String.format("Unable to find student profile with id '%d'.", id), StudentProfile.class);
+		throw new EntityNotFoundException(
+				String.format("Unable to find student profile with id '%d'.", id),
+				StudentProfile.class
+		);
 	}
 
 	@Override
