@@ -43,7 +43,7 @@ public class HabitForm {
 	public static class UpdateHabitForm {
 
 		@NotNull
-		private final Long habitId;
+		private final Long id;
 
 		@NotNull
 		@Max(5)
@@ -56,11 +56,11 @@ public class HabitForm {
 		private final Integer collaborative;
 
 		public UpdateHabitForm(
-				Long habitId,
+				Long id,
 				Integer talkative,
 				Integer collaborative
 		) {
-			this.habitId = habitId;
+			this.id = id;
 			this.talkative = talkative;
 			this.collaborative = collaborative;
 		}

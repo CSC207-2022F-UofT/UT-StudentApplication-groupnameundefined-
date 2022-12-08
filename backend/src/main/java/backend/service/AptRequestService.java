@@ -7,58 +7,64 @@ import java.util.List;
 
 public interface AptRequestService {
 
-    /**
-     * @return all AptRequests in the AptRequest Table
-     */
-    List<AptRequest> getAllAptRequests();
+	/**
+	 * @return All AptRequests in the AptRequest Table
+	 */
+	List<AptRequest> getAllAptRequests();
 
-    /**
-     * @param id of a AptRequest
-     * @return the AptRequests this id refers to
-     */
-    AptRequest getAptRequestById(Long id);
+	/**
+	 * @param id ID of the AptRequest to find
+	 * @return The designated AptRequest with the given id
+	 * @throws backend.exception.exceptions.EntityNotFoundException If the AptRequest could not be found
+	 */
+	AptRequest getAptRequestById(Long id);
 
-    /**
-     * @param fromId id of the User sending AptRequest
-     * @return all AptRequests sent by user with the given id
-     */
-    List<AptRequest> getAptRequestByFromId(Long fromId);
+	/**
+	 * @param fromId ID of the User sending AptRequest
+	 * @return All AptRequests sent by user with the given id
+	 */
+	List<AptRequest> getAptRequestByFromId(Long fromId);
 
-    /**
-     * @param toId id of the User receiving AptRequest
-     * @return all AptRequests received by user with the given id
-     */
-    List<AptRequest> getAptRequestByToId(Long toId);
+	/**
+	 * @param toId ID of the User receiving AptRequest
+	 * @return All AptRequests received by user with the given id
+	 * @throws backend.exception.exceptions.EntityNotFoundException if the user could not be found with toId
+	 */
+	List<AptRequest> getAptRequestByToId(Long toId);
 
-    /**
-     * @param input an input of the form defined in CreateAptRequestForm
-     * @return a AptRequest created with given input
-     */
-    AptRequest createAptRequest(CreateAptRequestForm input);
+	/**
+	 * @param input An input defined by CreateAptRequestForm
+	 * @return An AptRequest created with the given input
+	 */
+	AptRequest createAptRequest(CreateAptRequestForm input);
 
-    /**
-     * @param input an input of the form defined in UpdateAptRequestForm
-     * @return the updated AptRequest with given input
-     */
-    AptRequest updateAptRequest(UpdateAptRequestForm input);
+	/**
+	 * @param input An input defined by UpdateAptRequestForm
+	 * @return The updated AptRequest with the given input
+	 * @throws backend.exception.exceptions.EntityNotFoundException if the AptRequest could not be found
+	 */
+	AptRequest updateAptRequest(UpdateAptRequestForm input);
 
-    /**
-     * @param id id of the AptRequest needs to be approved
-     * @return the approved AptRequest
-     */
-    AptRequest approveAptRequest(Long id);
+	/**
+	 * @param id ID of the AptRequest to be approved
+	 * @return The approved AptRequest
+	 * @throws backend.exception.exceptions.EntityNotFoundException if the AptRequest could not be found
+	 */
+	AptRequest approveAptRequest(Long id);
 
-    /**
-     * @param id id of the AptRequest needs to be denied
-     * @return the denied AptRequest
-     */
-    AptRequest denyAptRequest(Long id);
+	/**
+	 * @param id ID of the AptRequest to be denied
+	 * @return The denied AptRequest
+	 * @throws backend.exception.exceptions.EntityNotFoundException if the AptRequest could not be found
+	 */
+	AptRequest denyAptRequest(Long id);
 
-    /**
-     * @param id id of the AptRequest needs to be deleted
-     * @return id of the deleted AptRequest
-     */
-    Long deleteAptRequest(Long id);
+	/**
+	 * @param id ID of the AptRequest to be deleted
+	 * @return id of the deleted AptRequest
+	 * @throws backend.exception.exceptions.EntityNotFoundException if the AptRequest could not be found
+	 */
+	Long deleteAptRequest(Long id);
 
 
 }

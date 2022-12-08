@@ -24,19 +24,16 @@ public class HabitServiceImp implements HabitService {
 
 	private final HabitRepository habitRepository;
 	private final StudentProfileService studentProfileService;
-	private final StudentProfileRepository studentProfileRepository;
 
 	@Autowired
 	public HabitServiceImp(
 			Logger logger,
 			HabitRepository habitRepository,
-			StudentProfileService studentProfileService,
-			StudentProfileRepository studentProfileRepository
+			StudentProfileService studentProfileService
 	) {
 		this.logger = logger;
 		this.habitRepository = habitRepository;
 		this.studentProfileService = studentProfileService;
-		this.studentProfileRepository = studentProfileRepository;
 	}
 
 	@Override
@@ -51,7 +48,7 @@ public class HabitServiceImp implements HabitService {
 
 	@Override
 	public Habit updateHabit(UpdateHabitForm input) {
-		Habit habit = getHabitById(input.getHabitId());
+		Habit habit = getHabitById(input.getId());
 
 		habit.setTalkative(input.getTalkative());
 		habit.setCollaborative(input.getCollaborative());

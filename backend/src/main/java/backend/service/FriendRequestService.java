@@ -7,57 +7,63 @@ import java.util.List;
 
 public interface FriendRequestService {
 
-    /**
-     * @return all FriendRequests in the FriendRequest Table
-     */
-    List<FriendRequest> getAllFriendRequests();
+	/**
+	 * @return All FriendRequests in the FriendRequest Table
+	 */
+	List<FriendRequest> getAllFriendRequests();
 
-    /**
-     * @param id of a FriendRequest
-     * @return the FriendRequest this id refers to
-     */
-    FriendRequest getFriendRequestById(Long id);
+	/**
+	 * @param id ID of the FriendRequest to find
+	 * @return The designated friend request with the given ID
+	 */
+	FriendRequest getFriendRequestById(Long id);
 
-    /**
-     * @param fromId id of the User sending FriendRequest
-     * @return all FriendRequests sent by user with the given id
-     */
-    List<FriendRequest> getFriendRequestByFromId(Long fromId);
+	/**
+	 * @param fromId ID of the User sending FriendRequest
+	 * @return All FriendRequests sent by user with the given id
+	 */
+	List<FriendRequest> getFriendRequestByFromId(Long fromId);
 
-    /**
-     * @param toId id of the User receiving FriendRequest
-     * @return all FriendRequests received by user with the given id
-     */
-    List<FriendRequest> getFriendRequestByToId(Long toId);
+	/**
+	 * @param toId id of the User receiving FriendRequest
+	 * @return All FriendRequests received by user with the given id
+	 */
+	List<FriendRequest> getFriendRequestByToId(Long toId);
 
-    /**
-     * @param input an input of the form defined in CreateFriendRequestForm
-     * @return a FriendRequest created with given input
-     */
-    FriendRequest createFriendRequest(CreateFriendRequestForm input);
+	/**
+	 * @param input An input defined by CreateFriendRequestForm
+	 * @return The created FriendRequest
+	 */
+	FriendRequest createFriendRequest(CreateFriendRequestForm input);
 
-    /**
-     * @param input an input of the form defined in UpdateFriendRequestForm
-     * @return the updated FriendRequest with given input
-     */
-    FriendRequest updateFriendRequest(UpdateFriendRequestForm input);
+	/**
+	 * @param input An input defined by UpdateFriendRequestForm
+	 * @return The updated FriendRequest
+	 * @throws backend.exception.exceptions.EntityNotFoundException if the FriendRequest to update could not be found
+	 */
+	FriendRequest updateFriendRequest(UpdateFriendRequestForm input);
 
-    /**
-     * @param id id of the FriendRequest needs to be approved
-     * @return the approved FriendRequest
-     */
-    FriendRequest approveFriendRequest(Long id);
+	/**
+	 * @param id ID of the FriendRequest to be approved
+	 * @return The approved FriendRequest
+	 * @throws backend.exception.exceptions.EntityNotFoundException if the FriendRequest could not be found
+	 * @throws backend.exception.exceptions.BadRequestException     if the FriendRequest has already been approved/denied
+	 */
+	FriendRequest approveFriendRequest(Long id);
 
-    /**
-     * @param id id of the FriendRequest needs to be denied
-     * @return the denied FriendRequest
-     */
-    FriendRequest denyFriendRequest(Long id);
+	/**
+	 * @param id ID of the FriendRequest to be denied
+	 * @return The denied FriendRequest
+	 * @throws backend.exception.exceptions.EntityNotFoundException if the FriendRequest could not be found
+	 * @throws backend.exception.exceptions.BadRequestException     if the FriendRequest has already been approved/denied
+	 */
+	FriendRequest denyFriendRequest(Long id);
 
-    /**
-     * @param id id of the FriendRequest needs to be deleted
-     * @return id of the deleted FriendRequest
-     */
-    Long deleteFriendRequest(Long id);
+	/**
+	 * @param id ID of the FriendRequest to be deleted
+	 * @return ID of the deleted FriendRequest
+	 * @throws backend.exception.exceptions.EntityNotFoundException if the FriendRequest could not be found
+	 */
+	Long deleteFriendRequest(Long id);
 
 }
