@@ -18,13 +18,13 @@ public interface HabitController {
 	@PostMapping("/create")
 	ResponseEntity<HabitDto> createHabit(@RequestBody @Valid CreateHabitForm input);
 
-	@GetMapping("/view/all")
+	@GetMapping("/")
 	ResponseEntity<List<HabitDto>> getAllHabits();
 
-	@GetMapping("/view/{id}")
-	ResponseEntity<HabitDto> getHabitById(Long id);
+	@GetMapping("/{id}")
+	ResponseEntity<HabitDto> getHabitById(@PathVariable Long id);
 
-	@GetMapping("/view/profile/{id}")
-	ResponseEntity<HabitDto> getHabitByStudentProfileId(Long studentProfileId);
+	@GetMapping("/profile/{studentProfileId}")
+	ResponseEntity<HabitDto> getHabitByStudentProfileId(@PathVariable Long studentProfileId);
 
 }
