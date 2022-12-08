@@ -25,4 +25,6 @@ public interface UserController {
 
 	ResponseEntity<UserDto> getUserById(Long id);
 
+	ResponseEntity<List<UserDto>> getFriendsByUserId(Long id);
+
 }
