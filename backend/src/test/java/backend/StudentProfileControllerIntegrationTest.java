@@ -10,6 +10,7 @@ import backend.service.HabitService;
 import backend.service.StudentProfileService;
 import backend.service.UserService;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -22,6 +23,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @Order(2)
@@ -137,10 +141,11 @@ public class StudentProfileControllerIntegrationTest extends ControllerIntegrati
 	//			);
 	//			StudentProfile studentProfile = studentProfileService.createStudentProfile(cspForm);
 	//
+	//			// habit 1 and habit 2 both have attrs of value 1, so we can test course matching.
 	//			CreateHabitForm createHabitForm = new CreateHabitForm(
 	//					studentProfile.getId(),
-	//					i,
-	//					i
+	//					i.equals(2) ? 1 : i,
+	//					i.equals(2) ? 1 : i
 	//			);
 	//			habitService.createHabit(createHabitForm);
 	//		}

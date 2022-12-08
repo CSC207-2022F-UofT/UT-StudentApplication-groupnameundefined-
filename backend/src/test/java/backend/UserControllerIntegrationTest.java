@@ -1,7 +1,7 @@
 package backend;
 
 import static org.hamcrest.Matchers.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.*;
@@ -155,14 +155,14 @@ public class UserControllerIntegrationTest extends ControllerIntegrationTest {
 	@Order(10)
 	public void logoutUser_expectSuccess() throws Exception {
 		User user = userService.getUserById(1L);
-		assertThat(user.getLoginStatus()).isTrue();
+		assertThat(user.getLoginStatus(), is(true));
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/user/logout/{id}", 1))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", is(1)));
 
 		User _user = userService.getUserById(1L);
-		assertThat(_user.getLoginStatus()).isFalse();
+		assertThat(_user.getLoginStatus(), is(false));
 	}
 
 	@Test
