@@ -32,4 +32,10 @@ public class StudentProfileDto {
 	@JsonProperty("courseCodes")
 	private Set<String> courseCodes;
 
+	@JsonProperty("userId")
+	private Long userId;
+
+	@JsonProperty("userName")
+	private String userName;
+
 }

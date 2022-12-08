@@ -11,6 +11,8 @@ import java.util.Set;
 @Mapper(uses = {SocialMediaProfileMapper.class, HabitMapper.class})
 public interface StudentProfileMapper {
 
+	@Mapping(target = "userId", source = "user.id")
+	@Mapping(target = "userName", source = "user.name")
 	StudentProfileDto toDto(StudentProfile studentProfile);
 
 	List<StudentProfileDto> toDtoList(List<StudentProfile> studentProfiles);
