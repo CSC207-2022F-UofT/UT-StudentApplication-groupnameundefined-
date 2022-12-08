@@ -4,7 +4,6 @@ import backend.form.HabitForm.*;
 import backend.form.StudentProfileForm.*;
 import backend.form.UserForm.*;
 import backend.model.Habit;
-import backend.model.StudentProfile;
 import backend.model.User;
 import backend.repository.UserRepository;
 import backend.service.HabitService;
@@ -21,18 +20,13 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 @Order(3)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class HabitControllerTest extends ControllerIntegrationTest{
+public class HabitControllerTestIntegration extends ControllerIntegrationTest{
 
     @Autowired
     private MockMvc mockMvc;
