@@ -45,7 +45,7 @@ import javax.swing.filechooser.FileFilter;
  *   images/Save16.gif
  */
 public class FileChooserDemo extends JPanel
-                             implements ActionListener {
+        implements ActionListener {
     static private final String newline = "\n";
     JButton openButton, saveButton;
     JTextArea log;
@@ -91,13 +91,13 @@ public class FileChooserDemo extends JPanel
             }
         });
         openButton = new JButton("Open a File...",
-                                 createImageIcon("images/Open16.gif"));
+                createImageIcon("images/Open16.gif"));
         openButton.addActionListener(this);
 
         //Create the save button.  We use the image from the JLF
         //Graphics Repository (but we extracted it from the jar).
         saveButton = new JButton("Save a File...",
-                                 createImageIcon("images/Save16.gif"));
+                createImageIcon("images/Save16.gif"));
         saveButton.addActionListener(this);
 
         //For layout purposes, put the buttons in a separate panel
@@ -125,7 +125,7 @@ public class FileChooserDemo extends JPanel
             }
             log.setCaretPosition(log.getDocument().getLength());
 
-        //Handle save button action.
+            //Handle save button action.
         } else if (e.getSource() == saveButton) {
             int returnVal = fc.showSaveDialog(FileChooserDemo.this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
