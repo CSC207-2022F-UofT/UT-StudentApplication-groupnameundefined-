@@ -1,13 +1,8 @@
 package backend.form;
 
-import java.io.File;
-
 import javax.validation.constraints.*;
 
-import backend.model.StudentProfile;
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 public class HabitForm {
 
@@ -37,6 +32,12 @@ public class HabitForm {
 			this.collaborative = collaborative;
 		}
 
+//		public CreateHabitForm(
+//				Integer talkative,
+//				Integer collaborative
+//		) {
+//			this.talkative = talkative;
+//			this.collaborative = collaborative;
+//		}
 	}
-
 }

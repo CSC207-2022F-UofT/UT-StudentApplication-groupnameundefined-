@@ -15,4 +15,6 @@ public interface HabitService {
 
 	Habit getHabitById(Long id);
 
+	Habit getHabitByStudentProfileId(Long studentProfileid);
+
 }
