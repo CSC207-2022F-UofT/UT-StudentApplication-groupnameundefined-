@@ -2,10 +2,8 @@ package backend;
 
 import backend.dto.FriendRequestDto;
 import backend.form.FriendRequestForm.*;
-import backend.form.StudentProfileForm;
 import backend.form.UserForm;
 import backend.model.User;
-import backend.service.FriendRequestService;
 import backend.service.UserService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -17,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static backend.ControllerIntegrationTest.toJsonString;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,9 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FriendRequestControllerIntegrationTest extends ControllerIntegrationTest {
 	@Autowired
 	private MockMvc mockMvc;
-
-	@Autowired
-	private FriendRequestService friendRequestService;
 
 	@Autowired
 	private UserService userService;
@@ -61,7 +55,7 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 		User user2 = userService.registerUser(registerForm2);
 		Long userId2 = user2.getId();
 		User user3 = userService.registerUser(registerForm3);
-		Long userId3 = user2.getId();
+		Long userId3 = user3.getId();
 
 		CreateFriendRequestForm input1 = new CreateFriendRequestForm(
 				userId1, userId2, ""
@@ -125,9 +119,9 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 
 		// Check if the request is approved
 		MvcResult result =
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/friend-request/approve/{id}", 1))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.status", is("APPROVED"))).andReturn();
+				mockMvc.perform(MockMvcRequestBuilders.get("/api/friend-request/approve/{id}", 1))
+						.andExpect(status().isOk())
+						.andExpect(jsonPath("$.status", is("APPROVED"))).andReturn();
 
 		FriendRequestDto resultDto = jsonStringToObject
 				(result.getResponse().getContentAsString(), FriendRequestDto.class);
