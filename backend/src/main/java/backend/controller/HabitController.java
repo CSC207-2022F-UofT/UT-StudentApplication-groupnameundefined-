@@ -14,13 +14,17 @@ import javax.validation.Valid;
 @RequestMapping("/api/habit")
 public interface HabitController {
 
-	@PostMapping("/create")
-	ResponseEntity<HabitDto> createHabit(@RequestBody @Valid CreateHabitForm input);
 
-	@GetMapping("/")
+	@PostMapping("/create")
+	ResponseEntity<HabitDto> createHabit(CreateHabitForm input);
+
+	@GetMapping("/view/all")
 	ResponseEntity<List<HabitDto>> getAllHabits();
 
-	@GetMapping("/{id}")
-	ResponseEntity<HabitDto> getHabitById(@PathVariable Long id);
+	@GetMapping("/view/{id}")
+	ResponseEntity<HabitDto> getHabitById(Long id);
+
+	@GetMapping("/view/profile/{id}")
+	ResponseEntity<HabitDto> getHabitByStudentProfileId(Long studentProfileId);
 
 }

@@ -1,8 +1,6 @@
 package frontend.components;
 
-import frontend.exception.ResponseException;
-import frontend.schema.UserSchema;
-import org.slf4j.Logger;
+import frontend.schema.HabitSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -19,10 +17,9 @@ import java.util.Map;
 @Component
 public class HabitSettingPanel extends JPanel implements ActionListener {
 
+    private final WebClient webClient;
+    private final HabitSchema habitSchema;
 
-//    private final Logger logger;
-//    private final WebClient webClient;
-//    private final UserSchema userSchema;
     private MainPanel mainPanel;
 
     private static JButton submitButton;
@@ -30,10 +27,13 @@ public class HabitSettingPanel extends JPanel implements ActionListener {
     private static JSlider talkativeSlider;
     private static JLabel collaborateLabel;
     private static JLabel talkativeLabel;
+    private static JLabel infoLabel;
 
 
     @Autowired
-    public HabitSettingPanel() {
+    public HabitSettingPanel(WebClient webClient, HabitSchema habitSchema) {
+        this.webClient = webClient;
+        this.habitSchema = habitSchema;
     }
 
     public void initialize(MainPanel mainPanel) {
@@ -71,12 +71,15 @@ public class HabitSettingPanel extends JPanel implements ActionListener {
         submitButton.setText("Submit");
         submitButton.addActionListener(this);
 
+        infoLabel = new JLabel();
+        infoLabel.setBounds(160, 115, 170, 20);
         // add slider to panel
         this.add(collaborateLabel);
         this.add(collaborateSlider);
         this.add(talkativeLabel);
         this.add(talkativeSlider);
         this.add(submitButton);
+        this.add(infoLabel);
 
         this.setVisible(true);
     }
@@ -90,25 +93,31 @@ public class HabitSettingPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==submitButton){
-            Integer collaborate = collaborateSlider.getValue();
-            Integer talkative = talkativeSlider.getValue();
-            System.out.print("Payload habit" + "collaborate:" + collaborate + "talkative:" + talkative); // to be replaced
-        }
-//        if(e.getSource() == submitButton){
+//        if(e.getSource()==submitButton){
 //            Integer collaborate = collaborateSlider.getValue();
 //            Integer talkative = talkativeSlider.getValue();
-//            Map<String, Integer> payload = new HashMap<>();
-//            payload.put("collaborate", collaborate);
-//            payload.put("talkative", talkative);
-//
-//            Mono<HabitSchema> response = webClient.post()
-//                    .uri("/habit/create")
-//                    .body(BodyInserters.fromValue(payload))
-//                    .retrieve()
-//                    .bodyToMono(HabitSchema.class)
-//                    .onErrorComplete();
-//
+//            System.out.print("Payload habit" + "collaborate:" + collaborate + "talkative:" + talkative); // to be replaced
 //        }
+//        if(e.getSource() == submitButton){
+            Integer collaborate = collaborateSlider.getValue();
+            Integer talkative = talkativeSlider.getValue();
+            Map<String, Integer> payload = new HashMap<>();
+            payload.put("collaborate", collaborate);
+            payload.put("talkative", talkative);
+
+            Mono<HabitSchema> response = webClient.post()
+                    .uri("/api/habit/create")
+                    .body(BodyInserters.fromValue(payload))
+                    .retrieve()
+                    .bodyToMono(HabitSchema.class)
+                    .onErrorComplete();
+
+            response.subscribe(v -> {
+                habitSchema.setId(v.getId());
+                habitSchema.setCollaborative(v.getCollaborative());
+                habitSchema.setTalkative(v.getTalkative());
+                infoLabel.setText("Habit set Successfully!");
+            });
+
     }
 }

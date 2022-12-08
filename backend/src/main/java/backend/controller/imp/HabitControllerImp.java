@@ -58,4 +58,12 @@ public class HabitControllerImp implements HabitController {
 		return new ResponseEntity<>(habitDto, HttpStatus.OK);
 	}
 
+	@Override
+	public ResponseEntity<HabitDto> getHabitByStudentProfileId(Long studentProfileId) {
+		Habit habit = habitService.getHabitByStudentProfileId(studentProfileId);
+		HabitDto habitDto = habitMapper.toDto(habit);
+
+		return new ResponseEntity<>(habitDto, HttpStatus.OK);
+	}
+
 }
