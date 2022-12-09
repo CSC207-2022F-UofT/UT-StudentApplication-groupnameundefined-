@@ -31,6 +31,7 @@ public class Timetable {
 
 	@Setter(AccessLevel.NONE)
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "timetables")
+	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	private Set<Block> blocks = new HashSet<>();
 
 	public Timetable() {

@@ -59,14 +59,8 @@ public class Block {
 			joinColumns = @JoinColumn(name = "block_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(name = "timetable_id", referencedColumnName = "id")
 	)
+	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	private Set<Timetable> timetables = new HashSet<>();
-
-	@PreRemove
-	private void removeGroupsFromUsers() {
-		for (Timetable t : timetables) {
-			t.getBlocks().remove(this);
-		}
-	}
 
 	public Block() {
 	}

@@ -62,6 +62,7 @@ public class FriendRequestControllerImp implements FriendRequestController {
 	public ResponseEntity<List<FriendRequestDto>> getFriendRequestByToId(Long toId, String status) {
 		List<FriendRequest> friendRequests = friendRequestService.getFriendRequestByToId(toId, status);
 		List<FriendRequestDto> friendRequestDtos = friendRequestMapper.toDtoList(friendRequests);
+		logger.info(friendRequestDtos.stream().map(FriendRequestDto::getId).toList().toString());
 
 		return new ResponseEntity<>(friendRequestDtos, HttpStatus.OK);
 	}
