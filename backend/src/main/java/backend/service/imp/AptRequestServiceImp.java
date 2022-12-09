@@ -22,155 +22,155 @@ import backend.exception.exceptions.EntityNotFoundException;
 @Service
 public class AptRequestServiceImp implements AptRequestService {
 
-    private final Logger logger;
+	private final Logger logger;
 
-    private final AptRequestRepository aptRequestRepository;
-    private final UserService userService;
-    private final TimetableRepository timetableRepository;
+	private final AptRequestRepository aptRequestRepository;
+	private final UserService userService;
+	private final TimetableRepository timetableRepository;
 
-    @Autowired
-    public AptRequestServiceImp(
-            Logger logger,
-            AptRequestRepository aptRequestRepository,
-            UserService userService,
-            TimetableRepository timetableRepository
-    ) {
-        this.logger = logger;
-        this.aptRequestRepository = aptRequestRepository;
-        this.userService = userService;
-        this.timetableRepository = timetableRepository;
-    }
+	@Autowired
+	public AptRequestServiceImp(
+			Logger logger,
+			AptRequestRepository aptRequestRepository,
+			UserService userService,
+			TimetableRepository timetableRepository
+	) {
+		this.logger = logger;
+		this.aptRequestRepository = aptRequestRepository;
+		this.userService = userService;
+		this.timetableRepository = timetableRepository;
+	}
 
-    @Override
-    public List<AptRequest> getAllAptRequests() {
-        return aptRequestRepository.findAll();
-    }
+	@Override
+	public List<AptRequest> getAllAptRequests() {
+		return aptRequestRepository.findAll();
+	}
 
-    @Override
-    public AptRequest getAptRequestById(Long id) {
-        Optional<AptRequest> aptRequest = aptRequestRepository.findById(id);
-        if (aptRequest.isPresent()) {
-            return aptRequest.get();
-        }
+	@Override
+	public AptRequest getAptRequestById(Long id) {
+		Optional<AptRequest> aptRequest = aptRequestRepository.findById(id);
+		if (aptRequest.isPresent()) {
+			return aptRequest.get();
+		}
 
-        throw new EntityNotFoundException(
-                String.format("Unable to find appointment request with id '%d'", id),
-                AptRequest.class
-        );
-    }
+		throw new EntityNotFoundException(
+				String.format("Unable to find appointment request with id '%d'", id),
+				AptRequest.class
+		);
+	}
 
-    @Override
-    public List<AptRequest> getAptRequestByFromId(Long fromId) {
-        return aptRequestRepository.findByFromId(fromId);
-    }
+	@Override
+	public List<AptRequest> getAptRequestByFromId(Long fromId) {
+		return aptRequestRepository.findByFromId(fromId);
+	}
 
-    @Override
-    public List<AptRequest> getAptRequestByToId(Long toId) {
-        return aptRequestRepository.findByToId(toId);
-    }
+	@Override
+	public List<AptRequest> getAptRequestByToId(Long toId, String status) {
+		return aptRequestRepository.findByToId(toId, status);
+	}
 
-    @Override
-    public AptRequest createAptRequest(CreateAptRequestForm input) {
-        User fromUser = userService.getUserById(input.getFromId());
-        User toUser = userService.getUserById(input.getToId());
+	@Override
+	public AptRequest createAptRequest(CreateAptRequestForm input) {
+		User fromUser = userService.getUserById(input.getFromId());
+		User toUser = userService.getUserById(input.getToId());
 
-        AptRequest aptRequest = new AptRequest(
-                fromUser,
-                toUser,
-                input.getMessage()
-        );
+		AptRequest aptRequest = new AptRequest(
+				fromUser,
+				toUser,
+				input.getMessage()
+		);
 
-        AptBlock aptBlock = new AptBlock(
-                input.getStartDay(),
-                input.getStartMil(),
-                input.getEndDay(),
-                input.getEndMil(),
-                input.getRepetition(),
-                input.getRepetitionTime()
-        );
+		AptBlock aptBlock = new AptBlock(
+				input.getStartDay(),
+				input.getStartMil(),
+				input.getEndDay(),
+				input.getEndMil(),
+				input.getRepetition(),
+				input.getRepetitionTime()
+		);
 
-        aptBlock.setAptRequest(aptRequest);
-        aptRequest.setAptBlock(aptBlock);
+		aptBlock.setAptRequest(aptRequest);
+		aptRequest.setAptBlock(aptBlock);
 
-        Timetable timetable = fromUser.getStudentProfile().getTimetable();
-        aptBlock.addTimetable(timetable);
+		Timetable timetable = fromUser.getStudentProfile().getTimetable();
+		aptBlock.addTimetable(timetable);
 
-        return aptRequestRepository.save(aptRequest);
-    }
+		return aptRequestRepository.save(aptRequest);
+	}
 
-    @Override
-    public AptRequest updateAptRequest(UpdateAptRequestForm input) {
-        Optional<AptRequest> _aptRequest = aptRequestRepository.findById(input.getId());
+	@Override
+	public AptRequest updateAptRequest(UpdateAptRequestForm input) {
+		Optional<AptRequest> _aptRequest = aptRequestRepository.findById(input.getId());
 
-        if (_aptRequest.isEmpty()) {
-            throw new EntityNotFoundException(
-                    String.format("Unable to find appointment request with id '%s'.", input.getId()),
-                    AptRequest.class
-            );
-        }
+		if (_aptRequest.isEmpty()) {
+			throw new EntityNotFoundException(
+					String.format("Unable to find appointment request with id '%s'.", input.getId()),
+					AptRequest.class
+			);
+		}
 
-        AptRequest aptRequest = _aptRequest.get();
-        aptRequest.setMessage(input.getMessage());
+		AptRequest aptRequest = _aptRequest.get();
+		aptRequest.setMessage(input.getMessage());
 
-        AptBlock aptBlock = aptRequest.getAptBlock();
-        aptBlock.update(
-                input.getStartDay(),
-                input.getStartMil(),
-                input.getEndDay(),
-                input.getEndMil(),
-                input.getRepetition(),
-                input.getRepetitionTime(),
-                input.getLocation()
-        );
+		AptBlock aptBlock = aptRequest.getAptBlock();
+		aptBlock.update(
+				input.getStartDay(),
+				input.getStartMil(),
+				input.getEndDay(),
+				input.getEndMil(),
+				input.getRepetition(),
+				input.getRepetitionTime(),
+				input.getLocation()
+		);
 
-        return aptRequestRepository.save(aptRequest);
-    }
+		return aptRequestRepository.save(aptRequest);
+	}
 
-    @Override
-    public AptRequest approveAptRequest(Long id) {
-        AptRequest aptRequest = this.getAptRequestById(id);
+	@Override
+	public AptRequest approveAptRequest(Long id) {
+		AptRequest aptRequest = this.getAptRequestById(id);
 
-        if (!aptRequest.getStatus().equals("PENDING")) {
-            throw new BadRequestException("The designated appointment request has already been processed.");
-        }
+		if (!aptRequest.getStatus().equals("PENDING")) {
+			throw new BadRequestException("The designated appointment request has already been processed.");
+		}
 
-        aptRequest.setStatus("APPROVED");
+		aptRequest.setStatus("APPROVED");
 
-        Timetable timetable = aptRequest.getTo().getStudentProfile().getTimetable();
+		Timetable timetable = aptRequest.getTo().getStudentProfile().getTimetable();
 
-        timetable.addBlock(aptRequest.getAptBlock());
-        timetableRepository.save(timetable);
+		timetable.addBlock(aptRequest.getAptBlock());
+		timetableRepository.save(timetable);
 
-        return aptRequestRepository.save(aptRequest);
+		return aptRequestRepository.save(aptRequest);
 
 
-    }
+	}
 
-    @Override
-    public AptRequest denyAptRequest(Long id) {
-        AptRequest aptRequest = this.getAptRequestById(id);
+	@Override
+	public AptRequest denyAptRequest(Long id) {
+		AptRequest aptRequest = this.getAptRequestById(id);
 
-        if (aptRequest.getStatus().equals("PENDING")) {
-            aptRequest.setStatus("DENIED");
-            aptRequest.setAptBlock(null);
+		if (aptRequest.getStatus().equals("PENDING")) {
+			aptRequest.setStatus("DENIED");
+			aptRequest.setAptBlock(null);
 
-            return aptRequestRepository.save(aptRequest);
-        }
+			return aptRequestRepository.save(aptRequest);
+		}
 
-        throw new BadRequestException("The designated appointment request has already been processed.");
-    }
+		throw new BadRequestException("The designated appointment request has already been processed.");
+	}
 
-    @Override
-    public Long deleteAptRequest(Long id) {
-        if (aptRequestRepository.existsById(id)) {
-            aptRequestRepository.deleteById(id);
-            return id;
-        }
+	@Override
+	public Long deleteAptRequest(Long id) {
+		if (aptRequestRepository.existsById(id)) {
+			aptRequestRepository.deleteById(id);
+			return id;
+		}
 
-        throw new EntityNotFoundException(
-                String.format("Unable to find a appointment request with id '%s'.", id),
-                AptRequest.class
-        );
-    }
+		throw new EntityNotFoundException(
+				String.format("Unable to find a appointment request with id '%s'.", id),
+				AptRequest.class
+		);
+	}
 
 }

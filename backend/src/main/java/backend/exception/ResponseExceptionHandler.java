@@ -23,6 +23,9 @@ import static java.util.Map.entry;
 @RestControllerAdvice
 public class ResponseExceptionHandler {
 
+	/**
+	 * Method argument not valid is thrown when input does not match form or any constraints on the parameter
+	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public final ResponseEntity<Object> handleMethodArgumentNotValid(
 			MethodArgumentNotValidException e

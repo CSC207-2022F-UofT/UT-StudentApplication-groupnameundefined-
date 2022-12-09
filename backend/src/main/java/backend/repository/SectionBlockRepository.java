@@ -10,8 +10,13 @@ import java.util.List;
 import java.util.Set;
 
 public interface SectionBlockRepository extends JpaRepository<SectionBlock, Long> {
-	@Query("SELECT s FROM SectionBlock s WHERE s.section.name = :sectionCode AND s.section.course.code = :courseCode")
+	@Query("SELECT s FROM SectionBlock s " +
+			"WHERE s.section.name = :sectionCode " +
+			"AND s.section.course.code = :courseCode " +
+			"AND (s.section.course.sectionCode = :sessionCode OR s.section.course.sectionCode = 'Y')"
+	)
 	List<SectionBlock> findByCode(
+			@Param("session") String session,
 			@Param("courseCode") String courseCode,
 			@Param("sectionCode") String sectionCode
 	);

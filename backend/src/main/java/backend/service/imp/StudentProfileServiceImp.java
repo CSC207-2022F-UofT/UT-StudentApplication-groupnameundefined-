@@ -81,13 +81,13 @@ public class StudentProfileServiceImp implements StudentProfileService {
 	}
 
 	@Override
-	public StudentProfile loadCourseIcs(Long studentProfileId, MultipartFile iCalendar) {
+	public StudentProfile loadCourseIcs(Long studentProfileId, String session, MultipartFile iCalendar) {
 		StudentProfile studentProfile = getStudentProfileById(studentProfileId);
 
 		List<Map<String, String>> sectionData = timetableService.parseIcs(iCalendar);
 
 		for (Map<String, String> sec : sectionData) {
-			List<SectionBlock> sectionBlocks = sectionBlockRepository.findByCode(sec.get("course"), sec.get("section"));
+			List<SectionBlock> sectionBlocks = sectionBlockRepository.findByCode(session, sec.get("course"), sec.get("section"));
 			for (SectionBlock sectionBlock : sectionBlocks) {
 				sectionBlock.addTimetable(studentProfile.getTimetable());
 				studentProfile.addCourse(sectionBlock.getSection().getCourse().getCode());
@@ -157,7 +157,6 @@ public class StudentProfileServiceImp implements StudentProfileService {
 			StudentProfile targetStudentProfile,
 			Boolean isSecondarySort
 	) {
-
 		List<Pair<StudentProfile, Integer>> courseCountList = new LinkedList<>();
 		for (StudentProfile studentProfile : studentProfiles) {
 			if (studentProfile.getId().equals(targetStudentProfile.getId())) {

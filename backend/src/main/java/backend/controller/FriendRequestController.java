@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @CrossOrigin
@@ -23,7 +24,10 @@ public interface FriendRequestController {
 	ResponseEntity<List<FriendRequestDto>> getFriendRequestByFromId(@PathVariable Long fromId);
 
 	@GetMapping("/to/{toId}")
-	ResponseEntity<List<FriendRequestDto>> getFriendRequestByToId(@PathVariable Long toId);
+	ResponseEntity<List<FriendRequestDto>> getFriendRequestByToId(
+			@PathVariable Long toId,
+			@RequestParam @Pattern(regexp = "PENDING|APPROVED|DENIED") String status
+	);
 
 	@PostMapping("/create")
 	ResponseEntity<FriendRequestDto> createFriendRequest(@RequestBody @Valid CreateFriendRequestForm input);

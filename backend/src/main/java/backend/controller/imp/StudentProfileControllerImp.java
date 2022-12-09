@@ -45,9 +45,10 @@ public class StudentProfileControllerImp implements StudentProfileController {
 	@Override
 	public ResponseEntity<StudentProfileDto> loadCourseIcs(
 			Long studentProfileId,
+			String session,
 			MultipartFile file
 	) {
-		StudentProfile studentProfile = studentProfileService.loadCourseIcs(studentProfileId, file);
+		StudentProfile studentProfile = studentProfileService.loadCourseIcs(studentProfileId, session, file);
 		StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile);
 
 		return new ResponseEntity<>(studentProfileDto, HttpStatus.OK);

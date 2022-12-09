@@ -30,7 +30,7 @@ public interface AptRequestService {
 	 * @return All AptRequests received by user with the given id
 	 * @throws backend.exception.exceptions.EntityNotFoundException if the user could not be found with toId
 	 */
-	List<AptRequest> getAptRequestByToId(Long toId);
+	List<AptRequest> getAptRequestByToId(Long toId, String status);
 
 	/**
 	 * @param input An input defined by CreateAptRequestForm

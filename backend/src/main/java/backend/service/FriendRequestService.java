@@ -28,7 +28,7 @@ public interface FriendRequestService {
 	 * @param toId id of the User receiving FriendRequest
 	 * @return All FriendRequests received by user with the given id
 	 */
-	List<FriendRequest> getFriendRequestByToId(Long toId);
+	List<FriendRequest> getFriendRequestByToId(Long toId, String status);
 
 	/**
 	 * @param input An input defined by CreateFriendRequestForm

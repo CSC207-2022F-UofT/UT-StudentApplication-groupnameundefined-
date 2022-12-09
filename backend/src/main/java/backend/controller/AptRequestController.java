@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @CrossOrigin
@@ -23,7 +24,10 @@ public interface AptRequestController {
 	ResponseEntity<List<AptRequestDto>> getAptRequestByFromId(@PathVariable Long fromId);
 
 	@GetMapping("/to/{toId}")
-	ResponseEntity<List<AptRequestDto>> getAptRequestByToId(@PathVariable Long toId);
+	ResponseEntity<List<AptRequestDto>> getAptRequestByToId(
+			@PathVariable Long toId,
+			@RequestParam @Pattern(regexp = "PENDING|APPROVED|DENIED") String status
+	);
 
 	@PostMapping("/create")
 	ResponseEntity<AptRequestDto> createAptRequest(@RequestBody @Valid CreateAptRequestForm input);

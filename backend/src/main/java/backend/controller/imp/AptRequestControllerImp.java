@@ -59,8 +59,8 @@ public class AptRequestControllerImp implements AptRequestController {
 	}
 
 	@Override
-	public ResponseEntity<List<AptRequestDto>> getAptRequestByToId(Long toId) {
-		List<AptRequest> aptRequests = aptRequestService.getAptRequestByToId(toId);
+	public ResponseEntity<List<AptRequestDto>> getAptRequestByToId(Long toId, String status) {
+		List<AptRequest> aptRequests = aptRequestService.getAptRequestByToId(toId, status);
 		List<AptRequestDto> aptRequestDtos = aptRequestMapper.toDtoList(aptRequests);
 
 		return new ResponseEntity<>(aptRequestDtos, HttpStatus.OK);

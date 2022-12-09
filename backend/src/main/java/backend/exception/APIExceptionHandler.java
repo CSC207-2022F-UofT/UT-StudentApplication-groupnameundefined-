@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.ZonedDateTime;
 
+/**
+ * Processes any throw exception from Controller-Service-Entity to readable format.
+ */
 @ControllerAdvice
 public class APIExceptionHandler {
 

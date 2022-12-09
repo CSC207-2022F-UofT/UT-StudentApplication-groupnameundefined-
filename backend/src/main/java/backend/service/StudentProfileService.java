@@ -22,7 +22,7 @@ public interface StudentProfileService {
 	 * @param iCalendar The courseCalendar (ics) file exported from ACORN
 	 * @return The updated StudentProfile
 	 */
-	StudentProfile loadCourseIcs(Long id, MultipartFile iCalendar);
+	StudentProfile loadCourseIcs(Long id, String session, MultipartFile iCalendar);
 
 	/**
 	 * @return All StudentProfiles from table student-profile

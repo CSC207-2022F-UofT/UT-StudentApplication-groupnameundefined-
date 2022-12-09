@@ -22,6 +22,7 @@ public interface StudentProfileController {
 	@PostMapping("/load-course-ics")
 	ResponseEntity<StudentProfileDto> loadCourseIcs(
 			@RequestParam Long studentProfileId,
+			@RequestParam String session,
 			@RequestPart MultipartFile file
 	);
 
