@@ -11,7 +11,7 @@ public interface AptRequestRepository extends JpaRepository<AptRequest, Long> {
 
 	List<AptRequest> findByFromId(Long fromId);
 
-	@Query("SELECT a FROM AptRequest AS a WHERE a.id = :toId AND a.status = :status")
+	@Query("SELECT a FROM AptRequest AS a WHERE a.to.id = :toId AND a.status = :status")
 	List<AptRequest> findByToId(@Param("toId") Long toId, @Param("status") String status);
 
 }

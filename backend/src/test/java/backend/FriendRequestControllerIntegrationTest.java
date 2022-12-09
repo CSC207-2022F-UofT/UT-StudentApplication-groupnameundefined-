@@ -135,7 +135,8 @@ public class FriendRequestControllerIntegrationTest extends ControllerIntegratio
 	@Order(4)
 	public void getFriendRequestByToId_expectSuccess() throws Exception {
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/api/friend-request/to/{toId}", 1))
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/friend-request/to/{toId}", 1)
+						.param("status", "PENDING"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", hasSize(0)));
 	}
