@@ -1,10 +1,10 @@
 package frontend.components;
 
 import frontend.exception.ResponseException;
+import frontend.schema.TimetableSchema;
 import frontend.schema.UserSchema;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -16,93 +16,118 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 @Component
-public class LoginPanel extends JPanel implements ActionListener {
+public class LoginPanel extends JPanel implements ActionListener, InitializablePanel {
 
 	private final WebClient webClient;
 	private final UserSchema userSchema;
+	private final TimetableSchema timetable;
 	private final Logger logger;
 
 	private MainPanel mainPanel;
 
-	private static JLabel emailLabel;
-	private static JTextField emailField;
-	private static JLabel emailError;
-	private static JLabel passwordLabel;
-	private static JPasswordField passwordField;
-	private static JLabel passwordError;
-	private static JButton registerButton;
-	private static JButton loginButton;
-	private static JLabel successLabel;
+	private final JLabel title = new JLabel("LOGIN");
+	private final JLabel emailLabel = new JLabel("Email: ");
+
+	private final JTextField emailField = new JTextField();
+
+	private final JLabel emailError = new JLabel("");
+
+	private final JLabel passwordLabel = new JLabel("Password: ");
+
+	private final JPasswordField passwordField = new JPasswordField();
+
+	private final JLabel passwordError = new JLabel("");
+
+	private final JButton registerButton = new JButton("Sign Up");
+
+	private final JButton loginButton = new JButton("Sign In");
+
+	private final JLabel successLabel = new JLabel("", SwingConstants.CENTER);
+
 
 	@Autowired
-	public LoginPanel(WebClient webClient, UserSchema userSchema, Logger logger) {
+	public LoginPanel(WebClient webClient, UserSchema userSchema,
+					  TimetableSchema timetableSchema, Logger logger) {
 		this.webClient = webClient;
 		this.userSchema = userSchema;
+		this.timetable = timetableSchema;
 		this.logger = logger;
 	}
 
-	public void initialize(MainPanel mainPanel) {
-		this.mainPanel = mainPanel;
+	@Override
+	public void initialize(MainPanel parent){
 
-		this.setBounds(0, 0, 500, 500);
-		this.setBackground(new Color(128, 128, 255));
-		this.setLayout(null);
+		this.mainPanel = parent;
 
-		emailLabel = new JLabel("Email: ");
-		emailLabel.setBounds(150, 90, 70, 20);
 
-		emailField = new JTextField();
-		emailField.setBounds(160, 115, 170, 20);
-
-		emailError = new JLabel("");
-		emailError.setBounds(165, 135, 300, 20);
-
-		passwordLabel = new JLabel("Password: ");
-		passwordLabel.setBounds(150, 155, 193, 28);
-
-		passwordField = new JPasswordField();
-		passwordField.setBounds(160, 180, 170, 20);
-
-		passwordError = new JLabel("");
-		passwordError.setBounds(165, 200, 300, 20);
-
-		registerButton = new JButton("Sign Up");
-		registerButton.setBounds(160, 230, 80, 30);
 		registerButton.addActionListener(this);
-
-		loginButton = new JButton("Sign In");
-		loginButton.setBounds(250, 230, 80, 30);
 		loginButton.addActionListener(this);
 
-		successLabel = new JLabel("", SwingConstants.CENTER);
-		successLabel.setBounds(45, 270, 400, 20);
+		JPanel jpGrid = new JPanel(new GridLayout(20, 1));
+		title.setHorizontalAlignment(SwingConstants.CENTER);
 
-		this.add(emailLabel);
-		this.add(emailField);
-		this.add(emailError);
-		this.add(passwordLabel);
-		this.add(passwordField);
-		this.add(passwordError);
-		this.add(registerButton);
-		this.add(loginButton);
-		this.add(successLabel);
+		JPanel jp2 = new JPanel(new GridLayout(1, 2));
+		jp2.add(emailLabel);
+		jp2.add(emailField);
 
-		this.setVisible(true);
+		JPanel jp3 = new JPanel(new BorderLayout());
+		jp3.add(emailError, SwingConstants.CENTER);
+
+		JPanel jp4 = new JPanel(new GridLayout(1, 2));
+		jp4.add(passwordLabel);
+		jp4.add(passwordField);
+
+		JPanel jp5 = new JPanel(new BorderLayout());
+		jp5.add(passwordError, BorderLayout.CENTER);
+
+		JPanel buttons = new JPanel(new GridLayout(1, 3));
+		buttons.add(registerButton);
+		buttons.add(new JPanel());
+		buttons.add(loginButton);
+
+		JPanel jpSuccess = new JPanel(new BorderLayout());
+		jpSuccess.add(successLabel, BorderLayout.CENTER);
+
+		jpGrid.add(new JPanel());
+		jpGrid.add(new JPanel());
+		jpGrid.add(new JPanel());
+		jpGrid.add(new JPanel());
+		jpGrid.add(title);
+		jpGrid.add(new JPanel());
+		jpGrid.add(jp2);
+		jpGrid.add(new JPanel());
+		jpGrid.add(jp3);
+		jpGrid.add(new JPanel());
+		jpGrid.add(jp4);
+		jpGrid.add(new JPanel());
+		jpGrid.add(jp5);
+		jpGrid.add(new JPanel());
+		jpGrid.add(buttons);
+		jpGrid.add(new JPanel());
+		jpGrid.add(new JPanel());
+		jpGrid.add(jpSuccess);
+
+		add(jpGrid);
+
+		this.setLayout(new GridLayout(1, 5));
+		this.add(new JPanel());
+		this.add(new JPanel());
+		JPanel vCenter = new JPanel(new BorderLayout());
+		vCenter.add(new JPanel());
+		vCenter.add(jpGrid, BorderLayout.CENTER);
+		this.add(vCenter);
+		this.add(new JPanel());
+		this.add(new JPanel());
+
+
 	}
 
-	/**
-	 * Sets this panel to be invisible and return nothing.
-	 */
 	public void close() {
 		this.setVisible(false);
 	}
 
-	/**
-	 * Cleans all error messages shown in the JLabels and all information typed into the fields.
-	 */
 	public void cleanAll() {
 		emailField.setText("");
 		emailError.setText("");
@@ -111,18 +136,12 @@ public class LoginPanel extends JPanel implements ActionListener {
 		successLabel.setText("");
 	}
 
-	/**
-	 * Only cleans the error messages shown in the JLabels.
-	 */
 	public void cleanErrors() {
 		emailError.setText("");
 		passwordError.setText("");
 		successLabel.setText("");
 	}
 
-	/**
-	 * Ban the register button in the login panel.
-	 */
 	public void disableRegisterButton() {
 		registerButton.setEnabled(false);
 	}
@@ -173,13 +192,33 @@ public class LoginPanel extends JPanel implements ActionListener {
 					userSchema.setLoginStatus(v.getLoginStatus());
 					userSchema.setJoinedTime(v.getJoinedTime());
 					userSchema.setLastActiveTime(v.getLastActiveTime());
-
+					userSchema.setStudentProfile(v.getStudentProfile());
 					successLabel.setText("Login Successfully!");
 					JOptionPane.showMessageDialog(null,
 							"Login successfully!");
-//					mainPanel.setPanel("NextPanel");
-//					this.cleanAll();
-//					this.close();
+					mainPanel.setUserSchema(userSchema);
+					if (userSchema.getStudentProfile() == null){
+						JOptionPane.showMessageDialog(null, "It looks like you haven't created a student profile yet. To fully utilize the functionality of the app, you will need to provide some basic info regarding your student status.");
+						mainPanel.setPanel("CreateProfilePanel");
+						this.cleanAll();
+						this.close();
+					}
+					else {
+						Mono<TimetableSchema> ttResponse = webClient.get()
+								.uri("/timetable/" + userSchema.getStudentProfile().getId())
+								.retrieve()
+								.bodyToMono(TimetableSchema.class);
+						ttResponse.subscribe(t -> {
+							timetable.setId(t.getId());
+							logger.info(t.getBlocks().toString());
+							timetable.setBlocks(t.getBlocks());
+							mainPanel.setTimetableSchema(timetable);
+							mainPanel.getHomePanel().initialize(mainPanel);
+							mainPanel.setPanel("HomePanel");
+							this.cleanAll();
+							this.close();
+							});
+					}
 				});
 			}
 		} else if (e.getSource() == registerButton) {

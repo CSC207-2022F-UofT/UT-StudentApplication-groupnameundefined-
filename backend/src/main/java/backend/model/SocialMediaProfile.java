@@ -41,4 +41,9 @@ public class SocialMediaProfile {
 	public SocialMediaProfile() {
 	}
 
+	public SocialMediaProfile(String instagramId, String facebookId) {
+		this.instagramId = instagramId;
+		this.facebookId = facebookId;
+	}
+
 }

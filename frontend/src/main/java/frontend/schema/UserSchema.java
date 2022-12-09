@@ -17,8 +17,7 @@ public class UserSchema {
 	private Boolean loginStatus;
 	private Timestamp joinedTime;
 	private Timestamp lastActiveTime;
-
-//	private StudentProfileDto studentProfile;
+	private StudentProfileSchema studentProfile;
 
 	public UserSchema() {
 

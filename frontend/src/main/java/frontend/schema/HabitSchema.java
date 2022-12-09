@@ -11,9 +11,8 @@ import java.sql.Timestamp;
 @Component
 public class HabitSchema {
     private Long id;
-    private Integer collaborative;
-    private Integer talkative;
-
+    private int talkative;
+    private int collaborative;
     public HabitSchema() {
 
     }

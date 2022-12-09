@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class RegisterPanel extends JPanel implements ActionListener {
+public class RegisterPanel extends JPanel implements ActionListener, InitializablePanel {
 
 	private final Logger logger;
 	private final WebClient webClient;
@@ -130,16 +130,10 @@ public class RegisterPanel extends JPanel implements ActionListener {
 		this.setVisible(true);
 	}
 
-	/**
-	 * Sets this panel to be invisible and return nothing.
-	 */
 	public void close() {
 		this.setVisible(false);
 	}
 
-	/**
-	 * Cleans all error messages shown in the JLabels and all information typed into the fields.
-	 */
 	public void cleanAll() {
 		nameField.setText("");
 		nameError.setText("");
@@ -154,9 +148,6 @@ public class RegisterPanel extends JPanel implements ActionListener {
 		successLabel.setText("");
 	}
 
-	/**
-	 * Only cleans the error messages shown in the JLabels.
-	 */
 	public void cleanErrors(){
 		nameError.setText("");
 		emailError.setText("");

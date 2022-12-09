@@ -31,8 +31,8 @@ public class SectionBlockServiceImp implements SectionBlockService {
 	}
 
 	@Override
-	public List<SectionBlock> getSectionBlocksByCode(String course, String section) {
-		return sectionBlockRepository.findByCode(course, section);
+	public List<SectionBlock> getSectionBlocksByCode(String session, String course, String section) {
+		return sectionBlockRepository.findByCode(session, course, section);
 	}
 
 	@Override

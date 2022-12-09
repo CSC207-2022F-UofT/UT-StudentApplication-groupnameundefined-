@@ -17,7 +17,7 @@ public interface SectionBlockService {
 	 * @param section Section code for the SectionBlock
 	 * @return List of sections that matches the given codes
 	 */
-	List<SectionBlock> getSectionBlocksByCode(String course, String section);
+	List<SectionBlock> getSectionBlocksByCode(String session, String course, String section);
 
 	/**
 	 * @param id ID of the SectionBlock to find

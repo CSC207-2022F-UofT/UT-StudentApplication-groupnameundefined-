@@ -3,6 +3,7 @@ package backend.service.imp;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import backend.exception.exceptions.BadRequestException;
 import backend.repository.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
@@ -60,6 +61,11 @@ public class StudentProfileServiceImp implements StudentProfileService {
 		}
 
 		User user = _user.get();
+
+		if (user.getStudentProfile() != null) {
+			throw new BadRequestException("Student profile for user " + user.getName() + " already exists.");
+		}
+		
 		StudentProfile studentProfile = new StudentProfile(
 				input.getProgram(),
 				input.getCollege(),
