@@ -54,7 +54,7 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
-	public Optional<User> authenticateUser(String email, String password) {
+	public Optional<User> userAuthenticate(String email, String password) {
 		try {
 			User user = this.getUserByEmail(email);
 			if (user.getPassword().equals(password)) {
@@ -69,7 +69,7 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public User loginUser(LoginForm input) {
-		Optional<User> _user = authenticateUser(input.getEmail(), input.getPassword());
+		Optional<User> _user = userAuthenticate(input.getEmail(), input.getPassword());
 		if (_user.isEmpty()) {
 			throw new InvalidCredentialsException("Invalid Credentials. Please check your email and password.");
 		}
