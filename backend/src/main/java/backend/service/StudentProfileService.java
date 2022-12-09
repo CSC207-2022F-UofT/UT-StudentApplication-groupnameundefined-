@@ -4,6 +4,7 @@ import java.util.*;
 
 import backend.form.StudentProfileForm.*;
 import backend.model.StudentProfile;
+import backend.model.Timetable;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface StudentProfileService {
@@ -22,7 +23,7 @@ public interface StudentProfileService {
 	 * @param iCalendar The courseCalendar (ics) file exported from ACORN
 	 * @return The updated StudentProfile
 	 */
-	StudentProfile loadCourseIcs(Long id, String session, MultipartFile iCalendar);
+	Timetable loadCourseIcs(Long id, String session, MultipartFile iCalendar);
 
 	/**
 	 * @return All StudentProfiles from table student-profile

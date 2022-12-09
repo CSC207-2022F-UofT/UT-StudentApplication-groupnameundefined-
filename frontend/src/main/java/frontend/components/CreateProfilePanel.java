@@ -280,7 +280,9 @@ public class CreateProfilePanel extends JPanel implements InitializablePanel {
 					builder.part("file", new FileSystemResource(jfcTimetable.getSelectedFile()));
 					HttpEntity<MultiValueMap<String, HttpEntity<?>>> requestEntity = new HttpEntity<>(builder.build(), headers);
 
-					String serverUrl = "http://localhost:8080/api/student-profile/load-course-ics" + "?studentProfileId=" + v.getId() + "?session=" + (String) Objects.requireNonNull(jcbSession.getSelectedItem());
+					String serverUrl = "http://localhost:8080/api/student-profile/load-course-ics" +
+							"?studentProfileId=" + v.getId() +
+							"&session=" + (String) Objects.requireNonNull(jcbSession.getSelectedItem());
 
 					RestTemplate restTemplate = new RestTemplate();
 					ResponseEntity<TimetableSchema> res = restTemplate
@@ -298,7 +300,7 @@ public class CreateProfilePanel extends JPanel implements InitializablePanel {
 						socialBody.put("instagramId", jtfIg.getText());
 						socialBody.put("facebookId", jtfFb.getText());
 						Mono<SocialMediaProfileSchema> socialResponse = webClient.post()
-								.uri("/social-profile/create")
+								.uri("/social-media-profile/create")
 								.body(BodyInserters.fromValue(socialBody))
 								.retrieve()
 								.bodyToMono(SocialMediaProfileSchema.class)

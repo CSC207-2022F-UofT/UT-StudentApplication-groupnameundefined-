@@ -43,4 +43,8 @@ public class AptBlock extends Block {
 		super.update(startDay, startMil, endDay, endMil, repetition, repetitionTime);
 		this.location = location;
 	}
+
+	public String getType() {
+		return "APT";
+	}
 }

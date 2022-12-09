@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface AptRequestController {
 	@GetMapping("/to/{toId}")
 	ResponseEntity<List<AptRequestDto>> getAptRequestByToId(
 			@PathVariable Long toId,
-			@RequestParam @Pattern(regexp = "PENDING|APPROVED|DENIED") String status
+			@RequestParam @NotBlank @Pattern(regexp = "PENDING|APPROVED|DENIED") String status
 	);
 
 	@PostMapping("/create")

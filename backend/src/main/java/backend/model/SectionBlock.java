@@ -39,4 +39,8 @@ public class SectionBlock extends Block {
 		super("SEC", startDay, startMil, endDay, endMil, repetition, repetitionTime);
 	}
 
+	public String getType() {
+		return "SEC";
+	}
+
 }

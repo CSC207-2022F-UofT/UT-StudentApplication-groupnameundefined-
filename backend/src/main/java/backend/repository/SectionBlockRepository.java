@@ -13,7 +13,7 @@ public interface SectionBlockRepository extends JpaRepository<SectionBlock, Long
 	@Query("SELECT s FROM SectionBlock s " +
 			"WHERE s.section.name = :sectionCode " +
 			"AND s.section.course.code = :courseCode " +
-			"AND (s.section.course.sectionCode = :sessionCode OR s.section.course.sectionCode = 'Y')"
+			"AND (s.section.course.sectionCode = :session OR s.section.course.sectionCode = 'Y')"
 	)
 	List<SectionBlock> findByCode(
 			@Param("session") String session,

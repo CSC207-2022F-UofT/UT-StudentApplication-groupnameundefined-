@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -51,8 +53,20 @@ public class Block {
 
 	@Setter(AccessLevel.NONE)
 	@Expose(serialize = true, deserialize = false)
-	@ManyToMany(mappedBy = "blocks")
+	@ManyToMany
+	@JoinTable(
+			name = "timetable_x_block",
+			joinColumns = @JoinColumn(name = "block_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "timetable_id", referencedColumnName = "id")
+	)
 	private Set<Timetable> timetables = new HashSet<>();
+
+	@PreRemove
+	private void removeGroupsFromUsers() {
+		for (Timetable t : timetables) {
+			t.getBlocks().remove(this);
+		}
+	}
 
 	public Block() {
 	}

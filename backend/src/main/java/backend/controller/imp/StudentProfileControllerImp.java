@@ -3,8 +3,12 @@ package backend.controller.imp;
 import java.util.*;
 
 import backend.dto.StudentProfileDto;
+import backend.dto.TimetableDto;
 import backend.mappers.StudentProfileMapper;
 
+import backend.mappers.TimetableMapper;
+import backend.mappers.TimetableMapperImpl;
+import backend.model.Timetable;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,13 +29,17 @@ public class StudentProfileControllerImp implements StudentProfileController {
 	private final StudentProfileService studentProfileService;
 	private final StudentProfileMapper studentProfileMapper;
 
+	private final TimetableMapper timetableMapper;
+
 	@Autowired
 	public StudentProfileControllerImp(
-			Logger logger, StudentProfileService studentProfileService, StudentProfileMapper studentProfileMapper
+			Logger logger, StudentProfileService studentProfileService, StudentProfileMapper studentProfileMapper,
+			TimetableMapper timetableMapper
 	) {
 		this.logger = logger;
 		this.studentProfileService = studentProfileService;
 		this.studentProfileMapper = studentProfileMapper;
+		this.timetableMapper = timetableMapper;
 	}
 
 	@Override
@@ -43,15 +51,15 @@ public class StudentProfileControllerImp implements StudentProfileController {
 	}
 
 	@Override
-	public ResponseEntity<StudentProfileDto> loadCourseIcs(
+	public ResponseEntity<TimetableDto> loadCourseIcs(
 			Long studentProfileId,
 			String session,
 			MultipartFile file
 	) {
-		StudentProfile studentProfile = studentProfileService.loadCourseIcs(studentProfileId, session, file);
-		StudentProfileDto studentProfileDto = studentProfileMapper.toDto(studentProfile);
+		Timetable timetable = studentProfileService.loadCourseIcs(studentProfileId, session, file);
+		TimetableDto timetableDto = timetableMapper.toDto(timetable);
 
-		return new ResponseEntity<>(studentProfileDto, HttpStatus.OK);
+		return new ResponseEntity<>(timetableDto, HttpStatus.OK);
 	}
 
 	@Override

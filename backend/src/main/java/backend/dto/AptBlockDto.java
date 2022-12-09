@@ -20,6 +20,5 @@ public class AptBlockDto extends BlockDto {
 
 	@JsonProperty("aptRequestToName")
 	private String aptRequestToName;
-
-
+	
 }

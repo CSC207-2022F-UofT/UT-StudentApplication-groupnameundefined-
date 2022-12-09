@@ -37,8 +37,11 @@ public class StudentProfile {
 	@Column(name = "enrolment_year")
 	private Integer enrolmentYear;
 
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@CollectionTable(name = "studentprofile_coursecodes", joinColumns = @JoinColumn(name = "studentprofile_id"))
+	@JoinColumn(name = "id")
+	@Column(name = "course_code")
 	@ElementCollection(fetch = FetchType.EAGER)
-	@Column(name = "course_codes")
 	private Set<String> courseCodes = new HashSet<>();
 
 	@OneToOne(cascade = {CascadeType.ALL}, mappedBy = "studentProfile", orphanRemoval = true)

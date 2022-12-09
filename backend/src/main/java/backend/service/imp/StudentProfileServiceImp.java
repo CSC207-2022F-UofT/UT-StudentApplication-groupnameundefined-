@@ -65,7 +65,7 @@ public class StudentProfileServiceImp implements StudentProfileService {
 		if (user.getStudentProfile() != null) {
 			throw new BadRequestException("Student profile for user " + user.getName() + " already exists.");
 		}
-		
+
 		StudentProfile studentProfile = new StudentProfile(
 				input.getProgram(),
 				input.getCollege(),
@@ -87,7 +87,7 @@ public class StudentProfileServiceImp implements StudentProfileService {
 	}
 
 	@Override
-	public StudentProfile loadCourseIcs(Long studentProfileId, String session, MultipartFile iCalendar) {
+	public Timetable loadCourseIcs(Long studentProfileId, String session, MultipartFile iCalendar) {
 		StudentProfile studentProfile = getStudentProfileById(studentProfileId);
 
 		List<Map<String, String>> sectionData = timetableService.parseIcs(iCalendar);
@@ -100,7 +100,7 @@ public class StudentProfileServiceImp implements StudentProfileService {
 			}
 		}
 
-		return studentProfileRepository.save(studentProfile);
+		return studentProfileRepository.save(studentProfile).getTimetable();
 	}
 
 	@Override

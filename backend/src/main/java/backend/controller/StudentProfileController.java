@@ -1,6 +1,7 @@
 package backend.controller;
 
 import backend.dto.StudentProfileDto;
+import backend.dto.TimetableDto;
 import org.springframework.http.ResponseEntity;
 
 import backend.form.StudentProfileForm.*;
@@ -20,7 +21,7 @@ public interface StudentProfileController {
 	ResponseEntity<StudentProfileDto> createStudentProfile(@RequestBody @Valid CreateStudentProfileForm input);
 
 	@PostMapping("/load-course-ics")
-	ResponseEntity<StudentProfileDto> loadCourseIcs(
+	ResponseEntity<TimetableDto> loadCourseIcs(
 			@RequestParam Long studentProfileId,
 			@RequestParam String session,
 			@RequestPart MultipartFile file
@@ -32,7 +33,7 @@ public interface StudentProfileController {
 	@GetMapping("/{id}")
 	ResponseEntity<StudentProfileDto> getStudentProfileById(@PathVariable Long id);
 
-	@PostMapping("/match/{id}")
+	@GetMapping("/match/{id}")
 	ResponseEntity<List<StudentProfileDto>> matchStudentProfiles(
 			@PathVariable Long id,
 			@RequestParam @Pattern(regexp = "HABIT|COURSE|BOTH") String criteria

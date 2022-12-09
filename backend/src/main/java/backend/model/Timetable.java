@@ -30,9 +30,7 @@ public class Timetable {
 	private StudentProfile studentProfile;
 
 	@Setter(AccessLevel.NONE)
-	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-	@JoinTable(name = "timetable_x_block", joinColumns = @JoinColumn(name = "timetable_id", referencedColumnName =
-			"id"), inverseJoinColumns = @JoinColumn(name = "block_id", referencedColumnName = "id"))
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "timetables")
 	private Set<Block> blocks = new HashSet<>();
 
 	public Timetable() {
