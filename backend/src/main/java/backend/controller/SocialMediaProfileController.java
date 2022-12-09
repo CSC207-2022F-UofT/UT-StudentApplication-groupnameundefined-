@@ -16,9 +16,9 @@ public interface SocialMediaProfileController {
 	ResponseEntity<List<SocialMediaProfileDto>> getAllSocialMediaProfiles();
 
 	@GetMapping("/{id}")
-	ResponseEntity<SocialMediaProfileDto> getSocialMediaProfileById(Long id);
+	ResponseEntity<SocialMediaProfileDto> getSocialMediaProfileById(@RequestParam Long id);
 
 	@PostMapping("/create")
-	ResponseEntity<SocialMediaProfileDto> createSocialMediaProfile(CreateSocialMediaProfileForm input);
+	ResponseEntity<SocialMediaProfileDto> createSocialMediaProfile(@RequestBody CreateSocialMediaProfileForm input);
 
 }
