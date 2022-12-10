@@ -13,6 +13,7 @@ build/
 .settings
 .springBeans
 .sts4-cache
+.DS_Store
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
@@ -33,5 +34,12 @@ out/
 /nbdist/
 /.nb-gradle/
 
+### Env Variables ###
+.env
+
 ### VS Code ###
 .vscode/
+
+
+.idea/
+*/.DS_Store
